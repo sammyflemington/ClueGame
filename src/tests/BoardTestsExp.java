@@ -20,7 +20,7 @@ public class BoardTestsExp {
 	@Test
 	public void testAdjacency_1() {
 		
-		TestBoardCell cell = board.get(1,1);
+		TestBoardCell cell = board.getCell(1,1);
 		Set<TestBoardCell> testList = cell.getAdjList();
 		
 		// Middle
@@ -34,11 +34,11 @@ public class BoardTestsExp {
 	@Test
 	public void testAdjacency_2() {
 		
-		TestBoardCell cell = board.get(1,1);
+		TestBoardCell cell = board.getCell(1,1);
 		Set<TestBoardCell> testList = cell.getAdjList();
 		
 		// Corner
-		cell = board.get(0,0);
+		cell = board.getCell(0,0);
 		testList = cell.getAdjList();
 		assertTrue(testList.contains(board.getCell(0,1)));
 		assertTrue(testList.contains(board.getCell(1,0)));
@@ -47,11 +47,11 @@ public class BoardTestsExp {
 	@Test
 	public void testAdjacency_3() {
 		
-		TestBoardCell cell = board.get(1,1);
+		TestBoardCell cell = board.getCell(1,1);
 		Set<TestBoardCell> testList = cell.getAdjList();
 		
 		// Edge
-		cell = board.get(2,3);
+		cell = board.getCell(2,3);
 		testList = cell.getAdjList();
 		assertTrue(testList.contains(board.getCell(1,3)));
 		assertTrue(testList.contains(board.getCell(3,3)));
