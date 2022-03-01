@@ -18,10 +18,7 @@ public class TestBoardCell {
 	public void addAdjacency(TestBoardCell cell) {
 		adjList.add(cell);
 	}
-	
-	Set<TestBoardCell> getAdjList(){
-		return adjList;
-	}
+
 	
 	void setRoom(boolean b) {
 		isRoom = b;
@@ -37,6 +34,12 @@ public class TestBoardCell {
 	
 	boolean getOccupied() {
 		return isOccupied;
+	}
+
+	public Set<TestBoardCell> getAdjList() {
+		
+		
+		return adjList;
 	}
 
 }

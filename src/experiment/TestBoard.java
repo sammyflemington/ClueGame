@@ -9,7 +9,7 @@ public class TestBoard {
 	
 	}
 	
-	void calcTargets( TestBoardCell startCell, int pathlength) {
+	void calcTargets(TestBoardCell startCell, int pathlength) {
 		
 		
 	}
@@ -20,7 +20,7 @@ public class TestBoard {
 		return null;	
 	}
 	
-	TestBoardCell getCell(int row, int col) {
+	public TestBoardCell getCell(int row, int col) {
 		
 		
 		return null;	
