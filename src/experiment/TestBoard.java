@@ -9,12 +9,12 @@ public class TestBoard {
 	
 	}
 	
-	void calcTargets(TestBoardCell startCell, int pathlength) {
+	public void calcTargets(TestBoardCell startCell, int pathlength) {
 		
 		
 	}
 	
-	Set<TestBoardCell> getTargets() {
+	public Set<TestBoardCell> getTargets() {
 		
 		
 		return null;	
