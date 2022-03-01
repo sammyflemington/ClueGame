@@ -38,5 +38,6 @@ public class TestBoardCell {
 	boolean getOccupied() {
 		return isOccupied;
 	}
+>>>>>>> 21a697e9d381eecf9b5c7a5111fee8ccddc99341
 }
 
