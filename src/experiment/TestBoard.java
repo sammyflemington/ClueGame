@@ -4,7 +4,7 @@ import java.util.Set;
 
 public class TestBoard {
 
-	TestBoard() {
+	public TestBoard() {
 		
 	
 	}
