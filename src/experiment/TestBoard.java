@@ -4,7 +4,7 @@ import java.util.Set;
 
 public class TestBoard {
 
-	TestBoard() {
+	public TestBoard() {
 		
 	
 	}
@@ -24,6 +24,11 @@ public class TestBoard {
 		
 		
 		return null;	
+	}
+
+	public TestBoardCell get(int i, int j) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	
