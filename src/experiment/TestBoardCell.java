@@ -20,19 +20,19 @@ public class TestBoardCell {
 	}
 
 	
-	void setRoom(boolean b) {
+	public void setRoom(boolean b) {
 		isRoom = b;
 	}
 	
-	boolean isRoom() {
+	public boolean isRoom() {
 		return isRoom;
 	}
 	
-	void setOccupied(boolean b) {
+	public void setOccupied(boolean b) {
 		isOccupied = b;
 	}
 	
-	boolean getOccupied() {
+	public boolean getOccupied() {
 		return isOccupied;
 	}
 
