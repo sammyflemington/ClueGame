@@ -103,9 +103,8 @@ public class BoardTestsExp {
 		assertTrue(targets.contains(board.getCell(1,3)));
 		assertTrue(targets.contains(board.getCell(2,0)));
 		assertTrue(targets.contains(board.getCell(2,2)));
-		assertTrue(targets.contains(board.getCell(3,1)));
 
-		assertEquals(5, targets.size());
+		assertEquals(4, targets.size());
 	}
 	
 	@Test
@@ -120,12 +119,10 @@ public class BoardTestsExp {
 		assertTrue(targets.contains(board.getCell(0,1)));
 		assertTrue(targets.contains(board.getCell(3,0)));
 		assertTrue(targets.contains(board.getCell(0,3)));
-		assertTrue(targets.contains(board.getCell(3,1)));
+		assertTrue(targets.contains(board.getCell(3,2)));
 
 		assertEquals(5, targets.size());
 	}
-	
-
 	
 	@Test
 	public void testTargetsMixed_3(){
