@@ -6,7 +6,6 @@ import java.util.Set;
 public class TestBoard {
 	private TestBoardCell[][] board;
 	private Set<TestBoardCell> targets = new HashSet<TestBoardCell>();
-	private Set<TestBoardCell> visited;
 	final static int COLS = 4;
 	final static int ROWS = 4;
 	
@@ -29,11 +28,36 @@ public class TestBoard {
 		}
 	}
 	
-	public void calcTargets(TestBoardCell startCell, int pathlength) {
-		// Do nothing
+	public void calcTargets(TestBoardCell startCell, int pathLength) {
+		// start
+		Set<TestBoardCell> visited = new HashSet<TestBoardCell>();
+		visited.add(startCell);
+		for (TestBoardCell c : startCell.getAdjList()) {
+			calculate(c, pathLength - 1, visited);
+		}
+	}
+	
+	public void calculate(TestBoardCell startCell, int pathLength, Set<TestBoardCell> visited) {
+		// Make a copy of the set for this branch of recursive search
+		visited = new HashSet<TestBoardCell>(visited);
+		
+		for (TestBoardCell c : startCell.getAdjList()) {
+			if (!visited.contains(c)) {
+				if (pathLength == 1) {
+					targets.add(c);
+				} else {
+					visited.add(c);
+					calculate(c, pathLength - 1, visited);
+				}
+			}
+		}
 	}
 	
 	public Set<TestBoardCell> getTargets() {
+		// DEBUG
+		System.out.println();
+		for (TestBoardCell t : targets)
+			System.out.println(t);
 		return targets;
 	}
 	

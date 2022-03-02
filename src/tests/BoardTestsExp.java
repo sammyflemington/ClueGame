@@ -61,6 +61,7 @@ public class BoardTestsExp {
 	@Test
 	public void testTargetsNormal_1() {
 		TestBoardCell cell = board.getCell(0,0);
+		System.out.println("N1");
 		board.calcTargets(cell, 2);
 		
 		Set<TestBoardCell> targets = board.getTargets();
@@ -76,6 +77,7 @@ public class BoardTestsExp {
 	@Test
 	public void testTargetsNormal_2() {
 		TestBoardCell cell = board.getCell(2,1);
+		System.out.println("N2");
 		board.calcTargets(cell, 1);
 		
 		Set<TestBoardCell> targets = board.getTargets();
@@ -85,7 +87,7 @@ public class BoardTestsExp {
 		assertTrue(targets.contains(board.getCell(2,2)));
 		assertTrue(targets.contains(board.getCell(2,0)));
 		
-		assertEquals(3, targets.size());
+		assertEquals(4, targets.size());
 		
 	}
 	

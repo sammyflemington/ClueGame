@@ -36,6 +36,10 @@ public class TestBoardCell {
 		return isOccupied;
 	}
 
+	@Override
+	public String toString() {
+		return "[" + Integer.toString(row) + ", " + Integer.toString(col) + "]";
+	}
 	public Set<TestBoardCell> getAdjList() {
 		
 		
