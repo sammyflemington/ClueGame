@@ -32,9 +32,8 @@ public class TestBoard {
 		// start
 		Set<TestBoardCell> visited = new HashSet<TestBoardCell>();
 		visited.add(startCell);
-		for (TestBoardCell c : startCell.getAdjList()) {
-			calculate(c, pathLength - 1, visited);
-		}
+		calculate(startCell, pathLength - 1, visited);
+		
 	}
 	
 	public void calculate(TestBoardCell startCell, int pathLength, Set<TestBoardCell> visited) {
@@ -43,7 +42,7 @@ public class TestBoard {
 		
 		for (TestBoardCell c : startCell.getAdjList()) {
 			if (!visited.contains(c)) {
-				if (pathLength == 1) {
+				if (pathLength == 0) {
 					targets.add(c);
 				} else {
 					visited.add(c);
