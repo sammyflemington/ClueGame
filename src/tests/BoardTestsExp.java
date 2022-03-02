@@ -119,7 +119,7 @@ public class BoardTestsExp {
 		assertTrue(targets.contains(board.getCell(0,1)));
 		assertTrue(targets.contains(board.getCell(3,0)));
 		assertTrue(targets.contains(board.getCell(0,3)));
-		assertTrue(targets.contains(board.getCell(3,2)));
+		assertTrue(targets.contains(board.getCell(3,2))); // This one is not found for some reason
 
 		assertEquals(5, targets.size());
 	}
