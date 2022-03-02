@@ -45,9 +45,12 @@ public class TestBoard {
 				if (pathLength == 0) {
 					targets.add(c);
 				} else {
-					visited.add(c);
-					calculate(c, pathLength - 1, visited);
+					if (!c.getOccupied() && !c.isRoom()) {
+						visited.add(c);
+						calculate(c, pathLength - 1, visited);
+					}
 				}
+					
 			}
 		}
 	}

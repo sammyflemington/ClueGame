@@ -6,7 +6,7 @@ import java.util.HashSet;
 public class TestBoardCell {
 	private int row;
 	private int col;
-	private boolean isRoom = true;
+	private boolean isRoom = false;
 	private boolean isOccupied = false;
 	private Set<TestBoardCell> adjList = new HashSet<TestBoardCell> ();
 	
