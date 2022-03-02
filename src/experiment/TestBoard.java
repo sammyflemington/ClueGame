@@ -15,21 +15,18 @@ public class TestBoard {
 		for (int i = 0; i < 4; i++) {
 			for (int j = 0; j < 4; j++) {
 				board[i][j] = new TestBoardCell(i, j);
-				
 			}
 		}
 		
 		// Calculate adjacencies
 		for (int i = 0; i < 4; i++) {
 			for (int j = 0; j < 4; j++) {
-				if (i > 0) 			board[i][j].addAdjacency(board[i-1][j]);
-				if (i < ROWS - 1) 	board[i][j].addAdjacency(board[i+1][j]);
-				if (j > 0)			board[i][j].addAdjacency(board[i][j-1]);
-				if (i < COLS - 1) 	board[i][j].addAdjacency(board[i][j+1]);
+				if (i > 0) 			board[i][j].addAdjacency(board[i-1][j]); // Left
+				if (i < ROWS - 1) 	board[i][j].addAdjacency(board[i+1][j]); // right
+				if (j > 0)			board[i][j].addAdjacency(board[i][j-1]); // up
+				if (j < COLS - 1) 	board[i][j].addAdjacency(board[i][j+1]); // down
 			}
 		}
-		
-		
 	}
 	
 	public void calcTargets(TestBoardCell startCell, int pathlength) {
