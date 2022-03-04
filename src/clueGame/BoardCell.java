@@ -7,15 +7,17 @@ import experiment.TestBoardCell;
 
 public class BoardCell {
 
-	private int col;
-	private int row;
-	private char initial;
+	private int 	col;
+	private int 	row;
+	private char 	initial;
 	
 	DoorDirection doorDirection;
 	
-	private boolean isOccupied;
-	private boolean isRoomLabel;
-	private boolean isRoomCenter;
+	private boolean isDoorway = false;
+	private boolean isOccupied = false;
+	private boolean isRoomLabel = false;
+	private boolean isLabel = false;
+	private boolean isRoomCenter = false;
 	private char 	secretPassage;
 	
 	private Set<BoardCell> adjList = new HashSet<BoardCell>();
@@ -33,8 +35,16 @@ public class BoardCell {
 		isRoomLabel = b;
 	}
 	
-	public boolean isRoom() {
+	public boolean isLabel() {
 		return isRoomLabel;
+	}
+	
+	public boolean isRoomCenter() {
+		return isRoomCenter;
+	}
+	
+	public boolean isDoorway() {
+		return isDoorway;
 	}
 	
 	public void setOccupied(boolean b) {
@@ -43,6 +53,10 @@ public class BoardCell {
 	
 	public boolean getOccupied() {
 		return isOccupied;
+	}
+	
+	public char getSecretPassage() {
+		return secretPassage;
 	}
 
 	@Override
