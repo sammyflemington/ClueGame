@@ -110,18 +110,21 @@ public class BoardTestsExp {
 	@Test
 	public void testTargetsMixed_2() {
 		TestBoardCell cell = board.getCell(2,3);
+		System.out.println("M2");
 		board.getCell(0,2).setOccupied(true);
 		board.getCell(3,1).setRoom(true);
 		board.calcTargets(cell, 6);
 		Set<TestBoardCell> targets = board.getTargets();
 		
-		assertTrue(targets.contains(board.getCell(1,0)));
+		assertTrue(targets.contains(board.getCell(1,0))); // This one is not found for some reason
 		assertTrue(targets.contains(board.getCell(0,1)));
 		assertTrue(targets.contains(board.getCell(3,0)));
+		assertTrue(targets.contains(board.getCell(1,2)));
 		assertTrue(targets.contains(board.getCell(0,3)));
+		assertTrue(targets.contains(board.getCell(2,1)));
 		assertTrue(targets.contains(board.getCell(3,2))); // This one is not found for some reason
 
-		assertEquals(5, targets.size());
+		assertEquals(7, targets.size());
 	}
 	
 	@Test
