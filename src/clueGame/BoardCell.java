@@ -7,9 +7,9 @@ import experiment.TestBoardCell;
 
 public class BoardCell {
 
-	static private int COL;
-	static private int ROW;
-	static private char initial;
+	private int col;
+	private int row;
+	private char initial;
 	
 	DoorDirection doorDirection;
 	

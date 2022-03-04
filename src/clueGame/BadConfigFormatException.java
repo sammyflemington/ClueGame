@@ -1,5 +1,5 @@
 package clueGame;
 
-public class BadConfigFormatException {
+public class BadConfigFormatException extends Exception {
 
 }
