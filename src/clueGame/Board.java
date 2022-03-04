@@ -25,22 +25,7 @@ public class Board {
 	}
 	
 	public void initialize() {
-		board = new BoardCell[numRows][numColumns];
-		for (int i = 0; i < 4; i++) {
-			for (int j = 0; j < 4; j++) {
-				board[i][j] = new BoardCell(i, j);
-			}
-		}
 		
-		// Calculate adjacencies
-		for (int i = 0; i < 4; i++) {
-			for (int j = 0; j < 4; j++) {
-				if (i > 0) 			board[i][j].addAdjacency(board[i-1][j]); // Left
-				if (i < numRows - 1) 	board[i][j].addAdjacency(board[i+1][j]); // right
-				if (j > 0)			board[i][j].addAdjacency(board[i][j-1]); // up
-				if (j < numColumns - 1) 	board[i][j].addAdjacency(board[i][j+1]); // down
-			}
-		}
 	}
 	
 	public void loadSetupConfig() {
@@ -48,7 +33,7 @@ public class Board {
 	}
 	
 	public void loadLayoutConfig() {
-		
+	
 	}
 	
 	public void setConfigFiles(String f1, String f2) {
@@ -91,7 +76,7 @@ public class Board {
 	}
 	
 	public BoardCell getCell(int row, int col) {
-		return board[row][col];
+		return new BoardCell(0,0);
 	}
 	
 	public int getNumRows() {
@@ -103,11 +88,11 @@ public class Board {
 	}
 	
 	public Room getRoom(char c) {
-		return null;
+		return new Room(new BoardCell(0,0),new BoardCell(0,0));
 	}
 	
 	public Room getRoom(BoardCell c) {
-		return null;
+		return new Room(new BoardCell(0,0),new BoardCell(0,0));
 	}
 	
 }
