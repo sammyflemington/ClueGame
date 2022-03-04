@@ -102,7 +102,7 @@ public class Board {
 		return numColumns;
 	}
 	
-	public Room getRoom(char c) {
+	public BoardCell getRoom(char c) {
 		return null;
 	}
 	
