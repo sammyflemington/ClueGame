@@ -1,5 +1,8 @@
 package clueGame;
 
+import java.io.*;
+import java.util.*;
+import java.io.File;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -24,16 +27,19 @@ public class Board {
 		return theInstance;
 	}
 	
-	public void initialize() {
+	public void initialize() throws BadConfigFormatException{
+		
+		loadSetupConfig();
+		loadLayoutConfig();
 		
 	}
 	
 	public void loadSetupConfig() {
-		
+		File setup = new File(setupConfigFile);
 	}
 	
 	public void loadLayoutConfig() {
-	
+		File layoutFile = new File(layoutConfigFile);
 	}
 	
 	public void setConfigFiles(String f1, String f2) {
