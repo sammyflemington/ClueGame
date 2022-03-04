@@ -13,14 +13,45 @@ public class BoardCell {
 	
 	DoorDirection doorDirection;
 	
-	private boolean roomLabel;
-	private boolean roomCenter;
+	private boolean isOccupied;
+	private boolean isRoomLabel;
+	private boolean isRoomCenter;
 	private char 	secretPassage;
 	
 	private Set<BoardCell> adjList = new HashSet<BoardCell>();
 	
-	public void addAdj(BoardCell cell) {
-		// do something
+	public BoardCell(int r, int c) {
+		row = r;
+		col = c;
 	}
 	
+	public void addAdjacency(BoardCell cell) {
+		adjList.add(cell);
+	}
+	
+	public void setRoom(boolean b) {
+		isRoomLabel = b;
+	}
+	
+	public boolean isRoom() {
+		return isRoomLabel;
+	}
+	
+	public void setOccupied(boolean b) {
+		isOccupied = b;
+	}
+	
+	public boolean getOccupied() {
+		return isOccupied;
+	}
+
+	@Override
+	public String toString() {
+		return "[" + Integer.toString(row) + ", " + Integer.toString(col) + "]";
+	}
+	
+	public Set<BoardCell> getAdjList() {
+		return adjList;
+	}
+
 }
