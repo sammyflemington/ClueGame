@@ -1,0 +1,13 @@
+// Rooms and room cards 
+Room, Cat hotel, C 
+Room, Magic room, M 
+Room, Round Table, t 
+Room, Square Table, S 
+Room, Mister Flufferson’s study , F 
+Room, Portal Room, P 
+Room, Red room, R 
+Room, Kitchen, K 
+Room, Bathroom, B 
+// other spaces on board 
+Space, Unused, X 
+Space, Walkway, W 
