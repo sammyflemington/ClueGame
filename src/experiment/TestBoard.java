@@ -31,6 +31,7 @@ public class TestBoard {
 	public void calcTargets(TestBoardCell startCell, int pathLength) {
 		// start
 		Set<TestBoardCell> visited = new HashSet<TestBoardCell>();
+		visited.clear();
 		visited.add(startCell);
 		calculate(startCell, pathLength - 1, visited);
 		
@@ -39,16 +40,15 @@ public class TestBoard {
 	// Does a recursive search of the grid and avoids obstacles. 
 	// TODO: No support yet for entering walkways!
 	public void calculate(TestBoardCell startCell, int pathLength, Set<TestBoardCell> visited) {
-		// Make a copy of the set for this branch of recursive search
-		visited = new HashSet<TestBoardCell>(visited);
-		
 		for (TestBoardCell c : startCell.getAdjList()) {
 			if (!visited.contains(c) && !c.getOccupied() && !c.isRoom()) {
 				if (pathLength == 0) {
 					targets.add(c);
 				} else {
-					visited.add(c);
-					calculate(c, pathLength - 1, visited);
+					// Create copy of visited list for this branch
+					Set<TestBoardCell> v = new HashSet<TestBoardCell>(visited);
+					v.add(c);
+					calculate(c, pathLength - 1, v);
 				}
 			}
 		}

@@ -58,6 +58,8 @@ public class BoardTestsExp {
 		assertTrue(testList.contains(board.getCell(2,2)));
 		assertEquals(3, testList.size());
 	}
+	
+
 	@Test
 	public void testTargetsNormal_1() {
 		TestBoardCell cell = board.getCell(0,0);
@@ -101,10 +103,11 @@ public class BoardTestsExp {
 		
 		assertTrue(targets.contains(board.getCell(0,0)));
 		assertTrue(targets.contains(board.getCell(1,3)));
+		assertTrue(targets.contains(board.getCell(1,1)));
 		assertTrue(targets.contains(board.getCell(2,0)));
 		assertTrue(targets.contains(board.getCell(2,2)));
 
-		assertEquals(4, targets.size());
+		assertEquals(5, targets.size());
 	}
 	
 	@Test
