@@ -4,12 +4,12 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import experiment.TestBoardCell;
+import clueGame.BoardCell;
 
 public class Board {
 	private static Board theInstance = new Board();
-	private TestBoardCell[][] board;
-	private Set<TestBoardCell> targets = new HashSet<TestBoardCell>();
+	private BoardCell[][] board;
+	private Set<BoardCell> targets = new HashSet<BoardCell>();
 	final static int numColumns = 4;
 	final static int numRows = 4;
 	private String layoutConfigFile;
@@ -25,10 +25,10 @@ public class Board {
 	}
 	
 	public void initialize() {
-		board = new TestBoardCell[numRows][numColumns];
+		board = new BoardCell[numRows][numColumns];
 		for (int i = 0; i < 4; i++) {
 			for (int j = 0; j < 4; j++) {
-				board[i][j] = new TestBoardCell(i, j);
+				board[i][j] = new BoardCell(i, j);
 			}
 		}
 		
@@ -56,9 +56,9 @@ public class Board {
 		setupConfigFile = f2;
 	}
 	
-	public void calcTargets(TestBoardCell startCell, int pathLength) {
+	public void calcTargets(BoardCell startCell, int pathLength) {
 		// start
-		Set<TestBoardCell> visited = new HashSet<TestBoardCell>();
+		Set<BoardCell> visited = new HashSet<BoardCell>();
 		visited.clear();
 		visited.add(startCell);
 		calculate(startCell, pathLength - 1, visited);
@@ -67,14 +67,14 @@ public class Board {
 	
 	// Does a recursive search of the grid and avoids obstacles. 
 	// TODO: No support yet for entering walkways!
-	public void calculate(TestBoardCell startCell, int pathLength, Set<TestBoardCell> visited) {
-		for (TestBoardCell c : startCell.getAdjList()) {
+	public void calculate(BoardCell startCell, int pathLength, Set<BoardCell> visited) {
+		for (BoardCell c : startCell.getAdjList()) {
 			if (!visited.contains(c) && !c.getOccupied() && !c.isRoom()) {
 				if (pathLength == 0) {
 					targets.add(c);
 				} else {
 					// Create copy of visited list for this branch
-					Set<TestBoardCell> v = new HashSet<TestBoardCell>(visited);
+					Set<BoardCell> v = new HashSet<BoardCell>(visited);
 					v.add(c);
 					calculate(c, pathLength - 1, v);
 				}
@@ -82,15 +82,15 @@ public class Board {
 		}
 	}
 	
-	public Set<TestBoardCell> getTargets() {
+	public Set<BoardCell> getTargets() {
 		// DEBUG
 		System.out.println();
-		for (TestBoardCell t : targets)
+		for (BoardCell t : targets)
 			System.out.println(t);
 		return targets;
 	}
 	
-	public TestBoardCell getCell(int row, int col) {
+	public BoardCell getCell(int row, int col) {
 		return board[row][col];
 	}
 	
