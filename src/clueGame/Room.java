@@ -8,4 +8,8 @@ public class Room {
 	public Room() {
 		
 	}
+	
+	public String getName() {
+		return name;
+	}
 }
