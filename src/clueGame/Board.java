@@ -17,7 +17,7 @@ public class Board {
 	final static int numRows = 4;
 	private String layoutConfigFile;
 	private String setupConfigFile;
-	private Map<Character, Room> roomMap;
+	private Map<Character, Room> roomMap = new HashMap<Character, Room>();
 	
 	private Board() {
 		super();
@@ -27,18 +27,20 @@ public class Board {
 		return theInstance;
 	}
 	
-	public void initialize() throws BadConfigFormatException{
-		
-		loadSetupConfig();
-		loadLayoutConfig();
-		
+	public void initialize() {
+		try {
+			loadSetupConfig();
+			loadLayoutConfig();
+		}catch(BadConfigFormatException e) {
+			// uh oh 
+		}
 	}
 	
-	public void loadSetupConfig() {
+	public void loadSetupConfig() throws BadConfigFormatException{
 		File setup = new File(setupConfigFile);
 	}
 	
-	public void loadLayoutConfig() {
+	public void loadLayoutConfig() throws BadConfigFormatException{
 		File layoutFile = new File(layoutConfigFile);
 	}
 	
@@ -93,6 +95,9 @@ public class Board {
 		return numColumns;
 	}
 	
+	public Map<Character, Room> getRoomMap(){
+		return roomMap;
+	}
 	public Room getRoom(char c) {
 		return new Room(new BoardCell(0,0),new BoardCell(0,0));
 	}

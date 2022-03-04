@@ -96,6 +96,9 @@ public class BoardCell {
 		return adjList;
 	}
 	
+	public char getInitial() {
+		return initial;
+	}
 	@Override
 	public String toString() {
 		return "[" + Integer.toString(row) + ", " + Integer.toString(col) + "]";
