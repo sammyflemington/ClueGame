@@ -1,0 +1,15 @@
+For the doorway tests, we chose these cells we did because they are doorways
+of different rooms. We chose one doorway that was facing each possible
+direction to make sure that they each worked properly.
+
+To ensure that the start and end of the file were read correctly, we chose to test
+the very first cell and very last cell of the csv to make sure they were the 
+correct room.
+
+To check cells for correct readings, we chose 4 cells across the board that have
+different initials.
+
+In order to make sure room centers and labels were being read properly, we
+chose to pick 2 different rooms to test that their centers were recorded
+correctly. We then chose 2 different rooms and tested that their room labels
+were accurate.
