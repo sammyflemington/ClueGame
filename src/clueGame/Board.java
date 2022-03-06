@@ -19,9 +19,11 @@ public class Board {
 	private String setupConfigFile;
 	private Map<Character, Room> roomMap = new HashMap<Character, Room>();
 	
+	// only one instance created
 	private Board() {
 		super();
 	}
+	
 	
 	public static Board getInstance() {
 		return theInstance;
@@ -32,15 +34,18 @@ public class Board {
 			loadSetupConfig();
 			loadLayoutConfig();
 		}catch(BadConfigFormatException e) {
+			e.printStackTrace();
 			// uh oh 
+		}catch(FileNotFoundException e) {
+			e.printStackTrace();
 		}
 	}
 	
-	public void loadSetupConfig() throws BadConfigFormatException{
+	public void loadSetupConfig() throws BadConfigFormatException, FileNotFoundException {
 		File setup = new File(setupConfigFile);
 	}
 	
-	public void loadLayoutConfig() throws BadConfigFormatException{
+	public void loadLayoutConfig() throws BadConfigFormatException, FileNotFoundException {
 		File layoutFile = new File(layoutConfigFile);
 	}
 	
