@@ -111,6 +111,17 @@ public class Board {
 			j = 0;
 		}
 		reader.close();
+		
+		// Calculate adjacencies
+		for (i = 0; i < 4; i++) {
+			for (j = 0; j < 4; j++) {
+				if (i > 0) 				board[i][j].addAdjacency(board[i-1][j]); // Left
+				if (i < numRows - 1) 	board[i][j].addAdjacency(board[i+1][j]); // right
+				if (j > 0)				board[i][j].addAdjacency(board[i][j-1]); // up
+				if (j < numColumns - 1) board[i][j].addAdjacency(board[i][j+1]); // down
+			}
+		}
+				
 		printBoard();
 	}
 	
