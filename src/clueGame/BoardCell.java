@@ -40,6 +40,9 @@ public class BoardCell {
 		return isRoom;
 	}
 		
+	public void setInitial(char c) {
+		initial = c;
+	}
 	public void setRoomLabel(boolean b) {
 		isRoomLabel = b;		
 	}

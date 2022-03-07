@@ -13,8 +13,8 @@ public class Board {
 	private static Board theInstance = new Board();
 	private BoardCell[][] board;
 	private Set<BoardCell> targets = new HashSet<BoardCell>();
-	final static int numColumns = 4;
-	final static int numRows = 4;
+	static int numColumns = 4;
+	static int numRows = 4;
 	private String layoutConfigFile;
 	private String setupConfigFile;
 	private Map<Character, Room> roomMap = new HashMap<Character, Room>();
@@ -30,9 +30,10 @@ public class Board {
 	}
 	
 	public void initialize() {
+		board = new BoardCell[numRows][numColumns];
 		try {
-			loadSetupConfig();
 			loadLayoutConfig();
+			loadSetupConfig();
 		}catch(BadConfigFormatException e) {
 			e.printStackTrace();
 			// uh oh 
@@ -42,11 +43,75 @@ public class Board {
 	}
 	
 	public void loadSetupConfig() throws BadConfigFormatException, FileNotFoundException {
-		File setup = new File(setupConfigFile);
+		
+		
 	}
 	
 	public void loadLayoutConfig() throws BadConfigFormatException, FileNotFoundException {
-		File layoutFile = new File(layoutConfigFile);
+		File file = new File(layoutConfigFile);
+		Scanner reader = new Scanner(file);
+		
+		// First find the size of the level layout
+		int i = 1, j = 0;
+		String line = reader.nextLine();
+		String[] chars = line.split(",");
+		for (String c : chars) {
+			j ++;
+		}
+		while (reader.hasNextLine()) {
+			line = reader.nextLine();
+			i++;
+		}
+		numRows = i;
+		numColumns = j;
+		board = new BoardCell[numRows][numColumns];
+		
+		i = j = 0;
+		reader.close();
+		reader = new Scanner(file);
+		while(reader.hasNextLine()) {
+			line = reader.nextLine();
+			
+			for (String s : line.split(",")) {
+				BoardCell cell = new BoardCell(i, j);
+				board[i][j] = cell;
+				cell.setInitial(s.charAt(0));
+				//System.out.print(cell.getInitial());
+				if (s.length() > 1) {
+					switch(s.charAt(1)) {
+					case '#':
+						cell.setRoomLabel(true);
+						break;
+					case '*':
+						cell.setRoomCenter(true);
+						break;
+					case 'v':
+						cell.setDoorDirection(DoorDirection.DOWN);
+						break;
+					case '<':
+						cell.setDoorDirection(DoorDirection.LEFT);
+						break;
+					case '>':
+						cell.setDoorDirection(DoorDirection.RIGHT);
+						break;
+					case '^':
+						cell.setDoorDirection(DoorDirection.UP);
+						break;
+					default:
+						// secret passage
+						cell.setSecretPassage(s.charAt(1));
+						break;
+					}
+				}
+				
+				j++;
+			}
+			//System.out.println();
+			i++;
+			j = 0;
+		}
+		reader.close();
+		printBoard();
 	}
 	
 	public void setConfigFiles(String f1, String f2) {
@@ -89,7 +154,7 @@ public class Board {
 	}
 	
 	public BoardCell getCell(int row, int col) {
-		return new BoardCell(0,0);
+		return board[row][col];
 	}
 	
 	public int getNumRows() {
@@ -103,8 +168,18 @@ public class Board {
 	public Map<Character, Room> getRoomMap(){
 		return roomMap;
 	}
+	
 	public Room getRoom(char c) {
 		return new Room(new BoardCell(0,0),new BoardCell(0,0));
+	}
+	
+	public void printBoard() {
+		for (int i = 0; i < numRows; i++) {
+			for (int j = 0; j < numColumns; j++) {
+				System.out.print(board[i][j].getInitial());
+			}
+			System.out.print("\r\n");
+		}
 	}
 	
 	public Room getRoom(BoardCell c) {

@@ -64,6 +64,8 @@ public class FinalInitTest {
 	@Test
 	public void testCells() {
 		// check some cells for correct readings
+		//board.printBoard();
+		//System.out.println(board.getCell(2,14).getInitial());
 		assertTrue(board.getCell(2,14).getInitial() == 'S');
 		assertTrue(board.getCell(9,10).getInitial() == 'X');
 		assertTrue(board.getCell(22,10).getInitial() == 'T');
