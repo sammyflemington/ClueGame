@@ -39,7 +39,6 @@ public class Board {
 			loadSetupConfig();
 		}catch(BadConfigFormatException e) {
 			e.printStackTrace();
-			// uh oh 
 		}catch(FileNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -51,11 +50,12 @@ public class Board {
 		
 		while (reader.hasNextLine()) {
 			String line = reader.nextLine(); 
-			
+			// Skip comments
 			if (line.charAt(0) == '/' && line.charAt(1) == '/') 
 				continue;
 			
 			String[] parts = line.split(", ");
+			// Check format
 			if (parts.length != 3) throw new BadConfigFormatException("Wrong number of elements in setup file line!");
 			
 			if (parts[0].equals("Room")) {
@@ -63,7 +63,7 @@ public class Board {
 				Room room = new Room(roomCenters.get(label), roomLabels.get(label));
 				room.setName(parts[1]);
 				roomMap.put(parts[2].charAt(0), room);
-				
+				// Remove from valid list to make sure we don't have mismatch
 				validChars.remove(validChars.indexOf(parts[2]));
 			} else if (parts[0].equals("Space")) {
 				char label = parts[2].charAt(0);
@@ -71,7 +71,7 @@ public class Board {
 				Room room = new Room(uselessCell, uselessCell);
 				room.setName(parts[1]);
 				roomMap.put(parts[2].charAt(0), room);
-				
+				// Remove from valid list to make sure we don't have mismatch
 				validChars.remove(validChars.indexOf(parts[2]));
 			} else {
 				throw new BadConfigFormatException(parts[0] + " is not a valid cell label!");
