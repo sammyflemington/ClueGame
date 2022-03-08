@@ -20,6 +20,7 @@ public class Board {
 	private Map<Character, Room> roomMap = new HashMap<Character, Room>();
 	Map<Character, BoardCell> roomLabels = new HashMap<Character, BoardCell>();
 	Map<Character, BoardCell> roomCenters = new HashMap<Character, BoardCell>();
+	ArrayList<Character> validChars = new ArrayList<Character>();
 	
 	// only one instance created
 	private Board() {
@@ -55,25 +56,32 @@ public class Board {
 				continue;
 			
 			String[] parts = line.split(", ");
-			//System.out.println(parts[0]);
-			// check if its a room or space
+			if (parts.length != 3) throw new BadConfigFormatException("Wrong number of elements in setup file line!");
+			
 			if (parts[0].equals("Room")) {
 				char label = parts[2].charAt(0);
 				Room room = new Room(roomCenters.get(label), roomLabels.get(label));
 				room.setName(parts[1]);
 				roomMap.put(parts[2].charAt(0), room);
+				
+				validChars.remove(validChars.indexOf(parts[2]));
 			} else if (parts[0].equals("Space")) {
 				char label = parts[2].charAt(0);
 				BoardCell uselessCell = new BoardCell(0,0);
 				Room room = new Room(uselessCell, uselessCell);
 				room.setName(parts[1]);
 				roomMap.put(parts[2].charAt(0), room);
+				
+				validChars.remove(validChars.indexOf(parts[2]));
+			} else {
+				throw new BadConfigFormatException(parts[0] + " is not a valid cell label!");
 			}
-			
+		
 		}
 		reader.close();
 		
-		
+		// Check format
+		if (validChars.size() != 0) throw new BadConfigFormatException("Layout refers to a room not in setup!");
 	}
 	
 	public void loadLayoutConfig() throws BadConfigFormatException, FileNotFoundException {
@@ -100,7 +108,7 @@ public class Board {
 		reader = new Scanner(file);
 		while(reader.hasNextLine()) {
 			line = reader.nextLine();
-			
+			if (line.split(",").length != j) throw new BadConfigFormatException("File does not have same number of entries in every row!");
 			for (String s : line.split(",")) {
 				BoardCell cell = new BoardCell(i, j);
 				board[i][j] = cell;
@@ -134,11 +142,14 @@ public class Board {
 						break;
 					default:
 						// secret passage
+						if (!Character.isLetter(s.charAt(1))) throw new BadConfigFormatException();
 						cell.setSecretPassage(s.charAt(1));
 						break;
 					}
 				}
 				
+				// Add to valid character list for format checking
+				validChars.add(s.charAt(0));
 				j++;
 			}
 			//System.out.println();
