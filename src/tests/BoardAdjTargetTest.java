@@ -7,6 +7,7 @@ import java.util.Set;
 import clueGame.Board;
 import clueGame.BoardCell;
 import clueGame.DoorDirection;
+import experiment.TestBoardCell;
 
 public class BoardAdjTargetTest {
 	private static int ROWS = 27;
@@ -100,4 +101,55 @@ public class BoardAdjTargetTest {
 		assertEquals(3, testList.size());
 			
 	}
+	
+	@Test
+	public void testWalkwayTargets() {
+		
+		BoardCell cell = board.getCell(16, 14);
+		board.calcTargets(cell, 1);
+		
+		Set<BoardCell> targets = board.getTargets();
+		
+		assertTrue(targets.contains(board.getCell(15, 14)));
+		assertTrue(targets.contains(board.getCell(17, 14)));
+		assertTrue(targets.contains(board.getCell(16, 15)));
+		
+	}
+	
+	@Test
+	public void testFromRoomTargets() {
+		
+		BoardCell cell = board.getCell(13, 20);
+		board.calcTargets(cell, 3);
+		
+		Set<BoardCell> targets = board.getTargets();
+		
+		assertTrue(targets.contains(board.getCell(11, 16)));
+		assertTrue(targets.contains(board.getCell(12, 15)));
+		assertTrue(targets.contains(board.getCell(13, 14)));
+		assertTrue(targets.contains(board.getCell(14, 15)));
+		assertTrue(targets.contains(board.getCell(15, 16)));
+		assertTrue(targets.contains(board.getCell(23, 17)));
+		assertTrue(targets.contains(board.getCell(25, 2)));
+		assertEquals(7, targets.size());
+		
+	}
+	
+	@Test
+	public void testToRoomTargets() {
+		
+		BoardCell cell = board.getCell(25, 6); // is a doorway
+		board.getCell(24,  6).setOccupied(true);
+		board.calcTargets(cell, 2);
+		Set<BoardCell> targets = board.getTargets();
+		
+		assertTrue(targets.contains(board.getCell(24, 7)));
+		assertTrue(targets.contains(board.getCell(26, 7)));
+		assertTrue(targets.contains(board.getCell(25, 2)));
+		assertTrue(targets.contains(board.getCell(13, 20)));
+		assertEquals(4, targets.size());
+		
+	}
+	
+	
 }
