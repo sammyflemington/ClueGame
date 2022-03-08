@@ -14,6 +14,10 @@ public class Room {
 		return name;
 	}
 	
+	public void setName(String n) {
+		name = n;
+	}
+	
 	public BoardCell getLabelCell() {
 		return labelCell;
 	}

@@ -51,19 +51,23 @@ public class Board {
 		while (reader.hasNextLine()) {
 			String line = reader.nextLine(); 
 			
-			
-			if (line.charAt(0) == '/' && line.charAt(1) == '/') {
+			if (line.charAt(0) == '/' && line.charAt(1) == '/') 
 				continue;
-			}
 			
 			String[] parts = line.split(", ");
 			//System.out.println(parts[0]);
 			// check if its a room or space
 			if (parts[0].equals("Room")) {
-				Room room = new Room(roomCenters.get(parts[2]), roomLabels.get(parts[2]));
+				char label = parts[2].charAt(0);
+				Room room = new Room(roomCenters.get(label), roomLabels.get(label));
+				room.setName(parts[1]);
 				roomMap.put(parts[2].charAt(0), room);
 			} else if (parts[0].equals("Space")) {
-				// idk
+				char label = parts[2].charAt(0);
+				BoardCell uselessCell = new BoardCell(0,0);
+				Room room = new Room(uselessCell, uselessCell);
+				room.setName(parts[1]);
+				roomMap.put(parts[2].charAt(0), room);
 			}
 			
 		}
@@ -101,7 +105,7 @@ public class Board {
 				BoardCell cell = new BoardCell(i, j);
 				board[i][j] = cell;
 				cell.setInitial(s.charAt(0));
-				//System.out.print(cell.getInitial());
+				
 				if (s.length() > 1) {
 					switch(s.charAt(1)) {
 					case '#':
@@ -114,15 +118,19 @@ public class Board {
 						break;
 					case 'v':
 						cell.setDoorDirection(DoorDirection.DOWN);
+						cell.setDoorway(true);
 						break;
 					case '<':
 						cell.setDoorDirection(DoorDirection.LEFT);
+						cell.setDoorway(true);
 						break;
 					case '>':
 						cell.setDoorDirection(DoorDirection.RIGHT);
+						cell.setDoorway(true);
 						break;
 					case '^':
 						cell.setDoorDirection(DoorDirection.UP);
+						cell.setDoorway(true);
 						break;
 					default:
 						// secret passage
@@ -148,8 +156,6 @@ public class Board {
 				if (j < numColumns - 1) board[i][j].addAdjacency(board[i][j+1]); // down
 			}
 		}
-				
-		printBoard();
 	}
 	
 	public void setConfigFiles(String f1, String f2) {
@@ -184,10 +190,6 @@ public class Board {
 	}
 	
 	public Set<BoardCell> getTargets() {
-		// DEBUG
-		System.out.println();
-		for (BoardCell t : targets)
-			System.out.println(t);
 		return targets;
 	}
 	
@@ -207,9 +209,7 @@ public class Board {
 		return roomMap;
 	}
 	
-	public Room getRoom(char c) {
-		return new Room(new BoardCell(0,0),new BoardCell(0,0));
-	}
+
 	
 	public void printBoard() {
 		for (int i = 0; i < numRows; i++) {
@@ -220,8 +220,12 @@ public class Board {
 		}
 	}
 	
+	public Room getRoom(char c) {
+		return roomMap.get(c);
+	}
+	
 	public Room getRoom(BoardCell c) {
-		return new Room(new BoardCell(0,0),new BoardCell(0,0));
+		return roomMap.get(c.getInitial());
 	}
 	
 }

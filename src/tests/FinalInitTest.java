@@ -23,9 +23,7 @@ public class FinalInitTest {
 	@Test
 	public void testRoomCount() {
 		// Correct # of rooms
-		System.out.println(board.getRoomMap().size());
-		board.getRoomMap().keySet().iterator().forEachRemaining(System.out::println);
-		assertTrue(board.getRoomMap().size() == 9);
+		assertTrue(board.getRoomMap().size() == 9 + 2); // +2 for unused spaces
 	}
 	
 	@Test
@@ -59,6 +57,7 @@ public class FinalInitTest {
 			}
 		}
 		assertTrue(numDoors == 12);
+		
 		
 		// non-door tiles are not doors
 		assertTrue(board.getCell(26, 21).isDoorway() == false);
