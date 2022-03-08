@@ -21,4 +21,9 @@ public class Room {
 	public BoardCell getCenterCell() {
 		return centerCell;
 	}
+	
+	@Override
+	public String toString() {
+		return name;
+	}
 }

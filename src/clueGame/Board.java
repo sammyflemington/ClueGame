@@ -18,6 +18,8 @@ public class Board {
 	private String layoutConfigFile;
 	private String setupConfigFile;
 	private Map<Character, Room> roomMap = new HashMap<Character, Room>();
+	Map<Character, BoardCell> roomLabels = new HashMap<Character, BoardCell>();
+	Map<Character, BoardCell> roomCenters = new HashMap<Character, BoardCell>();
 	
 	// only one instance created
 	private Board() {
@@ -43,6 +45,29 @@ public class Board {
 	}
 	
 	public void loadSetupConfig() throws BadConfigFormatException, FileNotFoundException {
+		File file = new File(setupConfigFile);
+		Scanner reader = new Scanner(file);
+		
+		while (reader.hasNextLine()) {
+			String line = reader.nextLine(); 
+			
+			
+			if (line.charAt(0) == '/' && line.charAt(1) == '/') {
+				continue;
+			}
+			
+			String[] parts = line.split(", ");
+			//System.out.println(parts[0]);
+			// check if its a room or space
+			if (parts[0].equals("Room")) {
+				Room room = new Room(roomCenters.get(parts[2]), roomLabels.get(parts[2]));
+				roomMap.put(parts[2].charAt(0), room);
+			} else if (parts[0].equals("Space")) {
+				// idk
+			}
+			
+		}
+		reader.close();
 		
 		
 	}
@@ -80,9 +105,11 @@ public class Board {
 				if (s.length() > 1) {
 					switch(s.charAt(1)) {
 					case '#':
+						roomLabels.put(cell.getInitial(), cell);
 						cell.setRoomLabel(true);
 						break;
 					case '*':
+						roomCenters.put(cell.getInitial(), cell);
 						cell.setRoomCenter(true);
 						break;
 					case 'v':

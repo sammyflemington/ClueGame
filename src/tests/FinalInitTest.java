@@ -23,6 +23,8 @@ public class FinalInitTest {
 	@Test
 	public void testRoomCount() {
 		// Correct # of rooms
+		System.out.println(board.getRoomMap().size());
+		board.getRoomMap().keySet().iterator().forEachRemaining(System.out::println);
 		assertTrue(board.getRoomMap().size() == 9);
 	}
 	
