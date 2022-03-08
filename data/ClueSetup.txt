@@ -1,7 +1,7 @@
 // Rooms and room cards 
 Room, Cat hotel, C 
 Room, Magic room, M 
-Room, Round Table, t 
+Room, Round Table, T
 Room, Square Table, S 
 Room, Mister Flufferson’s study , F 
 Room, Portal Room, P 

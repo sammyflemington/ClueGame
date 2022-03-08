@@ -12,15 +12,15 @@ import clueGame.BoardCell;
 public class Board {
 	private static Board theInstance = new Board();
 	private BoardCell[][] board;
-	private Set<BoardCell> targets = new HashSet<BoardCell>();
+	private Set<BoardCell> targets;
 	static int numColumns = 4;
 	static int numRows = 4;
 	private String layoutConfigFile;
 	private String setupConfigFile;
-	private Map<Character, Room> roomMap = new HashMap<Character, Room>();
-	Map<Character, BoardCell> roomLabels = new HashMap<Character, BoardCell>();
-	Map<Character, BoardCell> roomCenters = new HashMap<Character, BoardCell>();
-	ArrayList<Character> validChars = new ArrayList<Character>();
+	private Map<Character, Room> roomMap;
+	Map<Character, BoardCell> roomLabels;
+	Map<Character, BoardCell> roomCenters;
+	ArrayList<Character> validChars;
 	
 	// only one instance created
 	private Board() {
@@ -33,7 +33,10 @@ public class Board {
 	}
 	
 	public void initialize() {
+		// Allocate Memory
 		board = new BoardCell[numRows][numColumns];
+		targets = new HashSet<BoardCell>();
+		
 		try {
 			loadLayoutConfig();
 			loadSetupConfig();
@@ -45,6 +48,7 @@ public class Board {
 	}
 	
 	public void loadSetupConfig() throws BadConfigFormatException, FileNotFoundException {
+		roomMap = new HashMap<Character, Room>();
 		File file = new File(setupConfigFile);
 		Scanner reader = new Scanner(file);
 		
@@ -64,7 +68,9 @@ public class Board {
 				room.setName(parts[1]);
 				roomMap.put(parts[2].charAt(0), room);
 				// Remove from valid list to make sure we don't have mismatch
-				validChars.remove(validChars.indexOf(parts[2]));
+				if (validChars.contains(parts[2].charAt(0)))
+					validChars.remove(validChars.indexOf(parts[2].charAt(0)));
+				//else throw new BadConfigFormatException();
 			} else if (parts[0].equals("Space")) {
 				char label = parts[2].charAt(0);
 				BoardCell uselessCell = new BoardCell(0,0);
@@ -72,7 +78,9 @@ public class Board {
 				room.setName(parts[1]);
 				roomMap.put(parts[2].charAt(0), room);
 				// Remove from valid list to make sure we don't have mismatch
-				validChars.remove(validChars.indexOf(parts[2]));
+				if (validChars.contains(parts[2].charAt(0)))
+					validChars.remove(validChars.indexOf(parts[2].charAt(0)));
+				//else throw new BadConfigFormatException();
 			} else {
 				throw new BadConfigFormatException(parts[0] + " is not a valid cell label!");
 			}
@@ -81,10 +89,14 @@ public class Board {
 		reader.close();
 		
 		// Check format
+		System.out.println(validChars);
 		if (validChars.size() != 0) throw new BadConfigFormatException("Layout refers to a room not in setup!");
 	}
 	
 	public void loadLayoutConfig() throws BadConfigFormatException, FileNotFoundException {
+		roomLabels = new HashMap<Character, BoardCell>();
+		roomCenters = new HashMap<Character, BoardCell>();
+		validChars = new ArrayList<Character>();
 		File file = new File(layoutConfigFile);
 		Scanner reader = new Scanner(file);
 		
@@ -108,7 +120,7 @@ public class Board {
 		reader = new Scanner(file);
 		while(reader.hasNextLine()) {
 			line = reader.nextLine();
-			if (line.split(",").length != j) throw new BadConfigFormatException("File does not have same number of entries in every row!");
+			if (line.split(",").length != numColumns) throw new BadConfigFormatException("File does not have same number of entries in every row!");
 			for (String s : line.split(",")) {
 				BoardCell cell = new BoardCell(i, j);
 				board[i][j] = cell;
@@ -149,10 +161,10 @@ public class Board {
 				}
 				
 				// Add to valid character list for format checking
-				validChars.add(s.charAt(0));
+				if (!validChars.contains(s.charAt(0)))
+					validChars.add(s.charAt(0));
 				j++;
 			}
-			//System.out.println();
 			i++;
 			j = 0;
 		}
@@ -170,8 +182,8 @@ public class Board {
 	}
 	
 	public void setConfigFiles(String f1, String f2) {
-		layoutConfigFile = f1;
-		setupConfigFile = f2;
+		layoutConfigFile = "data/" + f1;
+		setupConfigFile = "data/" + f2;
 	}
 	
 	public void calcTargets(BoardCell startCell, int pathLength) {
