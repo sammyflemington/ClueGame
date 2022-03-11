@@ -220,8 +220,8 @@ public class Board {
 	// TODO: No support yet for entering walkways!
 	public void calculate(BoardCell startCell, int pathLength, Set<BoardCell> visited) {
 		for (BoardCell c : startCell.getAdjList()) {
-			if (!visited.contains(c) && !c.getOccupied() && !c.isRoom()) {
-				if (pathLength == 0) {
+			if (!visited.contains(c) && !c.getOccupied()) {
+				if (pathLength == 0 || c.isRoomCenter()) {
 					targets.add(c);
 				} else {
 					// Create copy of visited list for this branch
@@ -290,6 +290,7 @@ public class Board {
 					if (j < numColumns - 1)
 						if (!board[i][j + 1].isRoom())
 							board[i][j].addAdjacency(board[i][j + 1]);
+					
 				}
 			}	
 		}

@@ -123,7 +123,7 @@ public class BoardAdjTargetTest {
 		board.calcTargets(cell, 3);
 		
 		Set<BoardCell> targets = board.getTargets();
-		
+		System.out.println(targets);
 		assertTrue(targets.contains(board.getCell(11, 16)));
 		assertTrue(targets.contains(board.getCell(12, 15)));
 		assertTrue(targets.contains(board.getCell(13, 14)));
@@ -131,6 +131,7 @@ public class BoardAdjTargetTest {
 		assertTrue(targets.contains(board.getCell(15, 16))); 
 		assertTrue(targets.contains(board.getCell(23, 17))); // secret passage to room center
 		assertTrue(targets.contains(board.getCell(25, 2))); // secret passage to room center
+		
 		
 		assertEquals(7, targets.size());
 		
@@ -143,7 +144,7 @@ public class BoardAdjTargetTest {
 		board.getCell(24,  6).setOccupied(true);
 		board.calcTargets(cell, 2);
 		Set<BoardCell> targets = board.getTargets();
-		
+
 		assertTrue(targets.contains(board.getCell(24, 7)));
 		assertTrue(targets.contains(board.getCell(26, 7)));
 		assertTrue(targets.contains(board.getCell(25, 2))); // room center
