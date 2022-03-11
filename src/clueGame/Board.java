@@ -171,6 +171,7 @@ public class Board {
 					default:
 						// secret passage
 						if (!Character.isLetter(s.charAt(1))) throw new BadConfigFormatException();
+						cell.setRoom(true);
 						cell.setSecretPassage(s.charAt(1));
 						
 						// if the current room hasn't already had one secret passage
