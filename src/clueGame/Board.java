@@ -175,15 +175,13 @@ public class Board {
 						cell.setSecretPassage(s.charAt(1));
 						
 						// if the current room hasn't already had one secret passage
-						if (s.charAt(0) != sameChar) {
-							multiplePassages = new HashSet<Character>();
-							multiplePassages.add(s.charAt(1));
-							sameChar = s.charAt(0);
+						if (secretPassages.containsKey(s.charAt(0))) {
+							secretPassages.get(s.charAt(0)).add(s.charAt(1));
 						} else {
+							multiplePassages = new HashSet<Character>();
 							multiplePassages.add(s.charAt(1));
 							secretPassages.put(s.charAt(0), multiplePassages);
 						}
-						
 						break;
 					}
 
@@ -202,7 +200,8 @@ public class Board {
 			j = 0;
 		}
 		reader.close();
-
+		System.out.println(secretPassages);
+		calcAdjacencies();
 	}
 
 	public void setConfigFiles(String f1, String f2) {
@@ -235,9 +234,8 @@ public class Board {
 			}
 		}
 	}
-
 	// Adjacency Calculations
-	public void calcAdjacencies() {
+	public void calcAdjacencies() throws BadConfigFormatException{
 		
 		// go through each cell in the board
 		for (int i = 0; i < numRows; i++) {
@@ -245,228 +243,59 @@ public class Board {
 				
 				// if it's a room but not a room center
 				if (board[i][j].isRoom() && !board[i][j].isRoomCenter()) {
-					
 					continue; // no adjacencies
-					
 				} else if (board[i][j].isRoomCenter()) {
-				
 					if (secretPassages.containsKey(board[i][j].getInitial())) { // if there exists secret passage in room
-				
-						// what I put here confuses me because it passes a set of characters as the key for room Centers
-						board[i][j].addAdjacency(roomCenters.get(secretPassages.get(board[i][j].getInitial()))); //// HMMMMM
-						
-						// TODO: adjacencies out doorway(s)
-						
-					} else { // no secret passage in room
-				
-						// TODO: adjacencies out doorway(s)
-						
+						for (Character c : secretPassages.get(board[i][j].getInitial())) {
+							board[i][j].addAdjacency(roomCenters.get(c));
+						}
 					}
-				
-				} else if (i == 0) { // if in the top row
-				
-					// if in first column = no adj left or up
-					if (j == 0) {	
-					
-						if (board[i][j].isDoorway()) {	// if the current cell is a doorway
-							
-							// TODO: 	Check which room doorway is for
-							//			Add that room center to adj list
-							
+				} else {
+					Character ch;
+					if (board[i][j].isDoorway()) {	// if the current cell is a doorway
+						
+						// TODO: 	Check which room doorway is for
+						//			Add that room center to adj list
+						
+						switch (board[i][j].getDoorDirection()) {
+							case UP:
+								ch = board[i - 1][j].getInitial();
+								break;
+							case DOWN:
+								ch = board[i + 1][j].getInitial();
+								break;
+							case LEFT:
+								ch = board[i][j - 1].getInitial();
+								break;
+							case RIGHT:
+								ch = board[i][j + 1].getInitial();
+								break;
+							default:
+								throw new BadConfigFormatException("Something went horribly wrong");
 						}
 						
-						if (!board[i][j + 1].isRoom()) {	// if cell to the right is not a room cell
-							board[i][j].addAdjacency(board[i][j + 1]);
-						}
-						
-						if (!board[i + 1][j].isRoom()) {	// if cell below is not a room cell
-							board[i][j].addAdjacency(board[i + 1][j]);							
-						} 				
-						
-					// if in last column = no adj right or up
-					} else if (j == numColumns - 1) { 
-					
-						if (board[i][j].isDoorway()) {	// if the current cell is a doorway
-							
-							// TODO: 	Check which room doorway is for
-							//			Add that room center to adj list
-							
-						}
-						
-						if (!board[i][j - 1].isRoom()) {	// if cell to the left is not a room cell
-							board[i][j].addAdjacency(board[i][j - 1]);
-						}
-						
-						if (!board[i + 1][j].isRoom()) {	// if cell below is not a room cell
-							board[i][j].addAdjacency(board[i + 1][j]);							
-						} 							
-				
-					// else not in first or last column = no adj up
-					} else {
-						
-						if (board[i][j].isDoorway()) {	// if the current cell is a doorway
-							
-							// TODO: 	Check which room doorway is for
-							//			Add that room center to adj list
-							
-						}
-						
-						if (!board[i][j - 1].isRoom()) {	// if cell to the left is not a room cell
-							board[i][j].addAdjacency(board[i][j - 1]);
-						}
-						
-						if (!board[i][j + 1].isRoom()) {	// if cell to the right is not a room cell
-							board[i][j].addAdjacency(board[i][j + 1]);
-						}
-						
-						if (!board[i + 1][j].isRoom()) {	// if cell below is not a room cell
-							board[i][j].addAdjacency(board[i + 1][j]);							
-						} 		
-												
+						board[i][j].addAdjacency(roomCenters.get(ch));// Add adjacency both ways
+						roomCenters.get(ch).addAdjacency(board[i][j]);
 					}
 					
-				} else if (i == numRows - 1) { // if in the bottom row 
+					if (i > 0)
+						if (!board[i - 1][j].isRoom())
+							board[i][j].addAdjacency(board[i - 1][j]);
 					
-					// if in first column = no adj left or down
-					if (j == 0) {	
-					
-						if (board[i][j].isDoorway()) {	// if the current cell is a doorway
-							
-							// TODO: 	Check which room doorway is for
-							//			Add that room center to adj list
-							
-						}
-						
-						if (!board[i][j + 1].isRoom()) {	// if cell to the right is not a room cell
-							board[i][j].addAdjacency(board[i][j + 1]);
-						}
-						
-						if (!board[i - 1][j].isRoom()) {	// if cell above is not a room cell
-							board[i][j].addAdjacency(board[i - 1][j]);							
-						} 				
-						
-					// if in last column = no adj right or down
-					} else if (j == numColumns - 1) { 
-					
-						if (board[i][j].isDoorway()) {	// if the current cell is a doorway
-							
-							// TODO: 	Check which room doorway is for
-							//			Add that room center to adj list
-							
-						}
-						
-						if (!board[i][j - 1].isRoom()) {	// if cell to the left is not a room cell
+					if (j > 0)
+						if (!board[i][j - 1].isRoom())
 							board[i][j].addAdjacency(board[i][j - 1]);
-						}
-						
-						if (!board[i - 1][j].isRoom()) {	// if cell above is not a room cell
-							board[i][j].addAdjacency(board[i - 1][j]);							
-						} 							
-				
 					
-					} else { // not in first or last column = no adj down
-						
-						if (board[i][j].isDoorway()) {	// if the current cell is a doorway
-							
-							// TODO: 	Check which room doorway is for
-							//			Add that room center to adj list
-							
-						}
-						
-						if (!board[i][j - 1].isRoom()) {	// if cell to the left is not a room cell
-							board[i][j].addAdjacency(board[i][j - 1]);
-						}
-						
-						if (!board[i][j + 1].isRoom()) {	// if cell to the right is not a room cell
-							board[i][j].addAdjacency(board[i][j + 1]);
-						}
-						
-						if (!board[i - 1][j].isRoom()) {	// if cell above is not a room cell
-							board[i][j].addAdjacency(board[i - 1][j]);							
-						} 		
-												
-					}
-				
-				} else { // not top or bottom row)
-
-					// if in first column = no adj left
-					if (j == 0) {	
+					if (i < numRows - 1)
+						if (!board[i + 1][j].isRoom())
+							board[i][j].addAdjacency(board[i + 1][j]);
 					
-						if (board[i][j].isDoorway()) {	// if the current cell is a doorway
-							
-							// TODO: 	Check which room doorway is for
-							//			Add that room center to adj list
-							
-						}
-						
-						if (!board[i][j + 1].isRoom()) {	// if cell to the right is not a room cell
+					if (j < numColumns - 1)
+						if (!board[i][j + 1].isRoom())
 							board[i][j].addAdjacency(board[i][j + 1]);
-						}
-						
-						if (!board[i - 1][j].isRoom()) {	// if cell above is not a room cell
-							board[i][j].addAdjacency(board[i - 1][j]);							
-						} 
-						
-						if (!board[i + 1][j].isRoom()) {	// if cell below is not a room cell
-							board[i][j].addAdjacency(board[i + 1][j]);							
-						} 	
-						
-					// if in last column = no adj right
-					} else if (j == numColumns - 1) { 
-					
-						if (board[i][j].isDoorway()) {	// if the current cell is a doorway
-							
-							// TODO: 	Check which room doorway is for
-							//			Add that room center to adj list
-							
-						}
-						
-						if (!board[i][j - 1].isRoom()) {	// if cell to the left is not a room cell
-							board[i][j].addAdjacency(board[i][j - 1]);
-						}
-						
-						if (!board[i - 1][j].isRoom()) {	// if cell above is not a room cell
-							board[i][j].addAdjacency(board[i - 1][j]);							
-						} 					
-						
-						if (!board[i + 1][j].isRoom()) {	// if cell below is not a room cell
-							board[i][j].addAdjacency(board[i + 1][j]);							
-						} 	
-				
-					} else {
-						
-						if (board[i][j].isDoorway()) {	// if the current cell is a doorway
-							
-							// TODO: 	Check which room doorway is for
-							//			Add that room center to adj list
-							
-						}
-						
-						if (!board[i][j - 1].isRoom()) {	// if cell to the left is not a room cell
-							board[i][j].addAdjacency(board[i][j - 1]);
-						}
-						
-						if (!board[i][j + 1].isRoom()) {	// if cell to the right is not a room cell
-							board[i][j].addAdjacency(board[i][j + 1]);
-						}
-						
-						if (!board[i - 1][j].isRoom()) {	// if cell above is not a room cell
-							board[i][j].addAdjacency(board[i - 1][j]);							
-						} 	
-						
-						if (!board[i + 1][j].isRoom()) {	// if cell below is not a room cell
-							board[i][j].addAdjacency(board[i + 1][j]);							
-						} 	
-												
-					}
-		
 				}
-				
-	
-			}
-			
+			}	
 		}
-
 	}
 
 	public Set<BoardCell> getTargets() {

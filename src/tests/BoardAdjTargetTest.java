@@ -19,7 +19,7 @@ public class BoardAdjTargetTest {
 	public static void initialize() {
 		// load stuff
 		board = Board.getInstance();
-		board.setConfigFiles("data/ClueLayout.csv", "data/ClueSetup.txt");
+		board.setConfigFiles("ClueLayout.csv", "ClueSetup.txt");
 		board.initialize();
 	}
 	
