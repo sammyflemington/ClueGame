@@ -39,7 +39,7 @@ public class BoardAdjTargetTest {
 		testList = cell.getAdjList();
 		assertTrue(testList.contains(board.getCell(22, 13)));	
 		assertTrue(testList.contains(board.getCell(21, 14))); 
-		assertTrue(testList.contains(board.getCell(23, 14)))); 
+		assertTrue(testList.contains(board.getCell(23, 14))); 
 		assertEquals(3, testList.size());
 		
 		

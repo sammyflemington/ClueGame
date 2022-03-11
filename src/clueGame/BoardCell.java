@@ -36,7 +36,7 @@ public class BoardCell {
 		isRoom = b;
 	}
 	
-		public boolean isRoom() {
+	public boolean isRoom() {
 		return isRoom;
 	}
 		
