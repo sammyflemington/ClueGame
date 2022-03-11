@@ -89,7 +89,6 @@ public class Board {
 		reader.close();
 
 		// Check format
-		System.out.println(validChars);
 		if (validChars.size() != 0) throw new BadConfigFormatException("Layout refers to a room not in setup!");
 	}
 
@@ -200,7 +199,6 @@ public class Board {
 			j = 0;
 		}
 		reader.close();
-		System.out.println(secretPassages);
 		calcAdjacencies();
 	}
 
@@ -250,13 +248,12 @@ public class Board {
 							board[i][j].addAdjacency(roomCenters.get(c));
 						}
 					}
+					
 				} else {
-					Character ch;
+					char ch;
 					if (board[i][j].isDoorway()) {	// if the current cell is a doorway
 						
-						// TODO: 	Check which room doorway is for
-						//			Add that room center to adj list
-						
+						// Check which room doorway is for add that room center to adj list
 						switch (board[i][j].getDoorDirection()) {
 							case UP:
 								ch = board[i - 1][j].getInitial();

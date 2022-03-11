@@ -128,9 +128,10 @@ public class BoardAdjTargetTest {
 		assertTrue(targets.contains(board.getCell(12, 15)));
 		assertTrue(targets.contains(board.getCell(13, 14)));
 		assertTrue(targets.contains(board.getCell(14, 15)));
-		assertTrue(targets.contains(board.getCell(15, 16)));
-		assertTrue(targets.contains(board.getCell(23, 17)));
-		assertTrue(targets.contains(board.getCell(25, 2)));
+		assertTrue(targets.contains(board.getCell(15, 16))); 
+		assertTrue(targets.contains(board.getCell(23, 17))); // secret passage to room center
+		assertTrue(targets.contains(board.getCell(25, 2))); // secret passage to room center
+		
 		assertEquals(7, targets.size());
 		
 	}
@@ -145,9 +146,8 @@ public class BoardAdjTargetTest {
 		
 		assertTrue(targets.contains(board.getCell(24, 7)));
 		assertTrue(targets.contains(board.getCell(26, 7)));
-		assertTrue(targets.contains(board.getCell(25, 2)));
-		assertTrue(targets.contains(board.getCell(13, 20)));
-		assertEquals(4, targets.size());
+		assertTrue(targets.contains(board.getCell(25, 2))); // room center
+		assertEquals(3, targets.size());
 		
 	}
 	
