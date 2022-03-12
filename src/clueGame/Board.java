@@ -220,7 +220,7 @@ public class Board {
 	// TODO: No support yet for entering walkways!
 	public void calculate(BoardCell startCell, int pathLength, Set<BoardCell> visited) {
 		for (BoardCell c : startCell.getAdjList()) {
-			if (!visited.contains(c) && !c.getOccupied()) {
+			if (!visited.contains(c) && ! c.getOccupied()) {
 				if (pathLength == 0 || c.isRoomCenter()) {
 					targets.add(c);
 				} else {
