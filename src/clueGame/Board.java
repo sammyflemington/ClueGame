@@ -22,7 +22,7 @@ public class Board {
 	Map<Character, BoardCell> roomCenters;
 	Map<Character, Set<Character>> secretPassages;	// first char is the current room, second char set is room(s) it goes to
 	ArrayList<Character> validChars;
-	Set<BoardCell> visited;
+	
 
 	// only one instance created
 	private Board() {
@@ -73,7 +73,6 @@ public class Board {
 					validChars.remove(validChars.indexOf(parts[2].charAt(0)));
 				//else throw new BadConfigFormatException();
 			} else if (parts[0].equals("Space")) {
-				char label = parts[2].charAt(0);
 				BoardCell uselessCell = new BoardCell(0,0);
 				Room room = new Room(uselessCell, uselessCell);
 				room.setName(parts[1]);
@@ -210,31 +209,27 @@ public class Board {
 
 	public void calcTargets(BoardCell startCell, int pathLength) {
 		// start
-		visited = new HashSet<BoardCell>();
+		Set<BoardCell> visited = new HashSet<BoardCell>();
+		targets.clear();
 		visited.clear();
 		visited.add(startCell);
-		calculate(startCell, pathLength - 1);
+		calculate(startCell, pathLength - 1, visited);
 
 	}
 
 	// Does a recursive search of the grid and avoids obstacles. 
-	public void calculate(BoardCell startCell, int pathLength) {
-		
+	public void calculate(BoardCell startCell, int pathLength, Set<BoardCell> visited) {
 		for (BoardCell c : startCell.getAdjList()) {
-			
-			if (!visited.contains(c) && !c.getOccupied()) {
-				
-				visited.add(c);
-				System.out.println(visited);
-				if (c.isRoomCenter() || pathLength == 0) {
+			if (!visited.contains(c) && ! c.getOccupied()) {
+				if (pathLength == 0 || c.isRoomCenter()) {
 					targets.add(c);
 				} else {
 					// Create copy of visited list for this branch
-					calculate(c, pathLength - 1);
+					Set<BoardCell> v = new HashSet<BoardCell>(visited);
+					v.add(c);
+					calculate(c, pathLength - 1, v);
 				}
 			}
-			visited.remove(c);
-			System.out.println(visited);
 		}
 	}
 	// Adjacency Calculations

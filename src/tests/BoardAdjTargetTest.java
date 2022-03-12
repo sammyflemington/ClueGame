@@ -95,6 +95,11 @@ public class BoardAdjTargetTest {
 		testList = cell.getAdjList();
 		assertEquals(3, testList.size());
 		assertTrue(cell.isRoomCenter());
+		
+		cell = board.getCell(25,2);	// inside room
+		testList = cell.getAdjList();
+		assertEquals(3, testList.size());
+		assertTrue(cell.isRoomCenter());
 	}
 	
 	@Test
@@ -136,6 +141,9 @@ public class BoardAdjTargetTest {
 		board.calcTargets(cell, 3);
 		Set<BoardCell> targets = board.getTargets();
 		System.out.println();
+		cell = board.getCell(24, 7);
+		System.out.println();
+		
 		System.out.println(targets);
 		System.out.println();
 		assertTrue(targets.contains(board.getCell(11, 16)));
