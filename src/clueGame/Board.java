@@ -22,6 +22,7 @@ public class Board {
 	Map<Character, BoardCell> roomCenters;
 	Map<Character, Set<Character>> secretPassages;	// first char is the current room, second char set is room(s) it goes to
 	ArrayList<Character> validChars;
+	Set<BoardCell> visited;
 
 	// only one instance created
 	private Board() {
@@ -209,27 +210,31 @@ public class Board {
 
 	public void calcTargets(BoardCell startCell, int pathLength) {
 		// start
-		Set<BoardCell> visited = new HashSet<BoardCell>();
+		visited = new HashSet<BoardCell>();
 		visited.clear();
 		visited.add(startCell);
-		calculate(startCell, pathLength - 1, visited);
+		calculate(startCell, pathLength - 1);
 
 	}
 
 	// Does a recursive search of the grid and avoids obstacles. 
-	// TODO: No support yet for entering walkways!
-	public void calculate(BoardCell startCell, int pathLength, Set<BoardCell> visited) {
+	public void calculate(BoardCell startCell, int pathLength) {
+		
 		for (BoardCell c : startCell.getAdjList()) {
+			
 			if (!visited.contains(c) && !c.getOccupied()) {
-				if (pathLength == 0 || c.isRoomCenter()) {
+				
+				visited.add(c);
+				System.out.println(visited);
+				if (c.isRoomCenter() || pathLength == 0) {
 					targets.add(c);
 				} else {
 					// Create copy of visited list for this branch
-					Set<BoardCell> v = new HashSet<BoardCell>(visited);
-					v.add(c);
-					calculate(c, pathLength - 1, v);
+					calculate(c, pathLength - 1);
 				}
 			}
+			visited.remove(c);
+			System.out.println(visited);
 		}
 	}
 	// Adjacency Calculations

@@ -81,10 +81,20 @@ public class BoardAdjTargetTest {
 		//The cell that represents the Room (i.e. connects to walkway) is the cell 
 		// with a second character of ‘*’ (no other cells in a room should have adjacencies).
 		
-		BoardCell cell = board.getCell(3,1);	// inside room
+		BoardCell cell = board.getCell(2,3);	// inside room
 		Set<BoardCell> testList = cell.getAdjList();
-		assertEquals(0, testList.size());
+		assertEquals(1, testList.size());
+		assertTrue(cell.isRoomCenter());
 		
+		cell = board.getCell(2,13);	// inside room
+		testList = cell.getAdjList();
+		assertEquals(2, testList.size());
+		assertTrue(cell.isRoomCenter());
+		
+		cell = board.getCell(13,20);	// inside room
+		testList = cell.getAdjList();
+		assertEquals(3, testList.size());
+		assertTrue(cell.isRoomCenter());
 	}
 	
 	@Test
@@ -120,10 +130,14 @@ public class BoardAdjTargetTest {
 	public void testFromRoomTargets() {
 		
 		BoardCell cell = board.getCell(13, 20);
-		board.calcTargets(cell, 3);
 		
+		
+		System.out.println();
+		board.calcTargets(cell, 3);
 		Set<BoardCell> targets = board.getTargets();
+		System.out.println();
 		System.out.println(targets);
+		System.out.println();
 		assertTrue(targets.contains(board.getCell(11, 16)));
 		assertTrue(targets.contains(board.getCell(12, 15)));
 		assertTrue(targets.contains(board.getCell(13, 14)));
