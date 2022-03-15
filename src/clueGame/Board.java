@@ -120,9 +120,7 @@ public class Board {
 		int i = 1, j = 0;
 		String line = reader.nextLine();
 		
-		for (String s : line.split(",")) {
-			j ++;
-		}
+		j = line.split(",").length;
 		while (reader.hasNextLine()) {
 			reader.nextLine();
 			i++;
