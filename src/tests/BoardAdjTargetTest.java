@@ -137,15 +137,10 @@ public class BoardAdjTargetTest {
 		BoardCell cell = board.getCell(13, 20);
 		
 		
-		System.out.println();
+		
 		board.calcTargets(cell, 3);
 		Set<BoardCell> targets = board.getTargets();
-		System.out.println();
 		cell = board.getCell(24, 7);
-		System.out.println();
-		
-		System.out.println(targets);
-		System.out.println();
 		assertTrue(targets.contains(board.getCell(11, 16)));
 		assertTrue(targets.contains(board.getCell(12, 15)));
 		assertTrue(targets.contains(board.getCell(13, 14)));
