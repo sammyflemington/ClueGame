@@ -1,5 +1,14 @@
+
+// Author: Sammy Flemington and Eliot Edwards
+
 package clueGame;
 
+/*
+ * The Room class allows us to handle
+ * the necessary components of each room.
+ * This includes its name, label cell, and 
+ * center cell.
+ */
 public class Room {
 	private String name;
 	private BoardCell centerCell;
