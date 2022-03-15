@@ -9,6 +9,11 @@ import java.util.Set;
 
 import clueGame.BoardCell;
 
+/*
+ * Board class
+ * Stores layout of the board, handles calculating player moves and loading level data.
+ * Is a singleton
+ */
 public class Board {
 	private static Board theInstance = new Board();
 	private BoardCell[][] board;
@@ -47,7 +52,8 @@ public class Board {
 			e.printStackTrace();
 		}
 	}
-
+	
+	// Loads setup file with room names
 	public void loadSetupConfig() throws BadConfigFormatException, FileNotFoundException {
 		roomMap = new HashMap<Character, Room>();
 		File file = new File(setupConfigFile);
@@ -64,23 +70,25 @@ public class Board {
 			if (parts.length != 3) throw new BadConfigFormatException("Wrong number of elements in setup file line!");
 
 			if (parts[0].equals("Room")) {
+				// Create room and store into map
 				char label = parts[2].charAt(0);
 				Room room = new Room(roomCenters.get(label), roomLabels.get(label));
 				room.setName(parts[1]);
 				roomMap.put(parts[2].charAt(0), room);
+				
 				// Remove from valid list to make sure we don't have mismatch
 				if (validChars.contains(parts[2].charAt(0)))
 					validChars.remove(validChars.indexOf(parts[2].charAt(0)));
-				//else throw new BadConfigFormatException();
 			} else if (parts[0].equals("Space")) {
+				// Create a garbage "room" for use with empty space
 				BoardCell uselessCell = new BoardCell(0,0);
 				Room room = new Room(uselessCell, uselessCell);
 				room.setName(parts[1]);
 				roomMap.put(parts[2].charAt(0), room);
+				
 				// Remove from valid list to make sure we don't have mismatch
 				if (validChars.contains(parts[2].charAt(0)))
 					validChars.remove(validChars.indexOf(parts[2].charAt(0)));
-				//else throw new BadConfigFormatException();
 			} else {
 				throw new BadConfigFormatException(parts[0] + " is not a valid cell label!");
 			}
@@ -88,11 +96,13 @@ public class Board {
 		}
 		reader.close();
 
-		// Check format
+		// Finally, check format
 		if (validChars.size() != 0) throw new BadConfigFormatException("Layout refers to a room not in setup!");
 	}
-
+	
+	// Loads layout file with room layout.
 	public void loadLayoutConfig() throws BadConfigFormatException, FileNotFoundException {
+		// Allocate memory
 		roomLabels = new HashMap<Character, BoardCell>();
 		roomCenters = new HashMap<Character, BoardCell>();
 		
@@ -108,22 +118,20 @@ public class Board {
 		int i = 1, j = 0;
 		String line = reader.nextLine();
 		String[] chars = line.split(",");
-
+		
 		for (String c : chars) {
 			j ++;
 		}
-
 		while (reader.hasNextLine()) {
 			line = reader.nextLine();
 			i++;
 		}
-
 		numRows = i;
 		numColumns = j;
+		
+		// Now load the level data
 		board = new BoardCell[numRows][numColumns];
-
 		i = j = 0;
-		char sameChar = 'X';
 		
 		reader.close();
 		reader = new Scanner(file);
@@ -131,7 +139,10 @@ public class Board {
 		while(reader.hasNextLine()) {
 
 			line = reader.nextLine();
-			if (line.split(",").length != numColumns) throw new BadConfigFormatException("File does not have same number of entries in every row!");
+			if (line.split(",").length != numColumns) {
+				reader.close();
+				throw new BadConfigFormatException("File does not have same number of entries in every row!");
+			}
 
 
 			for (String s : line.split(",")) {
@@ -167,8 +178,7 @@ public class Board {
 						cell.setDoorDirection(DoorDirection.UP);
 						cell.setDoorway(true);
 						break;
-					default:
-						// secret passage
+					default: // must be secret passage
 						if (!Character.isLetter(s.charAt(1))) throw new BadConfigFormatException();
 						cell.setRoom(true);
 						cell.setSecretPassage(s.charAt(1));
@@ -207,6 +217,7 @@ public class Board {
 		setupConfigFile = "data/" + f2;
 	}
 
+	// Calculate valid moves from a given cell and given roll, store in "targets" set
 	public void calcTargets(BoardCell startCell, int pathLength) {
 		// start
 		Set<BoardCell> visited = new HashSet<BoardCell>();
@@ -232,6 +243,7 @@ public class Board {
 			}
 		}
 	}
+	
 	// Adjacency Calculations
 	public void calcAdjacencies() throws BadConfigFormatException{
 		
@@ -275,6 +287,7 @@ public class Board {
 						roomCenters.get(ch).addAdjacency(board[i][j]);
 					}
 					
+					// Handle edge cases for adjacencies
 					if (i > 0)
 						if (!board[i - 1][j].isRoom())
 							board[i][j].addAdjacency(board[i - 1][j]);
