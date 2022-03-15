@@ -1,3 +1,5 @@
+// Authors: Sammy Flemington and Eliot Edwards
+
 package clueGame;
 
 import java.io.*;
