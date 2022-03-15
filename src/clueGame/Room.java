@@ -1,5 +1,5 @@
 
-// Author: Sammy Flemington and Eliot Edwards
+// Authors: Eliot Edwards and Sammy Flemington
 
 package clueGame;
 
