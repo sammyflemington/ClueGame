@@ -113,7 +113,7 @@ public class BoardTestsExp {
 	@Test
 	public void testTargetsMixed_2() {
 		TestBoardCell cell = board.getCell(2,3);
-		//System.out.println("M2");
+		
 		board.getCell(0,2).setOccupied(true);
 		board.getCell(3,1).setRoom(true);
 		board.calcTargets(cell, 6);

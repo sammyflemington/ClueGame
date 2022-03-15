@@ -55,10 +55,7 @@ public class TestBoard {
 	}
 	
 	public Set<TestBoardCell> getTargets() {
-		// DEBUG
-		System.out.println();
-		for (TestBoardCell t : targets)
-			System.out.println(t);
+		
 		return targets;
 	}
 	
