@@ -119,13 +119,12 @@ public class Board {
 		// First find the size of the level layout
 		int i = 1, j = 0;
 		String line = reader.nextLine();
-		String[] parts = line.split(",");
 		
-		for (String s : parts) {
+		for (String s : line.split(",")) {
 			j ++;
 		}
 		while (reader.hasNextLine()) {
-			line = reader.nextLine();
+			reader.nextLine();
 			i++;
 		}
 		numRows = i;
