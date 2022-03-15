@@ -121,7 +121,7 @@ public class Board {
 		String line = reader.nextLine();
 		String[] chars = line.split(",");
 		
-		for (String c : chars) {
+		for (String s : chars) {
 			j ++;
 		}
 		while (reader.hasNextLine()) {
