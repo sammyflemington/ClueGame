@@ -1,3 +1,6 @@
+
+// Author: Sammy Flemington and Eliot Edwards
+
 package clueGame;
 
 import java.util.HashSet;
@@ -5,6 +8,12 @@ import java.util.Set;
 
 import experiment.TestBoardCell;
 
+/* 
+ * The BoardCell class allows us to handle
+ * the necessary components of each individual cell.
+ * This includes its doorway, room, label, room center,
+ * initial, occupancy, and secret passage status.
+ */
 public class BoardCell {
 
 	private int 	col;
