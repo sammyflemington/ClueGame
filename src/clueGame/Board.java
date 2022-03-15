@@ -148,8 +148,10 @@ public class Board {
 			for (String s : line.split(",")) {
 				BoardCell cell = new BoardCell(i, j);
 				board[i][j] = cell;
+				// First letter is always the cell initial
 				cell.setInitial(s.charAt(0));
-
+				
+				// If length > 1, we know that this is a special cell and must handle the second character
 				if (s.length() > 1) {
 					switch(s.charAt(1)) {
 					case '#':
