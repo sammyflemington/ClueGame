@@ -119,9 +119,9 @@ public class Board {
 		// First find the size of the level layout
 		int i = 1, j = 0;
 		String line = reader.nextLine();
-		String[] chars = line.split(",");
+		String[] parts = line.split(",");
 		
-		for (String s : chars) {
+		for (String s : parts) {
 			j ++;
 		}
 		while (reader.hasNextLine()) {
