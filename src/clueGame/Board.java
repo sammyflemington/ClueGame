@@ -270,23 +270,26 @@ public class Board {
 					if (board[i][j].isDoorway()) {	// if the current cell is a doorway
 						
 						// Check which room doorway is for add that room center to adj list
-						switch (board[i][j].getDoorDirection()) {
-							case UP:
-								ch = board[i - 1][j].getInitial();
-								break;
-							case DOWN:
-								ch = board[i + 1][j].getInitial();
-								break;
-							case LEFT:
-								ch = board[i][j - 1].getInitial();
-								break;
-							case RIGHT:
-								ch = board[i][j + 1].getInitial();
-								break;
-							default:
-								throw new BadConfigFormatException("Something went horribly wrong");
+						try {
+							switch (board[i][j].getDoorDirection()) {
+								case UP:
+									ch = board[i - 1][j].getInitial();
+									break;
+								case DOWN:
+									ch = board[i + 1][j].getInitial();
+									break;
+								case LEFT:
+									ch = board[i][j - 1].getInitial();
+									break;
+								case RIGHT:
+									ch = board[i][j + 1].getInitial();
+									break;
+								default:
+									throw new BadConfigFormatException("Something went wrong during door initialization");
+							}
+						} catch (ArrayIndexOutOfBoundsException e) {
+							throw new BadConfigFormatException("A door is placed illegally!");
 						}
-						
 						board[i][j].addAdjacency(roomCenters.get(ch));// Add adjacency both ways
 						roomCenters.get(ch).addAdjacency(board[i][j]);
 					}
