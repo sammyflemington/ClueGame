@@ -273,7 +273,7 @@ public class Board {
 			Card newCard = new Card(player.getName(), CardType.PERSON);
 			fullDeck.add(newCard);
 		}
-		
+
 		dealCards();
 
 	}
@@ -289,20 +289,19 @@ public class Board {
 		// Randomly choose 1 room, 1 person, and 1 weapon, and put them in solution
 		for (Card card : fullDeck) {
 
-			while (roomSolution == null || personSolution == null || weaponSolution == null) {
-
-				if (card.getCardType() == CardType.ROOM) {
-					roomSolution = card;
-					cards.remove(card);
-				} else if (card.getCardType() == CardType.PERSON) {
-					personSolution = card;
-					cards.remove(card);
-				} else { // weapon
-					weaponSolution = card;
-					cards.remove(card);
-				}
+			if (roomSolution == null && card.getCardType() == CardType.ROOM) {
+				roomSolution = card;
+				cards.remove(card);
+			} else if (personSolution == null && card.getCardType() == CardType.PERSON) {
+				personSolution = card;
+				cards.remove(card);
+			} else if (weaponSolution == null && card.getCardType() == CardType.WEAPON) {
+				weaponSolution = card;
+				cards.remove(card);
+			} else {
+				break;
 			}
-			
+
 		}
 
 		// Assign solution
@@ -313,7 +312,7 @@ public class Board {
 		while (!cards.isEmpty()) {
 			players.get(i).updateHand(cards.get(0));
 			cards.remove(0);
-			
+
 			// Changes player number
 			if (i == 5) {
 				i = 0;
