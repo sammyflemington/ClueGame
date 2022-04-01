@@ -1,13 +1,27 @@
-// Rooms and room cards 
-Room, Cat hotel, C 
-Room, Magic room, M 
+// Rooms and room cards
+Room, Cat Hotel, C
+Room, Magic Room, M
 Room, Round Table, T
-Room, Square Table, S 
-Room, Mister Flufferson’s study , F 
-Room, Portal Room, P 
-Room, Red room, R 
-Room, Kitchen, K 
-Room, Bathroom, B 
-// other spaces on board 
-Space, Unused, X 
-Space, Walkway, W 
+Room, Square Table, S
+Room, Mister Flufferson’s Study , F
+Room, Portal Room, P
+Room, Red Room, R
+Room, Kitchen, K
+Room, Bathroom, B
+// Other spaces on board
+Space, Unused, X
+Space, Walkway, W
+// Weapons
+Weapon, Butter Knife
+Weapon, Small Stick
+Weapon, Single Marble
+Weapon, Rusty Nail
+Weapon, Plastic Bucket
+Weapon, Used Needle
+// Players
+HumanPlayer, Sammy, Blue, 6, 0
+ComputerPlayer, Ellie, Red, 0, 16
+ComputerPlayer, Luka, Black, 24, 20
+ComputerPlayer, Snoop Dogg, Green, 26, 8
+ComputerPlayer, Your Mom, Pink, 21, 0
+ComputerPlayer, Mister Flufferson, Orange, 8, 21
