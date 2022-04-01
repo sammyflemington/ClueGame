@@ -12,16 +12,16 @@ import java.util.ArrayList;
  */
 public abstract class Player {
 
-	private String name, strColor;
+	protected String name, color;
 	//private Color color;
-	private int row, column;
-	private boolean isHuman = false;
-	private ArrayList<Card> hand;	// might need different data structure
+	protected int row, column;
+	protected boolean isHuman = false;
+	protected ArrayList<Card> hand;	// might need different data structure
 	
 	// Default...
 	public Player() {
 		this.name = "None";
-		this.strColor = "White";
+		this.color = "White";
 		this.row = 0;
 		this.column = 0;
 		this.isHuman = false;
@@ -30,7 +30,7 @@ public abstract class Player {
 	public Player(String name, String color, int row, int column, boolean isHuman) {
 		super();
 		this.name = name;
-		this.strColor = color;
+		this.color = color;
 		this.row = row;
 		this.column = column;
 		this.isHuman = isHuman;	
