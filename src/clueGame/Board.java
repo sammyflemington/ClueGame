@@ -291,13 +291,13 @@ public class Board {
 
 			if (roomSolution == null && card.getCardType() == CardType.ROOM) {
 				roomSolution = card;
-				cards.remove(card);
+				//cards.remove(card);
 			} else if (personSolution == null && card.getCardType() == CardType.PERSON) {
 				personSolution = card;
-				cards.remove(card);
+				//cards.remove(card);
 			} else if (weaponSolution == null && card.getCardType() == CardType.WEAPON) {
 				weaponSolution = card;
-				cards.remove(card);
+				//cards.remove(card);
 			} else {
 				break;
 			}
@@ -306,21 +306,15 @@ public class Board {
 
 		// Assign solution
 		solution = new Solution(roomSolution, personSolution, weaponSolution);
+		cards.remove(roomSolution);
+		cards.remove(personSolution);
+		cards.remove(weaponSolution);
 
 		// Deal the rest of the cards to players 1-6
 		int i = 0;
 		while (!cards.isEmpty()) {
-			players.get(i).updateHand(cards.get(0));
-			cards.remove(0);
-
-			// Changes player number
-			if (i == 5) {
-				i = 0;
-			} else {
-				i++;
-			}
+			players.get(i++ % 6).updateHand(cards.remove(0));
 		}
-
 	}
 
 	// Calculate valid moves from a given cell and given roll, store in "targets" set

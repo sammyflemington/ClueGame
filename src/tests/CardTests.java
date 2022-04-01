@@ -81,7 +81,7 @@ public class CardTests {
 		}
 		
 		// No player should have the same card as another player
-		ArrayList<Card> seenCards = null;
+		ArrayList<Card> seenCards = new ArrayList<Card>();
 		for (Player player : players) {
 			ArrayList<Card> currentHand = player.getHand();
 			for (Card card : currentHand) {
@@ -102,9 +102,6 @@ public class CardTests {
 		// Should be exactly 1 room card, 1 person card, and 1 weapon card
 		Solution newSolution = board.getSolution();
 		ArrayList<Card> solutionCards = newSolution.getCards();
-		for(Card c : solutionCards) {
-			System.out.println(c);
-		}
 		
 		assertEquals(3, solutionCards.size());
 		
@@ -123,9 +120,9 @@ public class CardTests {
 		}
 		
 		// Check for correct numbers of each card
-		assertEquals(9, rooms);
-		assertEquals(6, people);
-		assertEquals(6, weapons);
+		assertEquals(1, rooms);
+		assertEquals(1, people);
+		assertEquals(1, weapons);
 		
 		// No player should have a card that is one of the solutions
 		ArrayList<Player> players = board.getPlayers();
