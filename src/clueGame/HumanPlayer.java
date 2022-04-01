@@ -10,9 +10,6 @@ package clueGame;
  */
 public class HumanPlayer extends Player {
 	
-	private String name;
-	private String color;
-	private int row, column;
 	
 	public HumanPlayer(String name, String color, int row, int column) {
 		super(name, color, row, column, true);

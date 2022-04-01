@@ -9,9 +9,6 @@ package clueGame;
  */
 public class ComputerPlayer extends Player {
 
-	private String name;
-	private String color;
-	private int row, column;
 
 	public ComputerPlayer(String name, String color, int row, int column) {
 		super(name, color, row, column, false);
