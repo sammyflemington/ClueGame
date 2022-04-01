@@ -102,17 +102,20 @@ public class CardTests {
 		// Should be exactly 1 room card, 1 person card, and 1 weapon card
 		Solution newSolution = board.getSolution();
 		ArrayList<Card> solutionCards = newSolution.getCards();
+		for(Card c : solutionCards) {
+			System.out.println(c);
+		}
 		
 		assertEquals(3, solutionCards.size());
 		
 		// Count types of cards
 		int rooms = 0, people = 0, weapons = 0;
-		for (int i = 0; i < solutionCards.size(); i++) {
-			if (solutionCards.get(i).getCardType() == CardType.ROOM) {
+		for (Card c : solutionCards) {
+			if (c.getCardType() == CardType.ROOM) {
 				rooms++;
-			} else if (solutionCards.get(i).getCardType() == CardType.PERSON) {
+			} else if (c.getCardType() == CardType.PERSON) {
 				people++;
-			} else if (solutionCards.get(i).getCardType() == CardType.WEAPON) {
+			} else if (c.getCardType() == CardType.WEAPON) {
 				weapons++;
 			} else {
 				assertEquals(1, 0);	// false, shouldn't happen

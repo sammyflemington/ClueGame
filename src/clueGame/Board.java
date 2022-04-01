@@ -282,7 +282,7 @@ public class Board {
 	public void dealCards() {
 
 		Collections.shuffle(fullDeck);		// Shuffle deck
-		ArrayList<Card> cards = fullDeck;	// Make copy of deck
+		ArrayList<Card> cards = new ArrayList<Card>(fullDeck);	// Make copy of deck
 
 		Card roomSolution = null, personSolution = null, weaponSolution = null;
 

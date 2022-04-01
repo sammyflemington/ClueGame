@@ -29,7 +29,6 @@ public class Solution {
 	}
 	
 	// Getters and Setters
-	
 	public static Card getRoom() {
 		return room;
 	}
