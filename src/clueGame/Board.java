@@ -291,24 +291,19 @@ public class Board {
 
 			if (roomSolution == null && card.getCardType() == CardType.ROOM) {
 				roomSolution = card;
-				//cards.remove(card);
+				cards.remove(card);
 			} else if (personSolution == null && card.getCardType() == CardType.PERSON) {
 				personSolution = card;
-				//cards.remove(card);
+				cards.remove(card);
 			} else if (weaponSolution == null && card.getCardType() == CardType.WEAPON) {
 				weaponSolution = card;
-				//cards.remove(card);
-			} else {
-				break;
+				cards.remove(card);
 			}
 
 		}
 
 		// Assign solution
 		solution = new Solution(roomSolution, personSolution, weaponSolution);
-		cards.remove(roomSolution);
-		cards.remove(personSolution);
-		cards.remove(weaponSolution);
 
 		// Deal the rest of the cards to players 1-6
 		int i = 0;
