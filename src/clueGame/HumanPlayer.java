@@ -19,4 +19,9 @@ public class HumanPlayer extends Player {
 		this.column = column;
 	}
 
+	public BoardCell getCell(int row, int column) {
+		BoardCell cell = new BoardCell(row, column);
+		return cell;
+	}
+	
 }

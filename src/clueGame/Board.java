@@ -407,10 +407,27 @@ public class Board {
 		}
 	}
 
+
+	// Check if the player's accusation was correct or not
+	// If true: that player wins the game and the game is over
+	// If false: player is no longer playing the game
+	public boolean checkAccusation() {
+		
+		
+		return false;
+	}
+	
+	// Check if the player's suggestion was correct or not
+	public Card handleSuggestion() {
+		
+		
+		return null;
+	}
+	
 	public Set<BoardCell> getTargets() {
 		return targets;
 	}
-
+	
 	public BoardCell getCell(int row, int col) {
 		return board[row][col];
 	}

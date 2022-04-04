@@ -61,4 +61,8 @@ public abstract class Player {
 		this.name = name;
 	}
 	
+	// idk bout this
+	public abstract BoardCell getCell(int row, int column);
+	
+	
 }
