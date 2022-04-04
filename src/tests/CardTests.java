@@ -56,16 +56,6 @@ public class CardTests {
 		assertEquals(6, weapons);
 		assertEquals(21, testDeck.size());	// 6 weapons + 6 players + 9 rooms
 		
-		/*
-		// Check for some specific cards
-		for (Card card : testDeck) {
-			
-			assertTrue(testDeck.contains("Butter Knife"));	
-			assertTrue(testDeck.contains("Butter Knife"));	
-			
-		}
-		*/
-		
 	}
 	
 	// Test that players have appropriate cards
