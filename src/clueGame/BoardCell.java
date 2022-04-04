@@ -31,6 +31,7 @@ public class BoardCell {
 	private char 	secretPassage;
 	
 	private Set<BoardCell> adjList = new HashSet<BoardCell>();
+	private Set<BoardCell> targets = new HashSet<BoardCell>();
 	
 	public BoardCell(int r, int c) {
 		row = r;
@@ -106,6 +107,14 @@ public class BoardCell {
 	
 	public Set<BoardCell> getAdjList() {
 		return adjList;
+	}
+	
+	public void setTargets(Set<BoardCell> targetsList) {
+		targets = targetsList;
+	}
+	
+	public Set<BoardCell> getTargets() {
+		return targets;
 	}
 	
 	public char getInitial() {

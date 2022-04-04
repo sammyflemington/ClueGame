@@ -337,6 +337,9 @@ public class Board {
 				}
 			}
 		}
+		
+		startCell.setTargets(targets);	// set targets for that cell
+		
 	}
 
 	// Adjacency Calculations

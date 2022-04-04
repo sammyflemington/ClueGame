@@ -16,7 +16,8 @@ public abstract class Player {
 	//private Color color;
 	protected int row, column;
 	protected boolean isHuman = false;
-	protected ArrayList<Card> hand;	// might need different data structure
+	protected ArrayList<Card> hand;
+	protected ArrayList<Card> seenCards;
 	
 	// Default...
 	public Player() {
@@ -35,10 +36,15 @@ public abstract class Player {
 		this.column = column;
 		this.isHuman = isHuman;	
 		hand = new ArrayList<Card>();
+		seenCards = new ArrayList<Card>();
 	}
 
 	public void updateHand(Card card) {
 		hand.add(card);
+	}
+	
+	public void updateSeen(Card card) {
+		seenCards.add(card);
 	}
 
 	public String getName() {
@@ -55,6 +61,10 @@ public abstract class Player {
 
 	public ArrayList<Card> getHand() {
 		return hand;
+	}
+	
+	public ArrayList<Card> getSeen() {
+		return seenCards;
 	}
 
 	public void setName(String name) {

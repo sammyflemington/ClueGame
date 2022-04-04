@@ -168,6 +168,5 @@ public class BoardAdjTargetTest {
 		assertEquals(3, targets.size());
 		
 	}
-	
-	
+
 }
