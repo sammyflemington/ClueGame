@@ -57,4 +57,14 @@ public class Solution {
 	public ArrayList<Card> getCards() {
 		return solutionCards;
 	}
+	
+	public boolean equals(Solution other) {
+		if (other.getPerson().equals(this.getPerson()) &&
+			other.getWeapon().equals(this.getWeapon()) &&
+			other.getRoom().equals(this.getRoom())) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 }

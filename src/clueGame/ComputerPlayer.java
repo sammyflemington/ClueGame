@@ -24,7 +24,7 @@ public class ComputerPlayer extends Player {
 	// Randomly selects target for computer player to move to
 	// FUTURE: might want to use AI for this eventually instead of random
 	public BoardCell selectTarget() {
-
+		// TODO: LOOK BACK AT THIS!
 		BoardCell cell = getCell(row, column);
 		Set<BoardCell> targets = cell.getTargets();
 
@@ -45,8 +45,8 @@ public class ComputerPlayer extends Player {
 	public Solution makeSuggestion(ArrayList<Card> deck, Card room) {
 
 		ArrayList<Card> seenCards = getSeen();
-		ArrayList<Card> unseenWeapons = null;
-		ArrayList<Card> unseenPeople = null;
+		ArrayList<Card> unseenWeapons = new ArrayList<Card>();
+		ArrayList<Card> unseenPeople = new ArrayList<Card>();
 		
 		// For each card in the seen cards
 		for (Card card : seenCards) {
@@ -85,22 +85,8 @@ public class ComputerPlayer extends Player {
 			// https://stackoverflow.com/questions/124671/picking-a-random-element-from-a-set
 			person = new Random().nextInt(unseenPeople.size());
 		}
-		
-		int weaponIndex = 0;
-		int personIndex = 0;
-		
-		for (Card weap : unseenWeapons) {
-			for (Card pers : unseenPeople) {
-				
-				if (weaponIndex == weapon && personIndex == person) return new Solution(room, pers, weap);
-				
-				weaponIndex++;
-				personIndex++;
-			}
-		}
-		
-		return null;	// should never get here
-
+	
+		return new Solution(room, unseenPeople.get(person), unseenWeapons.get(weapon));
 	}
 
 

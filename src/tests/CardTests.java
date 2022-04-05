@@ -32,7 +32,6 @@ public class CardTests {
 	// Test that deck has necessary components
 	@Test
 	public void testDeck() {
-		
 		ArrayList<Card> testDeck = board.getDeck();
 		int rooms = 0, people = 0, weapons = 0;
 		

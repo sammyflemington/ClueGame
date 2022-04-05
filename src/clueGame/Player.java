@@ -3,6 +3,7 @@
 package clueGame;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /*
  * Player class (abstract) :
@@ -69,6 +70,29 @@ public abstract class Player {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public void clearHand() {
+		hand = new ArrayList<Card>();
+	}
+	
+	public Card disproveSuggestion(Solution suggestion) {
+		ArrayList<Card> suggested = suggestion.getCards();
+		Random rand = new Random();
+		ArrayList<Card> matches = new ArrayList<Card>();
+		for (Card c : hand) {
+			for (Card s : suggested) {
+				if (c.equals(s)) {
+					// We have a match!
+					matches.add(s);
+				}
+			}
+		}
+		// If we have any matches, pick a random one. Otherwise, return null.
+		if (matches.size() > 0) 
+			return matches.get(rand.nextInt(matches.size() - 1));
+		else
+			return null;
 	}
 	
 	// idk bout this

@@ -19,8 +19,12 @@ public class Card {
 	}
 	
 	public boolean equals(Card target) {
-		// TODO: Not yet implemented
-		return false;
+		if (target.toString().equals(this.toString()) &&
+			target.getCardType() == this.getCardType()) {
+			return true;
+		}else {
+			return false;
+		}
 	}
 
 	public CardType getCardType() {

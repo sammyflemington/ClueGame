@@ -33,6 +33,8 @@ public class Board {
 	private ArrayList<String> weapons = new ArrayList<String>();// Weapons
 
 	private Solution solution;	// current game solution
+	
+	private int turn = 0;
 
 	// So only one Board instance is created
 	private Board() {
@@ -414,16 +416,27 @@ public class Board {
 	// Check if the player's accusation was correct or not
 	// If true: that player wins the game and the game is over
 	// If false: player is no longer playing the game
-	public boolean checkAccusation() {
-		
-		
-		return false;
+	public boolean checkAccusation(Solution acc) {
+		if (acc.equals(solution)) {
+			return true;
+		}else {
+			return false;
+		}
 	}
 	
 	// Check if the player's suggestion was correct or not
-	public Card handleSuggestion() {
-		
-		
+	public Card handleSuggestion(Solution suggestion) {
+		// go through all players and see if they can disprove
+		for (int i = 1; i < players.size(); i++) {
+			int playerNum = (i + getTurn()) % players.size(); // loop through players starting with whose turn it is
+			Player p = players.get(playerNum);
+			Card c = p.disproveSuggestion(suggestion);
+			if (!c.equals(null)) {
+				// this player can disprove the suggestion
+				return c;
+			}
+		}
+		// Nobody could disprove the suggestion!
 		return null;
 	}
 	
@@ -460,6 +473,14 @@ public class Board {
 		}
 	}
 
+	public void nextTurn() {
+		turn ++;
+		turn = turn % players.size();
+	}
+	
+	public int getTurn() {
+		return turn;
+	}
 	public Room getRoom(char c) {
 		return roomMap.get(c);
 	}
