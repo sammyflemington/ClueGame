@@ -18,13 +18,17 @@ public class Card {
 		cardType = type;
 	}
 	
-	public boolean equals(Card target) {
-		if (target.toString().equals(this.toString()) &&
-			target.getCardType() == this.getCardType()) {
-			return true;
-		}else {
+	@Override
+	public boolean equals(Object target) {
+		if (target instanceof Card) {
+			Card card = (Card) target;
+			if (card.toString().equals(this.toString()) &&
+				card.getCardType() == this.getCardType()) {
+				return true;
+			}
 			return false;
 		}
+		return false;
 	}
 
 	public CardType getCardType() {
