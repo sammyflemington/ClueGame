@@ -104,20 +104,26 @@ public class ComputerAITest {
 			turn = board.getTurn();
 			p = board.getPlayers().get(turn);
 		}
+	
+		ComputerPlayer cp = (ComputerPlayer) p;
+		cp.moveTo(7, 9);
 		
-		BoardCell cell = board.getCell(1,2);
-		board.getCell(0,2).setOccupied(true);
-		board.getCell(1,1).setOccupied(true);
-		board.getCell(1,3).setOccupied(true);
-
-		board.calcTargets(cell, 2);
-		Set<BoardCell> targets = board.getTargets();
-
-		assertTrue(targets.contains(board.getCell(2,1)));
-		assertTrue(targets.contains(board.getCell(2,3)));
-		assertTrue(targets.contains(board.getCell(3,2)));
-		
-		assertEquals(3, targets.size());
+		int c1=0,c2=0,c3=0,c4=0;
+		for (int i = 0; i < 100; i++) {
+			BoardCell target = cp.selectTarget(1);
+			if (target.)
+				c1++;
+			else if (s.getPerson().equals(new Card("Mister Flufferson", CardType.PERSON)))
+				c2++;
+			if (s.getWeapon().equals(new Card("Plastic Bucket", CardType.WEAPON)))
+				c3++;
+			else if (s.getWeapon().equals(new Card("Used Needle", CardType.WEAPON)))
+				c4++;
+		}
+		assert(c1 > 10);
+		assert(c2 > 10);
+		assert(c3 > 10);
+		assert(c4 > 10);
 		
 	}
 		
