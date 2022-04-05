@@ -440,6 +440,10 @@ public class Board {
 		return null;
 	}
 	
+	public void setTurn(int t) {
+		turn = t;
+	}
+	
 	public Set<BoardCell> getTargets() {
 		return targets;
 	}

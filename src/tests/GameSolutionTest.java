@@ -15,6 +15,7 @@ import clueGame.Board;
 import clueGame.BoardCell;
 import clueGame.Card;
 import clueGame.CardType;
+import clueGame.HumanPlayer;
 import clueGame.Player;
 import clueGame.Solution;
 
@@ -111,36 +112,36 @@ public class GameSolutionTest {
 		// If only the player that makes the suggestion can disprove, returns null
 		board.nextTurn();
 		int turn = board.getTurn();
-		Player p = board.getPlayers().get(turn);
-		suggestion = new Solution(p.getHand().get(0), new Card("a", CardType.ROOM), new Card("b", CardType.ROOM));
+		Player player = board.getPlayers().get(turn);
+		suggestion = new Solution(player.getHand().get(0), new Card("a", CardType.ROOM), new Card("b", CardType.ROOM));
 		assertEquals(board.handleSuggestion(suggestion), null);
 		
 		// If only human player can disprove, returns one of their cards that can disprove
+		Player human = null;
+		for (Player p : board.getPlayers()) {
+			if (p instanceof HumanPlayer) {
+				human = p;
+				break;
+			}
+		}
+		// make sure it's not human's turn
+		board.setTurn(board.getPlayers().indexOf(human));
+		board.nextTurn();
+		suggestion = new Solution(human.getHand().get(0), new Card("a", CardType.ROOM), new Card("b", CardType.ROOM));
+		assertEquals(board.handleSuggestion(suggestion), human.getHand().get(0));
 		
 		// If two players can disprove, next player in order returns their disproving card
 
-	}
-	
-	// Test computer-generated suggestions are created properly
-	@Test
-	public void testCompSuggestion() {
+		Player suggester = board.getPlayers().get(board.getTurn());
+		board.nextTurn();
+		Player next = board.getPlayers().get(board.getTurn());
+		board.nextTurn();
+		Player third = board.getPlayers().get(board.getTurn());
 		
-		// Player is in the room center that they are suggesting
+		// next's card should be returned, not third's
+		suggestion = new Solution(next.getHand().get(0), third.getHand().get(0), new Card("b", CardType.ROOM));
 		
-		// If only one weapon is not seen, it's selected
-		
-		// If only one person is not seen, it's selected
-		
-		// Otherwise, randomly select both weapon and person
-		
-	}
-	
-	// Test Computer targets
-	@Test
-	public void testComputerTargets() {
-		
-		// If no rooms in targetList, 
-		
+		assertEquals(board.handleSuggestion(suggestion), next.getHand().get(0));
 	}
 	
 }
