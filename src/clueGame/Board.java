@@ -27,10 +27,10 @@ public class Board {
 	private Map<Character, Set<Character>> secretPassages;	// first char is the current room, second char set is room(s) it goes to
 	private ArrayList<Character> validChars;
 
-	private ArrayList<Card> fullDeck = new ArrayList<Card>();	// All game cards
-	private ArrayList<Room> rooms = new ArrayList<Room>();		// Rooms
-	private ArrayList<Player> players = new ArrayList<Player>();// Players
-	private ArrayList<String> weapons = new ArrayList<String>();// Weapons
+	private ArrayList<Card> fullDeck;
+	private ArrayList<Room> rooms;
+	private ArrayList<Player> players;
+	private ArrayList<String> weapons;
 
 	private Solution solution;	// current game solution
 	
@@ -49,7 +49,7 @@ public class Board {
 		// Allocate Memory
 		board = new BoardCell[numRows][numColumns];
 		targets = new HashSet<BoardCell>();
-
+		
 		try {
 			loadLayoutConfig();
 			loadSetupConfig();
@@ -148,7 +148,10 @@ public class Board {
 		// Allocate memory
 		roomLabels = new HashMap<Character, BoardCell>();
 		roomCenters = new HashMap<Character, BoardCell>();
-
+		fullDeck = new ArrayList<Card>();	// All game cards
+		rooms = new ArrayList<Room>();		// Rooms
+		players = new ArrayList<Player>();// Players
+		weapons = new ArrayList<String>();// Weapons
 		secretPassages = new HashMap<Character, Set<Character>>();
 		Set<Character> multiplePassages = new HashSet<Character>();
 

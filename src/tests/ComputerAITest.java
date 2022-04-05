@@ -3,26 +3,32 @@
 package tests;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import clueGame.Board;
+import clueGame.BoardCell;
 import clueGame.Card;
 import clueGame.CardType;
 import clueGame.ComputerPlayer;
 import clueGame.HumanPlayer;
 import clueGame.Player;
 import clueGame.Solution;
+import experiment.TestBoardCell;
 
 public class ComputerAITest {
 
 	private static Board board;
 	
-	@BeforeAll
-	public static void initialize() {
+	@BeforeEach
+	public void initialize() {
 		// load stuff
 		board = Board.getInstance();
 		board.setConfigFiles("ClueLayout.csv", "ClueSetup.txt");
@@ -90,8 +96,28 @@ public class ComputerAITest {
 	// Test Computer targets
 	@Test
 	public void testComputerTargets() {
-		
 		// If no rooms in targetList, 
+		int turn = board.getTurn();
+		Player p = board.getPlayers().get(turn);
+		while (p instanceof ComputerPlayer) {
+			board.nextTurn();
+			turn = board.getTurn();
+			p = board.getPlayers().get(turn);
+		}
+		
+		BoardCell cell = board.getCell(1,2);
+		board.getCell(0,2).setOccupied(true);
+		board.getCell(1,1).setOccupied(true);
+		board.getCell(1,3).setOccupied(true);
+
+		board.calcTargets(cell, 2);
+		Set<BoardCell> targets = board.getTargets();
+
+		assertTrue(targets.contains(board.getCell(2,1)));
+		assertTrue(targets.contains(board.getCell(2,3)));
+		assertTrue(targets.contains(board.getCell(3,2)));
+		
+		assertEquals(3, targets.size());
 		
 	}
 		

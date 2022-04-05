@@ -24,20 +24,32 @@ public class ComputerPlayer extends Player {
 
 	// Randomly selects target for computer player to move to
 	// FUTURE: might want to use AI for this eventually instead of random
-	public BoardCell selectTarget() {
+	public BoardCell selectTarget(int roll) {
 		// TODO: LOOK BACK AT THIS!
+		Random rand = new Random();
 		BoardCell cell = board.getCell(row, column);
-		Set<BoardCell> targets = cell.getTargets();
-
+		board.calcTargets(cell, roll);
+		Set<BoardCell> targets = board.getTargets();
 		// https://stackoverflow.com/questions/124671/picking-a-random-element-from-a-set
-		int choice = new Random().nextInt(targets.size());	// get random integer in index range of targets list
-		int index = 0;
-
-		for (BoardCell c : targets) {
-			if (index == choice) return c;
-			index++;
+		for (BoardCell tcell : targets) {
+			if (tcell.isRoomCenter()) {
+				// Check if we have seen this room
+				for (Card card : getSeen()) {
+					if (card.equals(new Card(board.getRoom(tcell).getName(), CardType.ROOM)))
+						continue;
+				}
+				// prioritize moving into a room we haven't seen
+				return tcell;
+			}
 		}
-
+		int r = rand.nextInt(targets.size());
+		int i = 0;
+		for (BoardCell c : targets) {
+			if (i == r) {
+				return c;
+			}
+			i++;
+		}
 		return null; // should never get here
 	}
 

@@ -11,3 +11,17 @@ Room, Hall, H
 // other spaces on board
 Space, Unused, X
 Space, Walkway, W
+// Weapons
+Weapon, Butter Knife
+Weapon, Small Stick
+Weapon, Single Marble
+Weapon, Rusty Nail
+Weapon, Plastic Bucket
+Weapon, Used Needle
+// Players
+HumanPlayer, Sammy, Blue, 6, 0
+ComputerPlayer, Ellie, Red, 0, 16
+ComputerPlayer, Luka, Black, 10, 2
+ComputerPlayer, Snoop Dogg, Green, 10, 8
+ComputerPlayer, Your Mom, Pink, 4, 0
+ComputerPlayer, Mister Flufferson, Orange, 8, 4

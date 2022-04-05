@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Set;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import clueGame.Board;
@@ -23,12 +24,59 @@ public class GameSolutionTest {
 
 	private static Board board;
 	
-	@BeforeAll
-	public static void initialize() {
+	@BeforeEach
+	public void initialize() {
 		// load stuff
 		board = Board.getInstance();
 		board.setConfigFiles("ClueLayout.csv", "ClueSetup.txt");
 		board.initialize();
+	}
+	// Test how suggestions are handled
+	@Test
+	public void testHandleSuggestion() {
+
+		// If no one can disprove suggestion, returns null
+		Solution suggestion = board.getSolution(); // solution can never be disproved
+		for (Player p : board.getPlayers()) {
+			Card c = p.disproveSuggestion(suggestion);
+			assert(c == null);
+		}
+		// If only the player that makes the suggestion can disprove, returns null
+		board.nextTurn();
+		int turn = board.getTurn();
+		Player player = board.getPlayers().get(turn);
+		suggestion = new Solution(player.getHand().get(0), new Card("a", CardType.ROOM), new Card("b", CardType.ROOM));
+		assertEquals(board.handleSuggestion(suggestion), null);
+		
+		// If only human player can disprove, returns one of their cards that can disprove
+		Player human = null;
+		for (Player p : board.getPlayers()) {
+			if (p instanceof HumanPlayer) {
+				human = p;
+				break;
+			}
+		}
+		// make sure it's not human's turn
+		board.setTurn(board.getPlayers().indexOf(human));
+		board.nextTurn();
+		suggestion = new Solution(human.getHand().get(0), new Card("a", CardType.ROOM), new Card("b", CardType.ROOM));
+		assertEquals(board.handleSuggestion(suggestion), human.getHand().get(0));
+		
+		// If two players can disprove, next player in order returns their disproving card
+
+		Player suggester = board.getPlayers().get(board.getTurn());
+		int suggesterTurn = board.getTurn();
+		board.nextTurn();
+		Player next = board.getPlayers().get(board.getTurn());
+		board.nextTurn();
+		Player third = board.getPlayers().get(board.getTurn());
+		
+		board.setTurn(suggesterTurn); // set turn back to suggester
+		
+		// next's card should be returned, not third's
+		suggestion = new Solution(next.getHand().get(0), third.getHand().get(0), new Card("b", CardType.ROOM));
+		
+		assertEquals(board.handleSuggestion(suggestion), next.getHand().get(0));
 	}
 	
 	// Test accusations
@@ -99,52 +147,6 @@ public class GameSolutionTest {
 		assertEquals(result, null);
 	}
 	
-	// Test how suggestions are handled
-	@Test
-	public void testHandleSuggestion() {
-
-		// If no one can disprove suggestion, returns null
-		Solution suggestion = board.getSolution(); // solution can never be disproved
-		for (Player p : board.getPlayers()) {
-			Card c = p.disproveSuggestion(suggestion);
-			assert(c == null);
-		}
-		// If only the player that makes the suggestion can disprove, returns null
-		board.nextTurn();
-		int turn = board.getTurn();
-		Player player = board.getPlayers().get(turn);
-		suggestion = new Solution(player.getHand().get(0), new Card("a", CardType.ROOM), new Card("b", CardType.ROOM));
-		assertEquals(board.handleSuggestion(suggestion), null);
-		
-		// If only human player can disprove, returns one of their cards that can disprove
-		Player human = null;
-		for (Player p : board.getPlayers()) {
-			if (p instanceof HumanPlayer) {
-				human = p;
-				break;
-			}
-		}
-		// make sure it's not human's turn
-		board.setTurn(board.getPlayers().indexOf(human));
-		board.nextTurn();
-		suggestion = new Solution(human.getHand().get(0), new Card("a", CardType.ROOM), new Card("b", CardType.ROOM));
-		assertEquals(board.handleSuggestion(suggestion), human.getHand().get(0));
-		
-		// If two players can disprove, next player in order returns their disproving card
-
-		Player suggester = board.getPlayers().get(board.getTurn());
-		int suggesterTurn = board.getTurn();
-		board.nextTurn();
-		Player next = board.getPlayers().get(board.getTurn());
-		board.nextTurn();
-		Player third = board.getPlayers().get(board.getTurn());
-		
-		board.setTurn(suggesterTurn); // set turn back to suggester
-		
-		// next's card should be returned, not third's
-		suggestion = new Solution(next.getHand().get(0), third.getHand().get(0), new Card("b", CardType.ROOM));
-		
-		assertEquals(board.handleSuggestion(suggestion), next.getHand().get(0));
-	}
+	
 	
 }
