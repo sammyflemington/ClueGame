@@ -59,14 +59,14 @@ public class ComputerAITest {
 		int c1=0,c2=0,c3=0,c4=0;
 		for (int i = 0; i < 100; i++) {
 			Solution s = cp.makeSuggestion(board.getDeck());
-			if (s.getPerson() == new Card("Your Mom", CardType.PERSON))
-				c1 ++;
-			else if (s.getPerson() == new Card("Mister Flufferson", CardType.PERSON))
-				c2 ++;
-			if (s.getWeapon() == new Card("Plastic Bucket", CardType.WEAPON))
-				c3 ++;
-			else if (s.getWeapon() == new Card("Used Needle", CardType.WEAPON))
-				c4 ++;
+			if (s.getPerson().equals(new Card("Your Mom", CardType.PERSON)))
+				c1++;
+			else if (s.getPerson().equals(new Card("Mister Flufferson", CardType.PERSON)))
+				c2++;
+			if (s.getWeapon().equals(new Card("Plastic Bucket", CardType.WEAPON)))
+				c3++;
+			else if (s.getWeapon().equals(new Card("Used Needle", CardType.WEAPON)))
+				c4++;
 		}
 		assert(c1 > 10);
 		assert(c2 > 10);
@@ -77,13 +77,13 @@ public class ComputerAITest {
 		cp.updateSeen(new Card("Plastic Bucket", CardType.WEAPON));
 		
 		suggestion = cp.makeSuggestion(board.getDeck());
-		assertEquals(suggestion.getWeapon(), new Card("Used Needle", CardType.WEAPON));
+		assert(suggestion.getWeapon().equals(new Card("Used Needle", CardType.WEAPON)));
 		
 		// If only one person is not seen, it's selected
 		cp.updateSeen(new Card("Your Mom", CardType.PERSON));
 		
 		suggestion = cp.makeSuggestion(board.getDeck());
-		assertEquals(suggestion.getPerson(), new Card("Mister Flufferson", CardType.PERSON));
+		assert(suggestion.getPerson().equals(new Card("Mister Flufferson", CardType.PERSON)));
 		
 	}
 	

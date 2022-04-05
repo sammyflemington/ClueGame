@@ -21,7 +21,7 @@ public class ComputerPlayer extends Player {
 		this.column = column;
 	}
 
-	
+
 	// Randomly selects target for computer player to move to
 	// FUTURE: might want to use AI for this eventually instead of random
 	public BoardCell selectTarget() {
@@ -49,20 +49,23 @@ public class ComputerPlayer extends Player {
 		ArrayList<Card> unseenWeapons = new ArrayList<Card>();
 		ArrayList<Card> unseenPeople = new ArrayList<Card>();
 		Random rand = new Random();
-		// For each card in the seen cards
+
 		for (Card c : deck) {
-			if (c.getCardType() == CardType.WEAPON) {
-				unseenWeapons.add(c);
-			} else if (c.getCardType() == CardType.PERSON) {
-				unseenPeople.add(c);
+			boolean flag = false;
+			for (Card card : seenCards) {
+				if (card.equals(c)) {
+					flag = true;
+				}
+			}
+			if (!flag) {
+				if (c.getCardType() == CardType.WEAPON) {
+					unseenWeapons.add(c);
+				} else if (c.getCardType() == CardType.PERSON) {
+					unseenPeople.add(c);
+				}
 			}
 		}
-		
-		for (Card c : seenCards) {
-			unseenWeapons.remove(c);
-			unseenPeople.remove(c);
-		}
-	
+
 		//return new Solution(room, unseenPeople.get(rand.nextInt(unseenPeople.size())), unseenWeapons.get(rand.nextInt(unseenWeapons.size())));
 		int weapon = 0;
 		// If only one weapon is not seen, it's selected
@@ -70,14 +73,14 @@ public class ComputerPlayer extends Player {
 			// https://stackoverflow.com/questions/124671/picking-a-random-element-from-a-set
 			weapon = rand.nextInt(unseenWeapons.size());
 		}
-		
+
 		int person = 0;
 		// If only one person is not seen, it's selected
 		if (unseenPeople.size() > 1) {
 			// https://stackoverflow.com/questions/124671/picking-a-random-element-from-a-set
 			person = rand.nextInt(unseenPeople.size());
 		}
-	
+
 		return new Solution(room, unseenPeople.get(person), unseenWeapons.get(weapon));
 	}
 
