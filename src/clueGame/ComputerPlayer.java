@@ -34,12 +34,14 @@ public class ComputerPlayer extends Player {
 		for (BoardCell tcell : targets) {
 			if (tcell.isRoomCenter()) {
 				// Check if we have seen this room
+				boolean flag = false;
 				for (Card card : getSeen()) {
 					if (card.equals(new Card(board.getRoom(tcell).getName(), CardType.ROOM)))
-						continue;
+						flag = true;
 				}
 				// prioritize moving into a room we haven't seen
-				return tcell;
+				if (!flag)
+					return tcell;
 			}
 		}
 		int r = rand.nextInt(targets.size());
