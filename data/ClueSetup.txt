@@ -3,7 +3,7 @@ Room, Cat Hotel, C
 Room, Magic Room, M
 Room, Round Table, T
 Room, Square Table, S
-Room, Mister Flufferson’s Study , F
+Room, Mister Fluffersons Study, F
 Room, Portal Room, P
 Room, Red Room, R
 Room, Kitchen, K

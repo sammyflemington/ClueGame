@@ -19,6 +19,7 @@ public abstract class Player {
 	protected boolean isHuman = false;
 	protected ArrayList<Card> hand;
 	protected ArrayList<Card> seenCards;
+	protected Board board;
 	
 	// Default...
 	public Player() {
@@ -40,6 +41,9 @@ public abstract class Player {
 		seenCards = new ArrayList<Card>();
 	}
 
+	public void setBoard(Board b) {
+		board = b;
+	}
 	public void updateHand(Card card) {
 		hand.add(card);
 	}
@@ -89,14 +93,17 @@ public abstract class Player {
 			}
 		}
 		// If we have any matches, pick a random one. Otherwise, return null.
-		if (matches.size() > 0) 
-			return matches.get(rand.nextInt(matches.size() - 1));
+		if (matches.size() >= 1) 
+			return matches.get(rand.nextInt(matches.size()));
 		else
 			return null;
 	}
 	
-	// idk bout this
-	public abstract BoardCell getCell(int row, int column);
-	
+	public void moveTo(int r, int c) {
+		board.getCell(row, column).setOccupied(false);
+		row = r;
+		column = c;
+		board.getCell(row, column).setOccupied(true);
+	}
 	
 }

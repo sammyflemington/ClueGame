@@ -96,7 +96,7 @@ public class GameSolutionTest {
 		p.updateHand(new Card("D", CardType.ROOM));
 		p.updateHand(new Card("F", CardType.ROOM));
 		result = p.disproveSuggestion(suggestion);
-		assert(result.equals(null));
+		assertEquals(result, null);
 	}
 	
 	// Test how suggestions are handled
@@ -107,7 +107,7 @@ public class GameSolutionTest {
 		Solution suggestion = board.getSolution(); // solution can never be disproved
 		for (Player p : board.getPlayers()) {
 			Card c = p.disproveSuggestion(suggestion);
-			assert(c.equals(null));
+			assert(c == null);
 		}
 		// If only the player that makes the suggestion can disprove, returns null
 		board.nextTurn();
@@ -133,10 +133,13 @@ public class GameSolutionTest {
 		// If two players can disprove, next player in order returns their disproving card
 
 		Player suggester = board.getPlayers().get(board.getTurn());
+		int suggesterTurn = board.getTurn();
 		board.nextTurn();
 		Player next = board.getPlayers().get(board.getTurn());
 		board.nextTurn();
 		Player third = board.getPlayers().get(board.getTurn());
+		
+		board.setTurn(suggesterTurn); // set turn back to suggester
 		
 		// next's card should be returned, not third's
 		suggestion = new Solution(next.getHand().get(0), third.getHand().get(0), new Card("b", CardType.ROOM));

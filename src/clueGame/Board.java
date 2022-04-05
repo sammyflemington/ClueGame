@@ -111,6 +111,8 @@ public class Board {
 
 				if (parts.length == 5) {	// Make sure we have all 5 player components
 					HumanPlayer newPlayer = new HumanPlayer(parts[1], parts[2], Integer.parseInt(parts[3]), Integer.parseInt(parts[4]));
+					getCell(Integer.parseInt(parts[3]), Integer.parseInt(parts[4])).setOccupied(true);
+					newPlayer.setBoard(this);
 					players.add(newPlayer);	// Add to players array for easy card initialization
 				} else {
 					throw new BadConfigFormatException ("Human player not formatted correctly");
@@ -120,6 +122,8 @@ public class Board {
 
 				if (parts.length == 5) {	// Make sure we have all 5 player components
 					ComputerPlayer newPlayer = new ComputerPlayer(parts[1], parts[2], Integer.parseInt(parts[3]), Integer.parseInt(parts[4]));
+					getCell(Integer.parseInt(parts[3]), Integer.parseInt(parts[4])).setOccupied(true);
+					newPlayer.setBoard(this);
 					players.add(newPlayer);	// Add to players array for easy card initialization
 				} else {
 					throw new BadConfigFormatException ("Computer players not formatted correctly");
@@ -431,7 +435,7 @@ public class Board {
 			int playerNum = (i + getTurn()) % players.size(); // loop through players starting with whose turn it is
 			Player p = players.get(playerNum);
 			Card c = p.disproveSuggestion(suggestion);
-			if (!c.equals(null)) {
+			if (c != null) {
 				// this player can disprove the suggestion
 				return c;
 			}

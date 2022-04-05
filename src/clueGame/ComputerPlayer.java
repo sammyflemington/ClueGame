@@ -21,11 +21,12 @@ public class ComputerPlayer extends Player {
 		this.column = column;
 	}
 
+	
 	// Randomly selects target for computer player to move to
 	// FUTURE: might want to use AI for this eventually instead of random
 	public BoardCell selectTarget() {
 		// TODO: LOOK BACK AT THIS!
-		BoardCell cell = getCell(row, column);
+		BoardCell cell = board.getCell(row, column);
 		Set<BoardCell> targets = cell.getTargets();
 
 		// https://stackoverflow.com/questions/124671/picking-a-random-element-from-a-set
@@ -42,57 +43,42 @@ public class ComputerPlayer extends Player {
 
 	// Makes a suggestion when computer player is inside a room
 	// Passes in the full deck of cards and the room that the computer player is in
-	public Solution makeSuggestion(ArrayList<Card> deck, Card room) {
-
+	public Solution makeSuggestion(ArrayList<Card> deck) {
+		Card room = new Card(board.getRoom(board.getCell(row, column).getInitial()).getName(), CardType.ROOM);
 		ArrayList<Card> seenCards = getSeen();
 		ArrayList<Card> unseenWeapons = new ArrayList<Card>();
 		ArrayList<Card> unseenPeople = new ArrayList<Card>();
-		
+		Random rand = new Random();
 		// For each card in the seen cards
-		for (Card card : seenCards) {
-
-			// For each card in a full deck
-			for (Card c : deck) {
-
-				// Add weapons and people to unseen lists
-				if (c.getCardType() == CardType.WEAPON) {
-					unseenWeapons.add(c);
-				} else if (card.getCardType() == CardType.PERSON) {
-					unseenPeople.add(c);
-				}
-				
-				// If weapon or person card has been seen, remove it from unseen lists
-				if (c.equals(card) && c.getCardType() == CardType.WEAPON) {
-					unseenWeapons.remove(c);
-				} else if (c.equals(card) && c.getCardType() == CardType.PERSON) {
-					unseenPeople.remove(c);
-				}
-								
+		for (Card c : deck) {
+			if (c.getCardType() == CardType.WEAPON) {
+				unseenWeapons.add(c);
+			} else if (c.getCardType() == CardType.PERSON) {
+				unseenPeople.add(c);
 			}
-
 		}
-
+		
+		for (Card c : seenCards) {
+			unseenWeapons.remove(c);
+			unseenPeople.remove(c);
+		}
+	
+		//return new Solution(room, unseenPeople.get(rand.nextInt(unseenPeople.size())), unseenWeapons.get(rand.nextInt(unseenWeapons.size())));
 		int weapon = 0;
 		// If only one weapon is not seen, it's selected
-		if (unseenWeapons.size() != 1) {
+		if (unseenWeapons.size() > 1) {
 			// https://stackoverflow.com/questions/124671/picking-a-random-element-from-a-set
-			weapon = new Random().nextInt(unseenWeapons.size());
+			weapon = rand.nextInt(unseenWeapons.size());
 		}
 		
 		int person = 0;
 		// If only one person is not seen, it's selected
-		if (unseenPeople.size() != 1) {
+		if (unseenPeople.size() > 1) {
 			// https://stackoverflow.com/questions/124671/picking-a-random-element-from-a-set
-			person = new Random().nextInt(unseenPeople.size());
+			person = rand.nextInt(unseenPeople.size());
 		}
 	
 		return new Solution(room, unseenPeople.get(person), unseenWeapons.get(weapon));
-	}
-
-
-	public BoardCell getCell(int row, int column) {
-		BoardCell cell = new BoardCell(row, column);
-		return cell;
 	}
 
 }
