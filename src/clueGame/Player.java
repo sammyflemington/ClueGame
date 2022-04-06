@@ -2,6 +2,7 @@
 
 package clueGame;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -13,7 +14,8 @@ import java.util.Random;
  */
 public abstract class Player {
 
-	protected String name, color;
+	protected String name;
+	protected Color color;
 	//private Color color;
 	protected int row, column;
 	protected boolean isHuman = false;
@@ -24,13 +26,13 @@ public abstract class Player {
 	// Default...
 	public Player() {
 		this.name = "None";
-		this.color = "White";
+		this.color = Color.WHITE;
 		this.row = 0;
 		this.column = 0;
 		this.isHuman = false;
 	}
 	
-	public Player(String name, String color, int row, int column, boolean isHuman) {
+	public Player(String name, Color color, int row, int column, boolean isHuman) {
 		super();
 		this.name = name;
 		this.color = color;
@@ -78,6 +80,10 @@ public abstract class Player {
 	
 	public void clearHand() {
 		hand = new ArrayList<Card>();
+	}
+	
+	public Color getColor() {
+		return color;
 	}
 	
 	public Card disproveSuggestion(Solution suggestion) {

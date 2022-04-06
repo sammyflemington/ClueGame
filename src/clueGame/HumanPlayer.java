@@ -2,6 +2,8 @@
 
 package clueGame;
 
+import java.awt.Color;
+
 /*
  * HumanPlayer class
  * 
@@ -11,7 +13,7 @@ package clueGame;
 public class HumanPlayer extends Player {
 	
 	
-	public HumanPlayer(String name, String color, int row, int column) {
+	public HumanPlayer(String name, Color color, int row, int column) {
 		super(name, color, row, column, true);
 		this.name = name;
 		this.color = color;

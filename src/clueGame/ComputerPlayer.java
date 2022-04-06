@@ -2,6 +2,7 @@
 
 package clueGame;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Set;
@@ -13,7 +14,7 @@ import java.util.Set;
  */
 public class ComputerPlayer extends Player {
 
-	public ComputerPlayer(String name, String color, int row, int column) {
+	public ComputerPlayer(String name, Color color, int row, int column) {
 		super(name, color, row, column, false);
 		this.name = name;
 		this.color = color;

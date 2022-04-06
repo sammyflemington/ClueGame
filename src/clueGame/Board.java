@@ -2,6 +2,7 @@
 
 package clueGame;
 
+import java.awt.Color;
 import java.io.*;
 import java.util.*;
 import java.io.File;
@@ -110,7 +111,7 @@ public class Board {
 			} else if (parts[0].equalsIgnoreCase("HumanPlayer")) {
 
 				if (parts.length == 5) {	// Make sure we have all 5 player components
-					HumanPlayer newPlayer = new HumanPlayer(parts[1], parts[2], Integer.parseInt(parts[3]), Integer.parseInt(parts[4]));
+					HumanPlayer newPlayer = new HumanPlayer(parts[1], stringToColor(parts[2]), Integer.parseInt(parts[3]), Integer.parseInt(parts[4]));
 					getCell(Integer.parseInt(parts[3]), Integer.parseInt(parts[4])).setOccupied(true);
 					newPlayer.setBoard(this);
 					players.add(newPlayer);	// Add to players array for easy card initialization
@@ -121,7 +122,7 @@ public class Board {
 			} else if (parts[0].equalsIgnoreCase("ComputerPlayer")) {
 
 				if (parts.length == 5) {	// Make sure we have all 5 player components
-					ComputerPlayer newPlayer = new ComputerPlayer(parts[1], parts[2], Integer.parseInt(parts[3]), Integer.parseInt(parts[4]));
+					ComputerPlayer newPlayer = new ComputerPlayer(parts[1], stringToColor(parts[2]), Integer.parseInt(parts[3]), Integer.parseInt(parts[4]));
 					getCell(Integer.parseInt(parts[3]), Integer.parseInt(parts[4])).setOccupied(true);
 					newPlayer.setBoard(this);
 					players.add(newPlayer);	// Add to players array for easy card initialization
@@ -143,6 +144,17 @@ public class Board {
 
 	}
 
+	private Color stringToColor(String s) {
+		switch (s){
+		case "Blue": return Color.blue;	
+		case "Red": return Color.red; 
+		case "Black": return Color.black; 
+		case "Green": return Color.green; 
+		case "Pink": return Color.pink; 
+		case "Orange": return Color.orange; 
+		default: return Color.white;
+		}
+	}
 	// Loads layout file with room layout.
 	public void loadLayoutConfig() throws BadConfigFormatException, FileNotFoundException {
 		// Allocate memory
