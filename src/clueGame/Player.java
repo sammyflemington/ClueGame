@@ -3,6 +3,7 @@
 package clueGame;
 
 import java.awt.Color;
+import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -43,6 +44,12 @@ public abstract class Player {
 		seenCards = new ArrayList<Card>();
 	}
 
+	public void draw(Graphics g, int w, int h) {
+		int x = w * column;
+		int y = h * row;
+		g.setColor(this.color);
+		g.fillOval(x, y, w, h);
+	}
 	public void setBoard(Board b) {
 		board = b;
 	}

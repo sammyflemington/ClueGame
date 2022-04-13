@@ -3,8 +3,12 @@
 package clueGame;
 
 import java.awt.Color;
+import java.awt.Graphics;
 import java.io.*;
 import java.util.*;
+
+import javax.swing.JPanel;
+
 import java.io.File;
 
 import clueGame.BoardCell;
@@ -14,12 +18,12 @@ import clueGame.BoardCell;
  * Stores layout of the board, handles calculating player moves and loading level data.
  * Is a singleton
  */
-public class Board {
+public class Board extends JPanel{
 	private static Board theInstance = new Board();
 	private BoardCell[][] board;
 	private Set<BoardCell> targets;
-	static int numColumns;
-	static int numRows;
+	static int numColumns = 1;
+	static int numRows = 1;
 	private String layoutConfigFile;
 	private String setupConfigFile;
 	private Map<Character, Room> roomMap;
@@ -62,6 +66,32 @@ public class Board {
 
 	}
 
+	public void paintComponent(Graphics g) {
+		// must call super method to do the preliminary stuffs
+		super.paintComponent(g);
+		
+		// Now draw the board, cells draw themselves.
+		int cellWidth = Math.round(getWidth() / numColumns);
+		int cellHeight = Math.round(getHeight() / numRows);
+		
+		for (int i = 0; i < numRows; i++) {
+			for (int j = 0; j < numColumns; j++) {
+				board[i][j].draw(g, cellWidth, cellHeight);
+			}
+		}
+		
+		// draw room labels
+		for (Room r : rooms) {
+			r.drawLabel(g, cellWidth, cellHeight);
+		}
+		
+		// Draw players
+		for (Player p : players) {
+			p.draw(g, cellWidth, cellHeight);
+		}
+		
+		repaint();
+	}
 	// Loads setup file with rooms, weapons, and players
 	public void loadSetupConfig() throws BadConfigFormatException, FileNotFoundException {
 		roomMap = new HashMap<Character, Room>();
@@ -516,8 +546,20 @@ public class Board {
 		return players;
 	}
 
+	public HumanPlayer getHumanPlayer() {
+		for (Player p : players) {
+			if (p instanceof HumanPlayer) {
+				return (HumanPlayer) p;
+			}
+		}
+		return null;
+	}
 	public Solution getSolution() {
 		return solution;
+	}
+	
+	public String getRoomLabel(char c){
+		return roomMap.get(c).getName();
 	}
 
 }

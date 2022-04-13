@@ -91,12 +91,14 @@ public class CardPanel extends JPanel{
 		
 		public void addToHand(Card c) {
 			JTextField card = new JTextField(c.toString());
+			card.setEditable(false);
 			hand.add(card);
 			updateUI();
 		}
 		
 		public void addToSeen(Card c) {
 			JTextField card = new JTextField(c.toString());
+			card.setEditable(false);
 			seen.add(card);
 			updateUI();
 		}

@@ -2,7 +2,8 @@
 // Authors: Eliot Edwards and Sammy Flemington
 
 package clueGame;
-
+import java.awt.Color;
+import java.awt.Graphics;
 /*
  * The Room class allows us to handle
  * the necessary components of each room.
@@ -17,6 +18,13 @@ public class Room {
 	public Room(BoardCell center, BoardCell label) {
 		centerCell = center;
 		labelCell = label;
+	}
+	
+	public void drawLabel(Graphics g, int w, int h) {
+		int x = labelCell.getCol() * w;
+		int y = labelCell.getRow() * h;
+		g.setColor(Color.BLUE);
+		g.drawString(Board.getInstance().getRoomLabel(labelCell.getInitial()), x, y);
 	}
 	
 	public String getName() {

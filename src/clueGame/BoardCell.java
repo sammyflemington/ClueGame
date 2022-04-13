@@ -3,18 +3,22 @@
 
 package clueGame;
 
+import java.awt.Color;
+import java.awt.Graphics;
 import java.util.HashSet;
 import java.util.Set;
 
-import experiment.TestBoardCell;
+import javax.swing.JPanel;
 
+import experiment.TestBoardCell;
+import javax.swing.JFrame;
 /* 
  * The BoardCell class allows us to handle
  * the necessary components of each individual cell.
  * This includes its doorway, room, label, room center,
  * initial, occupancy, and secret passage status.
  */
-public class BoardCell {
+public class BoardCell{
 
 	private int 	col;
 	private int 	row;
@@ -36,6 +40,57 @@ public class BoardCell {
 	public BoardCell(int r, int c) {
 		row = r;
 		col = c;
+	}
+	
+	public void draw(Graphics g, int w, int h) {
+		// Determine position based on row and col and cell size
+		int x = w * col;
+		int y = h * row;
+		if (initial == 'X') {
+			g.setColor(Color.BLACK);
+			g.fillRect(x, y, w, h);
+		}else if (isDoorway) { 
+			// draw walkway tile behind door
+			g.setColor(Color.YELLOW);
+			g.fillRect(x, y, w, h);
+			g.setColor(Color.BLACK);
+			g.drawRect(x, y, w, h);
+			
+			g.setColor(Color.BLUE);
+			int marginW = (3 * w) / 4;
+			int marginH = (3*h)/4;
+			
+			switch(doorDirection) {
+				case UP:
+					g.fillRect(x, y, w, h-marginH);
+					break;
+				case DOWN:
+					g.fillRect(x, y+marginH, w, h-marginH);
+					break;
+				case LEFT:
+					g.fillRect(x, y, w-marginW, h);
+					break;
+				case RIGHT:
+					g.fillRect(x+marginW, y, w-marginW, h);
+					break;
+				default:
+					//g.fillRect(x, y, w, h);
+					break;
+					
+				}
+			//g.fillRect(x, y, w, h);
+		}else if (isRoom) {
+			g.setColor(Color.GRAY);
+			g.fillRect(x, y, w, h);
+
+		}else if (initial == 'W'){
+			g.setColor(Color.YELLOW);
+			g.fillRect(x, y, w, h);
+			g.setColor(Color.BLACK);
+			g.drawRect(x, y, w, h);
+		}
+		
+		
 	}
 	
 	public void addAdjacency(BoardCell cell) {
@@ -117,6 +172,12 @@ public class BoardCell {
 		return targets;
 	}
 	
+	public int getRow() {
+		return row;
+	}
+	public int getCol() {
+		return col;
+	}
 	public char getInitial() {
 		return initial;
 	}
