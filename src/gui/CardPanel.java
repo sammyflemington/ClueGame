@@ -1,8 +1,14 @@
+// Authors: Eliot Edwards and Sammy Flemington
+
 package gui;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.util.ArrayList;
+import java.util.Random;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -15,23 +21,31 @@ import clueGame.CardType;
 import clueGame.HumanPlayer;
 import clueGame.Player;
 
+/*
+ * CardPanel Class:
+ * 
+ * 	- Extends JPanel
+ * 	- Organizes and displays the cards the HumanPlayer has seen
+ */
 public class CardPanel extends JPanel{
 	CardHolder peopleHolder;
 	CardHolder roomHolder;
 	CardHolder weaponHolder;
+	
 	public CardPanel() {
 		JPanel mainPanel = new JPanel();
 		mainPanel.setLayout(new GridLayout(3, 1));
+
+		// Make each card holder panel
+		peopleHolder = new CardHolder("PEOPLE");
+		roomHolder = new CardHolder("ROOMS");
+		weaponHolder = new CardHolder("WEAPONS");
 		
-		peopleHolder = new CardHolder("People");
-		
-		roomHolder = new CardHolder("Rooms");
-		
-		weaponHolder = new CardHolder("Weapons");
+		// Add each card holder panel to main card panel
 		mainPanel.add(peopleHolder);
 		mainPanel.add(roomHolder);
 		mainPanel.add(weaponHolder);
-		setLayout(new GridLayout(1,1));
+		setLayout(new GridLayout(1, 1));
 		add(mainPanel, BorderLayout.CENTER);
 	}
 	
@@ -72,33 +86,64 @@ public class CardPanel extends JPanel{
 		}
 	}
 	
-	class CardHolder extends JPanel{
+	class CardHolder extends JPanel {
 		private JPanel hand;
 		private JPanel seen;
+		private static Color handColor;
+		private static Color seenColor;
+		
 		public CardHolder(String title) {
 			setLayout(new GridLayout(2, 1));
-			setBorder(new TitledBorder(new EtchedBorder(), title));
+			setBorder(new TitledBorder(new EtchedBorder(), title, TitledBorder.CENTER, TitledBorder.CENTER));
+			
+			handColor = getRandomColor();	// Set hand cards to a random color			
+			seenColor = getRandomColor();	// Set seen cards to a different color
+			
 			hand = new JPanel();
 			hand.setLayout(new GridLayout(0, 1));
-			hand.setBorder(new TitledBorder(new EtchedBorder(), "In Hand"));
+			hand.setBorder(new TitledBorder(new EtchedBorder(), " In Hand "));
 			seen = new JPanel();
 			seen.setLayout(new GridLayout(0, 1));
-			seen.setBorder(new TitledBorder(new EtchedBorder(), "Seen"));
+			seen.setBorder(new TitledBorder(new EtchedBorder(), " Seen "));
 			
 			add(hand);
 			add(seen);
 		}
 		
+		// Set the card category (seen or in hand) to a random color - do once for each
+		// From C24 Class Prep Video 2
+		private Color getRandomColor() {
+			Random rand = new Random();
+			int red = rand.nextInt(256);
+			int blue = rand.nextInt(256);
+			int green = rand.nextInt(256);
+			
+			// Get new color if first color is too dark for black font on top
+			if (red + green + blue > 450) {
+				return getRandomColor();
+			} else {
+				return new Color(red, green, blue);
+			}
+		}
+		
 		public void addToHand(Card c) {
 			JTextField card = new JTextField(c.toString());
+			card.setHorizontalAlignment(JTextField.CENTER);
+			card.setFont(card.getFont().deriveFont(Font.ITALIC + Font.BOLD, 12f));
+			card.setForeground(Color.white);	// Font color
 			card.setEditable(false);
+			card.setBackground(handColor);
 			hand.add(card);
 			updateUI();
 		}
 		
 		public void addToSeen(Card c) {
 			JTextField card = new JTextField(c.toString());
+			card.setHorizontalAlignment(JTextField.CENTER);
+			card.setFont(card.getFont().deriveFont(Font.ITALIC + Font.BOLD, 12f));
+			card.setForeground(Color.white);	// Font color
 			card.setEditable(false);
+			card.setBackground(seenColor);
 			seen.add(card);
 			updateUI();
 		}
@@ -108,7 +153,7 @@ public class CardPanel extends JPanel{
 		CardPanel panel = new CardPanel();
 		JFrame frame = new JFrame(); 
 		frame.setContentPane(panel); // put the panel in the frame
-		frame.setSize(180, 750);  // size the frame
+		frame.setSize(200, 750);  // size the frame
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // allow it to close
 		frame.setVisible(true); // make it visible
 		

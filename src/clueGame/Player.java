@@ -47,12 +47,14 @@ public abstract class Player {
 	public void draw(Graphics g, int w, int h) {
 		int x = w * column;
 		int y = h * row;
-		g.setColor(this.color);
+		g.setColor(color);
 		g.fillOval(x, y, w, h);
 	}
+	
 	public void setBoard(Board b) {
 		board = b;
 	}
+	
 	public void updateHand(Card card) {
 		hand.add(card);
 	}

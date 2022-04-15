@@ -4,6 +4,9 @@ package clueGame;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.*;
 import java.util.*;
 
@@ -14,9 +17,10 @@ import java.io.File;
 import clueGame.BoardCell;
 
 /*
- * Board class
- * Stores layout of the board, handles calculating player moves and loading level data.
- * Is a singleton
+ * Board class:
+ * 
+ *	- Stores layout of the board, handles calculating player moves and loading level data.
+ *	- Is a singleton
  */
 public class Board extends JPanel{
 	private static Board theInstance = new Board();
@@ -35,6 +39,7 @@ public class Board extends JPanel{
 	private ArrayList<Card> fullDeck;
 	private ArrayList<Room> rooms;
 	private ArrayList<Player> players;
+	private ArrayList<Point> points;
 	private ArrayList<String> weapons;
 
 	private Solution solution;	// current game solution
@@ -67,31 +72,43 @@ public class Board extends JPanel{
 	}
 
 	public void paintComponent(Graphics g) {
-		// must call super method to do the preliminary stuffs
+		// Must call super method to do the preliminary stuffs
 		super.paintComponent(g);
 		
-		// Now draw the board, cells draw themselves.
+		// Recalculate cell size in case the window gets resized
 		int cellWidth = Math.round(getWidth() / numColumns);
 		int cellHeight = Math.round(getHeight() / numRows);
 		
+		// Have board cells draw themselves
 		for (int i = 0; i < numRows; i++) {
 			for (int j = 0; j < numColumns; j++) {
 				board[i][j].draw(g, cellWidth, cellHeight);
 			}
 		}
 		
-		// draw room labels
+		// Tell rooms to draw their labels
 		for (Room r : rooms) {
 			r.drawLabel(g, cellWidth, cellHeight);
 		}
 		
-		// Draw players
+		// Tell players to draw themselves
 		for (Player p : players) {
 			p.draw(g, cellWidth, cellHeight);
 		}
 		
+		// If human player's turn
+		if (turn == 0) {
+			g.setColor(getHumanPlayer().getColor()); // Set color to human player's color
+			
+			// Tell target cells to draw themselves
+			for (BoardCell cell : targets) {
+				board[cell.getRow()][cell.getCol()].drawTarget(g, cellWidth, cellHeight);
+			}
+		}
+		
 		repaint();
 	}
+		
 	// Loads setup file with rooms, weapons, and players
 	public void loadSetupConfig() throws BadConfigFormatException, FileNotFoundException {
 		roomMap = new HashMap<Character, Room>();
