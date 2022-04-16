@@ -117,11 +117,29 @@ public class BoardCell {
 			return false;
 		}
 	}
+	
 
 	public void addAdjacency(BoardCell cell) {
 		adjList.add(cell);
 	}
 
+	public int getX() {
+		return x;
+	}
+
+	public void setX(int x) {
+		this.x = x;
+	}
+
+	public int getY() {
+		return y;
+	}
+
+	public void setY(int y) {
+		this.y = y;
+	}
+
+	
 	public void setRoom(boolean b) {
 		isRoom = b;
 	}
@@ -200,12 +218,15 @@ public class BoardCell {
 	public int getRow() {
 		return row;
 	}
+	
 	public int getCol() {
 		return col;
 	}
+	
 	public char getInitial() {
 		return initial;
 	}
+	
 	@Override
 	public String toString() {
 		return "[" + Integer.toString(row) + ", " + Integer.toString(col) + "]";

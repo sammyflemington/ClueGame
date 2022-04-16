@@ -13,15 +13,15 @@ import java.util.Set;
  * Keeps track of computer players and their components
  */
 public class ComputerPlayer extends Player {
-
+	
 	public ComputerPlayer(String name, Color color, int row, int column) {
 		super(name, color, row, column, false);
 		this.name = name;
 		this.color = color;
 		this.row = row;
 		this.column = column;
+		setTurnOver(true);
 	}
-
 
 	// Randomly selects target for computer player to move to
 	// FUTURE: might want to use AI for this eventually instead of random

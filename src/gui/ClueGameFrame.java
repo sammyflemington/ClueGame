@@ -1,11 +1,17 @@
-// Authors: Eliot Edwards and Sammy Flemington
+/**Authors:
+ * @Author Eliot Edwards
+ * @Author Sammy Flemington
+ */
 
 package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -15,6 +21,7 @@ import clueGame.Board;
 import clueGame.Card;
 import clueGame.CardType;
 import clueGame.HumanPlayer;
+import clueGame.Player;
 /*
  * ClueGameFrame class:
  * 
@@ -22,10 +29,13 @@ import clueGame.HumanPlayer;
  *	- Draws board, draws cells in board, draws rooms, draws players, contains entry point for application.
  *	- Holds control panel and card panels
  */
-public class ClueGameFrame extends JFrame{
+public class ClueGameFrame extends JFrame {
+	
 	static Board board = Board.getInstance();
 	static GameControlPanel gameControlPanel;
 	static CardPanel cardPanel;
+	private Player currentPlayer;
+	
 	public ClueGameFrame() {
 		super();
 		board.setConfigFiles("ClueLayout.csv", "ClueSetup.txt");
@@ -37,6 +47,7 @@ public class ClueGameFrame extends JFrame{
 		add(gameControlPanel, BorderLayout.SOUTH);	// put game control panel on bottom
 		setTitle("Really Good Lookin' Clue!");
 		addMouseListener(new ClueListener());		// Add listener to the panel
+		currentPlayer = board.getHumanPlayer();
 	}
 	
 	/*
@@ -53,29 +64,30 @@ public class ClueGameFrame extends JFrame{
 
 		public void mouseClicked(MouseEvent e) {			
 		// Press and release of the mouse button
-			
+					
 			int x = e.getX();
 			int y = e.getY();
-			// check if human player's turn 
 			
-				// while human player has not chosen a spot
-			
-				// check if clicked a cell in target list
-					// if so, put empty red circle on that target
-					
-				// if not
+			// Check if human player's turn and if a valid target was clicked
+			if (currentPlayer instanceof HumanPlayer) {
+				if (board.checkTargetClicked(x, y) == null) {
+					// Error msg box
+					JFrame splash = new JFrame("");
+					String text = "Please choose a valid target.";
+					JLabel label = new JLabel("<html><p align=center>" + text);
+					JOptionPane.showMessageDialog(splash, label, "CLUE ERROR", JOptionPane.ERROR_MESSAGE);
+				} else {
+					// Choose that target
+					board.humanTurn(board.checkTargetClicked(x, y));
+				}
+			}
 			
 			repaint();	// Repaint the panel
 		}
 
-		public void mousePressed(MouseEvent e) {
-			
-		}
-
+		public void mousePressed(MouseEvent e) {}
 		public void mouseReleased(MouseEvent e) {}
-
 		public void mouseEntered(MouseEvent e) {}
-
 		public void mouseExited(MouseEvent e) {}
 		
 	}

@@ -1,4 +1,7 @@
-// Authors: Eliot Edwards and Sammy Flemington
+/**Authors:
+ * @Author Eliot Edwards
+ * @Author Sammy Flemington
+ */
 
 package clueGame;
 
@@ -22,7 +25,7 @@ import clueGame.BoardCell;
  *	- Stores layout of the board, handles calculating player moves and loading level data.
  *	- Is a singleton
  */
-public class Board extends JPanel{
+public class Board extends JPanel {
 	private static Board theInstance = new Board();
 	private BoardCell[][] board;
 	private Set<BoardCell> targets;
@@ -43,8 +46,11 @@ public class Board extends JPanel{
 	private ArrayList<String> weapons;
 
 	private Solution solution;	// current game solution
-	
+
+	private Player currentPlayer;
 	private int turn = 0;
+	private int roll = 0;
+	private boolean playing = true;
 
 	// So only one Board instance is created
 	private Board() {
@@ -59,56 +65,128 @@ public class Board extends JPanel{
 		// Allocate Memory
 		board = new BoardCell[numRows][numColumns];
 		targets = new HashSet<BoardCell>();
-		
+		setRoll();
+		roll = getRoll();
+
 		try {
 			loadLayoutConfig();
 			loadSetupConfig();
-		}catch(BadConfigFormatException e) {
+		} catch(BadConfigFormatException e) {
 			e.printStackTrace();
-		}catch(FileNotFoundException e) {
+		} catch(FileNotFoundException e) {
 			e.printStackTrace();
+		}
+		
+	}
+
+	// Next button events for human player
+	public void humanTurn(BoardCell target) {
+		
+		currentPlayer.moveTo(target.getRow(), target.getCol());
+		
+		if (target.isRoom()) {
+			// TODO: Can make suggestion
+		}
+		
+		currentPlayer.setTurnOver(true);			// Set turn over
+
+	}
+	
+	// Checks if the human player clicked on a valid target cell
+	public BoardCell checkTargetClicked(int x, int y) {
+
+		// Check each target rectangle for the coordinates (x, y)
+		for (BoardCell target : targets) {
+			if (target.contains(x,  y)) {
+				return target;
+			}
+		}
+
+		return null;
+
+	}
+
+	// Next button events for computer player
+	public void computerTurn() {
+
+		setRoll();
+		int roll = getRoll();
+		BoardCell target = currentPlayer.selectTarget(roll);
+		currentPlayer.moveTo(target.getRow(), target.getCol()); 		
+
+		currentPlayer.setTurnOver(true);			// Set turn over
+		nextTurn();									// Next players turn
+
+	}
+
+	public void nextPlayer() {
+		
+		currentPlayer = players.get(turn);			// Update current player
+		currentPlayer.setTurnOver(false);			// Set turn not over
+		
+		if (currentPlayer instanceof HumanPlayer) {
+			// TODO: Human player's turn 
+		} else {
+			computerTurn();
 		}
 
 	}
 
+	// Returns a random number from 1-6
+	public void setRoll() {
+		Random rand = new Random();
+		this.roll = rand.nextInt(6) + 1;
+	}
+	
+	public int getRoll() {
+		return roll;
+	}
+
+	// Goes to next turn
+	public void nextTurn() {
+		turn++;
+		turn = turn % players.size();
+	}
+
+	// Draws the board
 	public void paintComponent(Graphics g) {
 		// Must call super method to do the preliminary stuffs
 		super.paintComponent(g);
-		
+
 		// Recalculate cell size in case the window gets resized
 		int cellWidth = Math.round(getWidth() / numColumns);
 		int cellHeight = Math.round(getHeight() / numRows);
-		
+
 		// Have board cells draw themselves
 		for (int i = 0; i < numRows; i++) {
 			for (int j = 0; j < numColumns; j++) {
 				board[i][j].draw(g, cellWidth, cellHeight);
 			}
 		}
-		
+
 		// Tell rooms to draw their labels
 		for (Room r : rooms) {
 			r.drawLabel(g, cellWidth, cellHeight);
 		}
-		
+
 		// Tell players to draw themselves
 		for (Player p : players) {
 			p.draw(g, cellWidth, cellHeight);
 		}
-		
+
 		// If human player's turn
-		if (turn == 0) {
+		if (getTurn() == 0) {
 			g.setColor(getHumanPlayer().getColor()); // Set color to human player's color
-			
+
 			// Tell target cells to draw themselves
 			for (BoardCell cell : targets) {
 				board[cell.getRow()][cell.getCol()].drawTarget(g, cellWidth, cellHeight);
 			}
 		}
-		
+
 		repaint();
 	}
-		
+
 	// Loads setup file with rooms, weapons, and players
 	public void loadSetupConfig() throws BadConfigFormatException, FileNotFoundException {
 		roomMap = new HashMap<Character, Room>();
@@ -162,6 +240,7 @@ public class Board extends JPanel{
 					getCell(Integer.parseInt(parts[3]), Integer.parseInt(parts[4])).setOccupied(true);
 					newPlayer.setBoard(this);
 					players.add(newPlayer);	// Add to players array for easy card initialization
+					currentPlayer = newPlayer;
 				} else {
 					throw new BadConfigFormatException ("Human player not formatted correctly");
 				}				
@@ -202,6 +281,7 @@ public class Board extends JPanel{
 		default: return Color.white;
 		}
 	}
+
 	// Loads layout file with room layout.
 	public void loadLayoutConfig() throws BadConfigFormatException, FileNotFoundException {
 		// Allocate memory
@@ -405,9 +485,9 @@ public class Board extends JPanel{
 				}
 			}
 		}
-		
+
 		startCell.setTargets(targets);	// set targets for that cell
-		
+
 	}
 
 	// Adjacency Calculations
@@ -478,7 +558,6 @@ public class Board extends JPanel{
 		}
 	}
 
-
 	// Check if the player's accusation was correct or not
 	// If true: that player wins the game and the game is over
 	// If false: player is no longer playing the game
@@ -489,7 +568,7 @@ public class Board extends JPanel{
 			return false;
 		}
 	}
-	
+
 	// Check if the player's suggestion was correct or not
 	public Card handleSuggestion(Solution suggestion) {
 		// go through all players and see if they can disprove
@@ -505,15 +584,12 @@ public class Board extends JPanel{
 		// Nobody could disprove the suggestion!
 		return null;
 	}
-	
-	public void setTurn(int t) {
-		turn = t;
-	}
-	
+
+
 	public Set<BoardCell> getTargets() {
 		return targets;
 	}
-	
+
 	public BoardCell getCell(int row, int col) {
 		return board[row][col];
 	}
@@ -543,14 +619,10 @@ public class Board extends JPanel{
 		}
 	}
 
-	public void nextTurn() {
-		turn ++;
-		turn = turn % players.size();
-	}
-	
 	public int getTurn() {
 		return turn;
 	}
+	
 	public Room getRoom(char c) {
 		return roomMap.get(c);
 	}
@@ -571,10 +643,11 @@ public class Board extends JPanel{
 		}
 		return null;
 	}
+
 	public Solution getSolution() {
 		return solution;
 	}
-	
+
 	public String getRoomLabel(char c){
 		return roomMap.get(c).getName();
 	}

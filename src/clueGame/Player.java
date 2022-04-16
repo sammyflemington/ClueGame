@@ -23,6 +23,7 @@ public abstract class Player {
 	protected ArrayList<Card> hand;
 	protected ArrayList<Card> seenCards;
 	protected Board board;
+	private boolean turnOver;
 	
 	// Default...
 	public Player() {
@@ -33,6 +34,14 @@ public abstract class Player {
 		this.isHuman = false;
 	}
 	
+	public boolean isTurnOver() {
+		return turnOver;
+	}
+
+	public void setTurnOver(boolean turnOver) {
+		this.turnOver = turnOver;
+	}
+
 	public Player(String name, Color color, int row, int column, boolean isHuman) {
 		super();
 		this.name = name;
@@ -120,5 +129,7 @@ public abstract class Player {
 		column = c;
 		board.getCell(row, column).setOccupied(true);
 	}
+
+	protected abstract BoardCell selectTarget(int roll);
 	
 }

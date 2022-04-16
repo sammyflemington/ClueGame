@@ -6,16 +6,22 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
+import clueGame.Board;
 import clueGame.ComputerPlayer;
+import clueGame.HumanPlayer;
+import clueGame.Player;
 
 /*
  * GameControlPanel class:
@@ -23,25 +29,34 @@ import clueGame.ComputerPlayer;
  * 	- Extends JPanel
  * 	- Displays and regulates buttons the user needs to play the game
  */
-public class GameControlPanel extends JPanel{
+public class GameControlPanel extends JPanel implements ActionListener {
+	private static Board board = Board.getInstance();
+	
 	private JTextField guessText;
 	private JTextField guessResultText;
 	private JTextField playerName;
 	private JTextField rollNum;
 	
+	private JButton nextButton;
+	private JButton accuseButton;
+	
+	private Player currentPlayer;
+	
 	public GameControlPanel() {
+		currentPlayer = board.getHumanPlayer();
+		
 		JPanel mainPanel = new JPanel();
 		mainPanel.setLayout(new GridLayout(2, 1));
 		
 		// Holds current player status, accusation and next buttons.
 		JPanel topPanel = new JPanel();
-		topPanel.setLayout(new GridLayout(1,4));
+		topPanel.setLayout(new GridLayout(1, 4));
 		mainPanel.add(topPanel);
 		
 		JPanel turnPanel = new JPanel();
 		JLabel whoseTurn = new JLabel("Whose turn?");
 		turnPanel.setLayout(new GridLayout(2, 1));
-		playerName = new JTextField("");
+		playerName = new JTextField(currentPlayer.getName());
 		playerName.setEditable(false);
 		turnPanel.add(whoseTurn, BorderLayout.NORTH); 
 		turnPanel.add(playerName, BorderLayout.SOUTH);
@@ -49,17 +64,19 @@ public class GameControlPanel extends JPanel{
 		
 		JPanel rollPanel = new JPanel();
 		JLabel roll = new JLabel("Roll: ");
-		rollNum = new JTextField();
+		rollNum = new JTextField(Integer.toString(board.getRoll()));
 		rollNum.setEditable(false);
 		rollPanel.add(roll);
 		rollPanel.add(rollNum);
 		topPanel.add(rollPanel);
 		
-		JButton accuseButton = new JButton("ACCUSATION!");
+		accuseButton = new JButton("ACCUSATION!");
 		topPanel.add(accuseButton);
+		accuseButton.addActionListener(this);
 		
-		JButton nextButton = new JButton("Next!");
+		nextButton = new JButton("Next!");
 		topPanel.add(nextButton);
+		nextButton.addActionListener(this);
 		
 		// Holds guess information
 		JPanel bottomPanel = new JPanel();
@@ -67,7 +84,7 @@ public class GameControlPanel extends JPanel{
 		mainPanel.add(bottomPanel);
 		
 		JPanel guessPanel = new JPanel();
-		guessText = new JTextField("");
+		guessText = new JTextField("");			// TODO: Change text here
 		guessText.setEditable(false);
 		guessPanel.add(guessText);
 		guessPanel.setBorder(new TitledBorder(new EtchedBorder(), "Guess"));
@@ -86,6 +103,38 @@ public class GameControlPanel extends JPanel{
 		
 	}
 	
+	public JTextField getGuessText() {
+		return guessText;
+	}
+
+	public void setGuessText(JTextField guessText) {
+		this.guessText = guessText;
+	}
+
+	public JTextField getGuessResultText() {
+		return guessResultText;
+	}
+
+	public void setGuessResultText(JTextField guessResultText) {
+		this.guessResultText = guessResultText;
+	}
+
+	public JTextField getPlayerName() {
+		return playerName;
+	}
+
+	public void setPlayerName(JTextField playerName) {
+		this.playerName = playerName;
+	}
+
+	public JTextField getRollNum() {
+		return rollNum;
+	}
+
+	public void setRollNum(JTextField rollNum) {
+		this.rollNum = rollNum;
+	}
+
 	public void setGuess(String guess) {
 		guessText.setText(guess);
 		updateUI();
@@ -101,6 +150,29 @@ public class GameControlPanel extends JPanel{
 		playerName.setBackground(computerPlayer.getColor());
 		rollNum.setText(Integer.toString(i));
 		updateUI();
+	}
+	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		
+		// Accuse button was clicked
+		if (e.getSource() == accuseButton) {
+			// TODO: allow human player to make accusation
+		}
+		
+		// Next button was clicked
+		if (e.getSource() == nextButton) {
+
+			// Human player, turn is over
+			if ((currentPlayer.isTurnOver()) && (currentPlayer instanceof HumanPlayer)) {
+				board.nextPlayer();
+			} else if (!(currentPlayer instanceof HumanPlayer)) {
+				board.nextPlayer();
+			} else {
+				JOptionPane.showMessageDialog(this, "Wait! Your turn is not finished!", "CLUE ERROR", JOptionPane.ERROR_MESSAGE);
+			}
+		}
+		
 	}
 	
 	public static void main(String[] args) {
