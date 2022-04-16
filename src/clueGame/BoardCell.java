@@ -104,20 +104,22 @@ public class BoardCell {
 
 	// On human player's turn, displays empty ovals where human player can move
 	public void drawTarget(Graphics g, int width, int height) {
+		this.x = getWidth() * col;
+		this.y = getHeight() * row;
 		g.setColor(Color.white);
 		g.fillRect(x, y, width, height);	// Draw empty circle on target
 	}
 
 	// Check if mouse click was in a board cell
 	// 		- from C24 Class Prep Video 2
-	public boolean contains(int mouseX, int mouseY) {
-		Rectangle cell = new Rectangle(x, y, width, height);
-		if (cell.contains(new Point(mouseY / height, mouseX / width)) {
-			return true;
-		} else {
-			return false;
-		}
-	}
+//	public boolean contains(int mouseX, int mouseY) {
+//		Rectangle cell = new Rectangle(x, y, width, height);
+//		if (cell.contains(new Point(mouseY / height, mouseX / width)) {
+//			return true;
+//		} else {
+//			return false;
+//		}
+//	}
 	
 
 	public void addAdjacency(BoardCell cell) {

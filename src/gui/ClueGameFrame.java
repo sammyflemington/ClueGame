@@ -78,7 +78,7 @@ public class ClueGameFrame extends JFrame {
 					JOptionPane.showMessageDialog(splash, label, "CLUE ERROR", JOptionPane.ERROR_MESSAGE);
 				} else {
 					// Choose that target
-					board.humanTurn(board.checkTargetClicked(x, y));
+					board.setHumanMove(board.checkTargetClicked(x, y));
 				}
 			}
 			
@@ -110,7 +110,8 @@ public class ClueGameFrame extends JFrame {
 		game.setSize(850, 800);	// had to change this because it wouldn't fit on my screen lol -E
 		game.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // allow it to close
 		game.setVisible(true); 
-		
+		board.humanTurn();
+		gameControlPanel.setRollNum(board.getRoll());
 		
 		
 		

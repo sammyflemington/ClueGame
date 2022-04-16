@@ -132,20 +132,22 @@ public class GameControlPanel extends JPanel implements ActionListener {
 		this.guessResultText = guessResultText;
 	}
 
-	public JTextField getPlayerName() {
-		return playerName;
+	public String getPlayerName() {
+		return playerName.getText();
 	}
 
 	public void setPlayerName(String str) {
-		this.playerName = str;
+		this.playerName.setText(str);
+		updateUI();
 	}
 
 	public JTextField getRollNum() {
 		return rollNum;
 	}
 
-	public void setRollNum(JTextField rollNum) {
-		this.rollNum = rollNum;
+	public void setRollNum(int rollNum) {
+		this.rollNum.setText(Integer.toString(rollNum));
+		updateUI();
 	}
 
 	public void setGuess(String guess) {
@@ -178,8 +180,12 @@ public class GameControlPanel extends JPanel implements ActionListener {
 			// Human player, turn is over
 			if ((currentPlayer.isTurnOver()) && (currentPlayer instanceof HumanPlayer)) {
 				board.nextPlayer();
+				setRollNum(board.getRoll());
+				setPlayerName(board.getCurrentPlayer().getName());
 			} else if (!(currentPlayer instanceof HumanPlayer)) {
 				board.nextPlayer();
+				setRollNum(board.getRoll());
+				setPlayerName(board.getCurrentPlayer().getName());
 			} else {
 				JOptionPane.showMessageDialog(this, "Wait! Your turn is not finished!", "CLUE ERROR", JOptionPane.ERROR_MESSAGE);
 			}
