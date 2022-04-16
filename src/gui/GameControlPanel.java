@@ -33,9 +33,14 @@ public class GameControlPanel extends JPanel implements ActionListener {
 	private static Board board = Board.getInstance();
 	
 	private JTextField guessText;
+	private String guess;
+	
 	private JTextField guessResultText;
 	private JTextField playerName;
+	private String name;
+	
 	private JTextField rollNum;
+	private String roll;
 	
 	private JButton nextButton;
 	private JButton accuseButton;
@@ -44,6 +49,8 @@ public class GameControlPanel extends JPanel implements ActionListener {
 	
 	public GameControlPanel() {
 		currentPlayer = board.getHumanPlayer();
+		name = currentPlayer.getName();
+		roll = Integer.toString(board.getRoll());
 		
 		JPanel mainPanel = new JPanel();
 		mainPanel.setLayout(new GridLayout(2, 1));
@@ -56,17 +63,17 @@ public class GameControlPanel extends JPanel implements ActionListener {
 		JPanel turnPanel = new JPanel();
 		JLabel whoseTurn = new JLabel("Whose turn?");
 		turnPanel.setLayout(new GridLayout(2, 1));
-		playerName = new JTextField(currentPlayer.getName());
+		playerName = new JTextField(name);
 		playerName.setEditable(false);
 		turnPanel.add(whoseTurn, BorderLayout.NORTH); 
 		turnPanel.add(playerName, BorderLayout.SOUTH);
 		topPanel.add(turnPanel);
 		
 		JPanel rollPanel = new JPanel();
-		JLabel roll = new JLabel("Roll: ");
-		rollNum = new JTextField(Integer.toString(board.getRoll()));
+		JLabel rollLabel = new JLabel("Roll: ");
+		rollNum = new JTextField(roll);
 		rollNum.setEditable(false);
-		rollPanel.add(roll);
+		rollPanel.add(rollLabel);
 		rollPanel.add(rollNum);
 		topPanel.add(rollPanel);
 		
@@ -97,10 +104,16 @@ public class GameControlPanel extends JPanel implements ActionListener {
 		guessResultPanel.setBorder(new TitledBorder(new EtchedBorder(), "Guess Result"));
 		bottomPanel.add(guessResultPanel);
 		
-		setLayout(new GridLayout(1,1));
+		setLayout(new GridLayout(1, 1));
 		add(mainPanel, BorderLayout.CENTER);
 		//pack();
 		
+	}
+	
+	public void updateGameControl(String nameStr, String guessStr, String rollStr) {
+		this.name = nameStr;
+		this.guess = guessStr;
+		this.roll = rollStr;
 	}
 	
 	public JTextField getGuessText() {
@@ -123,8 +136,8 @@ public class GameControlPanel extends JPanel implements ActionListener {
 		return playerName;
 	}
 
-	public void setPlayerName(JTextField playerName) {
-		this.playerName = playerName;
+	public void setPlayerName(String str) {
+		this.playerName = str;
 	}
 
 	public JTextField getRollNum() {
@@ -161,8 +174,7 @@ public class GameControlPanel extends JPanel implements ActionListener {
 		}
 		
 		// Next button was clicked
-		if (e.getSource() == nextButton) {
-
+		if (e.getSource() == nextButton) {		
 			// Human player, turn is over
 			if ((currentPlayer.isTurnOver()) && (currentPlayer instanceof HumanPlayer)) {
 				board.nextPlayer();

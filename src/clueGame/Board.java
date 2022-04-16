@@ -18,6 +18,7 @@ import javax.swing.JPanel;
 import java.io.File;
 
 import clueGame.BoardCell;
+import gui.GameControlPanel;
 
 /*
  * Board class:
@@ -29,10 +30,14 @@ public class Board extends JPanel {
 	private static Board theInstance = new Board();
 	private BoardCell[][] board;
 	private Set<BoardCell> targets;
+	private GameControlPanel panel;
+	
 	static int numColumns = 1;
 	static int numRows = 1;
+	
 	private String layoutConfigFile;
 	private String setupConfigFile;
+	
 	private Map<Character, Room> roomMap;
 	private Map<Character, BoardCell> roomLabels;
 	private Map<Character, BoardCell> roomCenters;
@@ -65,8 +70,6 @@ public class Board extends JPanel {
 		// Allocate Memory
 		board = new BoardCell[numRows][numColumns];
 		targets = new HashSet<BoardCell>();
-		setRoll();
-		roll = getRoll();
 
 		try {
 			loadLayoutConfig();
@@ -78,11 +81,18 @@ public class Board extends JPanel {
 		}
 		
 	}
-
+	
+	public void setPanel(GameControlPanel panel) {
+		this.panel = panel;
+	}
+	
 	// Next button events for human player
 	public void humanTurn(BoardCell target) {
 		
+		calcTargets(board[currentPlayer.row][currentPlayer.column], roll);
+		
 		currentPlayer.moveTo(target.getRow(), target.getCol());
+
 		
 		if (target.isRoom()) {
 			// TODO: Can make suggestion
@@ -90,6 +100,15 @@ public class Board extends JPanel {
 		
 		currentPlayer.setTurnOver(true);			// Set turn over
 
+	}
+
+	public void displayTargets(Graphics g, int width, int height) {
+		g.setColor(getHumanPlayer().getColor()); // Set color to human player's color
+
+		// Tell target cells to draw themselves
+		for (BoardCell cell : targets) {
+			board[cell.getRow()][cell.getCol()].drawTarget(g, width, height);
+		}
 	}
 	
 	// Checks if the human player clicked on a valid target cell
@@ -109,8 +128,6 @@ public class Board extends JPanel {
 	// Next button events for computer player
 	public void computerTurn() {
 
-		setRoll();
-		int roll = getRoll();
 		BoardCell target = currentPlayer.selectTarget(roll);
 		currentPlayer.moveTo(target.getRow(), target.getCol()); 		
 
@@ -123,6 +140,12 @@ public class Board extends JPanel {
 		
 		currentPlayer = players.get(turn);			// Update current player
 		currentPlayer.setTurnOver(false);			// Set turn not over
+		setRoll();
+		int roll = getRoll();
+		calcTargets(board[currentPlayer.row][currentPlayer.column], roll);
+		
+		panel.setPlayerName(currentPlayer.getName());
+		
 		
 		if (currentPlayer instanceof HumanPlayer) {
 			// TODO: Human player's turn 
@@ -173,16 +196,8 @@ public class Board extends JPanel {
 		for (Player p : players) {
 			p.draw(g, cellWidth, cellHeight);
 		}
-
-		// If human player's turn
-		if (getTurn() == 0) {
-			g.setColor(getHumanPlayer().getColor()); // Set color to human player's color
-
-			// Tell target cells to draw themselves
-			for (BoardCell cell : targets) {
-				board[cell.getRow()][cell.getCol()].drawTarget(g, cellWidth, cellHeight);
-			}
-		}
+		
+		displayTargets(g, cellWidth, cellHeight);
 
 		repaint();
 	}
