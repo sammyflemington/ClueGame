@@ -54,7 +54,7 @@ public class Board extends JPanel {
 
 	private Player currentPlayer;
 	private int turn = 0;
-	private int roll = 0;
+	private int roll = 1;
 	private boolean playing = true;
 
 	// So only one Board instance is created
@@ -107,16 +107,23 @@ public class Board extends JPanel {
 
 		// Tell target cells to draw themselves
 		for (BoardCell cell : targets) {
-			board[cell.getRow()][cell.getCol()].drawTarget(g, width, height);
+			cell.drawTarget(g, width, height);
 		}
+		repaint();
 	}
 	
 	// Checks if the human player clicked on a valid target cell
 	public BoardCell checkTargetClicked(int x, int y) {
 
+		int row = Math.round(y / getCell(0, 0).getHeight());
+		int col = Math.round(x / getCell(0, 0).getWidth());
+		
+		BoardCell clickedCell = getCell(row, col);
+		System.out.println(Integer.toString(row) + ", " + Integer.toString(col));
+		
 		// Check each target rectangle for the coordinates (x, y)
 		for (BoardCell target : targets) {
-			if (target.contains(x,  y)) {
+			if (target.equals(clickedCell)) {
 				return target;
 			}
 		}

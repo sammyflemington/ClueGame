@@ -51,36 +51,36 @@ public class BoardCell {
 		// Determine position based on row and col and cell size
 		this.width = w;
 		this.height = h;
-		this.x = width * col;
-		this.y = height * row;
+		this.x = getWidth() * col;
+		this.y = getHeight() * row;
 
 		// Fill depending on cell type
 		if (initial == 'X') {
 			g.setColor(Color.BLACK);
-			g.fillRect(x, y, width, height);
+			g.fillRect(x, y, getWidth(), getHeight());
 		} else if (isDoorway) { 
 			// draw walkway tile behind door
 			g.setColor(Color.YELLOW);
-			g.fillRect(x, y, width, height);
+			g.fillRect(x, y, getWidth(), getHeight());
 			g.setColor(Color.BLACK);
-			g.drawRect(x, y, width, height);
+			g.drawRect(x, y, getWidth(), getHeight());
 
 			g.setColor(Color.BLUE);
-			int marginW = (3 * width) / 4;
-			int marginH = (3 * height) / 4;
+			int marginW = (3 * getWidth()) / 4;
+			int marginH = (3 * getHeight()) / 4;
 
 			switch(doorDirection) {
 			case UP:
-				g.fillRect(x, y, width, height - marginH);
+				g.fillRect(x, y, getWidth(), getHeight() - marginH);
 				break;
 			case DOWN:
-				g.fillRect(x, y + marginH, width, height - marginH);
+				g.fillRect(x, y + marginH, getWidth(), getHeight() - marginH);
 				break;
 			case LEFT:
-				g.fillRect(x, y, width - marginW, height);
+				g.fillRect(x, y, getWidth() - marginW, getHeight());
 				break;
 			case RIGHT:
-				g.fillRect(x + marginW, y, width - marginW, height);
+				g.fillRect(x + marginW, y, getWidth() - marginW, getHeight());
 				break;
 			default:
 				//g.fillRect(x, y, width, height);
@@ -91,27 +91,28 @@ public class BoardCell {
 
 		} else if (isRoom) {
 			g.setColor(Color.GRAY);
-			g.fillRect(x, y, width, height);
+			g.fillRect(x, y, getWidth(), getHeight());
 
 		} else if (initial == 'W') {
 			g.setColor(Color.YELLOW);
-			g.fillRect(x, y, width, height);
+			g.fillRect(x, y, getWidth(), getHeight());
 			g.setColor(Color.BLACK);
-			g.drawRect(x, y, width, height);
+			g.drawRect(x, y, getWidth(), getHeight());
 		}	
 		
 	}	
 
 	// On human player's turn, displays empty ovals where human player can move
 	public void drawTarget(Graphics g, int width, int height) {
-		g.drawOval(x, y, width, height);	// Draw empty circle on target
+		g.setColor(Color.white);
+		g.fillRect(x, y, width, height);	// Draw empty circle on target
 	}
 
 	// Check if mouse click was in a board cell
 	// 		- from C24 Class Prep Video 2
 	public boolean contains(int mouseX, int mouseY) {
 		Rectangle cell = new Rectangle(x, y, width, height);
-		if (cell.contains(new Point(mouseX, mouseY))) {
+		if (cell.contains(new Point(mouseY / height, mouseX / width)) {
 			return true;
 		} else {
 			return false;
@@ -230,6 +231,14 @@ public class BoardCell {
 	@Override
 	public String toString() {
 		return "[" + Integer.toString(row) + ", " + Integer.toString(col) + "]";
+	}
+
+	public int getHeight() {
+		return height;
+	}
+
+	public int getWidth() {
+		return width;
 	}
 
 }
