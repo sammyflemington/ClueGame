@@ -149,9 +149,6 @@ public class Board extends JPanel {
 		int roll = getRoll();
 		calcTargets(board[currentPlayer.row][currentPlayer.column], roll);
 		
-		//panel.setPlayerName(currentPlayer.getName());
-		
-		
 		if (currentPlayer instanceof HumanPlayer) {
 			humanTurn();
 		} else {

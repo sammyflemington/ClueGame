@@ -26,7 +26,7 @@ public class ComputerPlayer extends Player {
 	// Randomly selects target for computer player to move to
 	// FUTURE: might want to use AI for this eventually instead of random
 	public BoardCell selectTarget(int roll) {
-		// TODO: LOOK BACK AT THIS!
+
 		Random rand = new Random();
 		BoardCell cell = board.getCell(row, column);
 		board.calcTargets(cell, roll);
@@ -81,18 +81,13 @@ public class ComputerPlayer extends Player {
 			}
 		}
 
-		//return new Solution(room, unseenPeople.get(rand.nextInt(unseenPeople.size())), unseenWeapons.get(rand.nextInt(unseenWeapons.size())));
 		int weapon = 0;
-		// If only one weapon is not seen, it's selected
 		if (unseenWeapons.size() > 1) {
-			// https://stackoverflow.com/questions/124671/picking-a-random-element-from-a-set
 			weapon = rand.nextInt(unseenWeapons.size());
 		}
 
 		int person = 0;
-		// If only one person is not seen, it's selected
 		if (unseenPeople.size() > 1) {
-			// https://stackoverflow.com/questions/124671/picking-a-random-element-from-a-set
 			person = rand.nextInt(unseenPeople.size());
 		}
 

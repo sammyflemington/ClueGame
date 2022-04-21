@@ -106,7 +106,6 @@ public class GameControlPanel extends JPanel implements ActionListener {
 		
 		setLayout(new GridLayout(1, 1));
 		add(mainPanel, BorderLayout.CENTER);
-		//pack();
 		
 	}
 	
