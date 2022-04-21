@@ -115,7 +115,7 @@ public abstract class Player {
 				matches.add(c);
 			}
 		}
-		// If we have any matches, pick a random one. Otherwise, return null.
+		// If we have any matches, pick a random one. Otherwise, return null.  
 		if (matches.size() >= 1) 
 			return matches.get(rand.nextInt(matches.size()));
 		else
