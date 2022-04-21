@@ -20,7 +20,7 @@ public class Card {
 	
 	@Override
 	public boolean equals(Object target) {
-		if (target instanceof Card) {
+		if (target instanceof Card) {//
 			Card card = (Card) target;
 			if (card.toString().equals(this.toString()) &&
 				card.getCardType() == this.getCardType()) {
