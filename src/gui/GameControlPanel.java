@@ -91,7 +91,7 @@ public class GameControlPanel extends JPanel implements ActionListener {
 		mainPanel.add(bottomPanel);
 		
 		JPanel guessPanel = new JPanel();
-		guessText = new JTextField("");			// TODO: Change text here
+		guessText = new JTextField("");
 		guessText.setEditable(false);
 		guessPanel.add(guessText);
 		guessPanel.setBorder(new TitledBorder(new EtchedBorder(), "Guess"));
