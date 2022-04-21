@@ -35,14 +35,17 @@ public class ComputerPlayer extends Player {
 		for (BoardCell tcell : targets) {
 			if (tcell.isRoomCenter()) {
 				// Check if we have seen this room
-				boolean flag = false;
-				for (Card card : getSeen()) {
-					if (card.equals(new Card(board.getRoom(tcell).getName(), CardType.ROOM)))
-						flag = true;
-				}
-				// prioritize moving into a room we haven't seen
-				if (!flag)
+				//boolean flag = false;
+				if (!getSeen().contains(new Card(board.getRoom(tcell).getName(), CardType.ROOM))) {
 					return tcell;
+				}
+//				for (Card card : getSeen()) {
+//					if (card.equals(new Card(board.getRoom(tcell).getName(), CardType.ROOM)))
+//						flag = true;
+//				}
+//				// prioritize moving into a room we haven't seen
+//				if (!flag)
+//					return tcell;
 			}
 		}
 		int r = rand.nextInt(targets.size());
