@@ -64,7 +64,7 @@ public class BoardCell {
 			g.fillRect(x, y, getWidth(), getHeight());
 			g.setColor(Color.BLACK);
 			g.drawRect(x, y, getWidth(), getHeight());
-
+			// Draw blue rectangle next to doorway
 			g.setColor(Color.BLUE);
 			int marginW = (3 * getWidth()) / 4;
 			int marginH = (3 * getHeight()) / 4;
@@ -83,11 +83,10 @@ public class BoardCell {
 				g.fillRect(x + marginW, y, getWidth() - marginW, getHeight());
 				break;
 			default:
-				//g.fillRect(x, y, width, height);
+
 				break;	
 			}
 
-			//g.fillRect(x, y, width, height);
 
 		} else if (isRoom) {
 			g.setColor(Color.GRAY);
@@ -109,18 +108,6 @@ public class BoardCell {
 		g.setColor(Color.white);
 		g.fillRect(x, y, width, height);	// Draw empty circle on target
 	}
-
-	// Check if mouse click was in a board cell
-	// 		- from C24 Class Prep Video 2
-//	public boolean contains(int mouseX, int mouseY) {
-//		Rectangle cell = new Rectangle(x, y, width, height);
-//		if (cell.contains(new Point(mouseY / height, mouseX / width)) {
-//			return true;
-//		} else {
-//			return false;
-//		}
-//	}
-	
 
 	public void addAdjacency(BoardCell cell) {
 		adjList.add(cell);

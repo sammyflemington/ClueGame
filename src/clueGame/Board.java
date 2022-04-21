@@ -676,5 +676,9 @@ public class Board extends JPanel {
 	public String getRoomLabel(char c){
 		return roomMap.get(c).getName();
 	}
+	
+	public void setTurn(int t) {
+		turn = t;
+	}
 
 }
