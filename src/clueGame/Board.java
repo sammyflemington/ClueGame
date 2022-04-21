@@ -30,6 +30,7 @@ public class Board extends JPanel {
 	private static Board theInstance = new Board();
 	private BoardCell[][] board;
 	private Set<BoardCell> targets;
+	private GameControlPanel panel;
 	private boolean doDrawTargets = true;
 	
 	static int numColumns = 1;
