@@ -107,13 +107,12 @@ public abstract class Player {
 	public Card disproveSuggestion(Solution suggestion) {
 		ArrayList<Card> suggested = suggestion.getCards();
 		Random rand = new Random();
+		
+		
 		ArrayList<Card> matches = new ArrayList<Card>();
 		for (Card c : hand) {
-			for (Card s : suggested) {
-				if (c.equals(s)) {
-					// We have a match!
-					matches.add(s);
-				}
+			if (suggested.contains(c)) {
+				matches.add(c);
 			}
 		}
 		// If we have any matches, pick a random one. Otherwise, return null.
