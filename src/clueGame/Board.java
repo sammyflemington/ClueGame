@@ -30,7 +30,6 @@ public class Board extends JPanel {
 	private static Board theInstance = new Board();
 	private BoardCell[][] board;
 	private Set<BoardCell> targets;
-	private GameControlPanel panel;
 	private boolean doDrawTargets = true;
 	
 	static int numColumns = 1;
@@ -48,7 +47,6 @@ public class Board extends JPanel {
 	private ArrayList<Card> fullDeck;
 	private ArrayList<Room> rooms;
 	private ArrayList<Player> players;
-	private ArrayList<Point> points;
 	private ArrayList<String> weapons;
 
 	private Solution solution;	// current game solution
@@ -56,7 +54,6 @@ public class Board extends JPanel {
 	private Player currentPlayer;
 	private int turn = 0;
 	private int roll = 1;
-	private boolean playing = true;
 
 	// So only one Board instance is created
 	private Board() {
@@ -96,16 +93,6 @@ public class Board extends JPanel {
 		calcTargets(board[currentPlayer.row][currentPlayer.column], roll);
 		// set a flag to draw targets
 		doDrawTargets = true;
-		
-		//currentPlayer.moveTo(target.getRow(), target.getCol());
-
-		
-//		if (target.isRoom()) {
-//			// TODO: Can make suggestion
-//		}
-//		
-		//currentPlayer.setTurnOver(true);			// Set turn over
-
 	}
 	public void setHumanMove(BoardCell c) {
 		currentPlayer.moveTo(c.getRow(), c.getCol());
@@ -116,7 +103,6 @@ public class Board extends JPanel {
 	public void displayTargets(Graphics g, int width, int height) {
 		g.setColor(getHumanPlayer().getColor()); // Set color to human player's color
 
-		//calcTargets(getCell(6, 1), 4);
 		// Tell target cells to draw themselves
 		for (BoardCell cell : targets) {
 			cell.drawTarget(g, width, height);
@@ -151,8 +137,6 @@ public class Board extends JPanel {
 		currentPlayer.moveTo(target.getRow(), target.getCol()); 		
 
 		currentPlayer.setTurnOver(true);			// Set turn over
-		//nextTurn();									// Next players turn
-
 	}
 
 	public void nextPlayer() {
