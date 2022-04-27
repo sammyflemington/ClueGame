@@ -105,13 +105,21 @@ public class Board extends JPanel {
 	public boolean getDoDrawTargets() {
 		return doDrawTargets;
 	}
+	
 	// Next button events for human player
 	public void humanTurn() {
 		setRoll();
 		calcTargets(board[currentPlayer.row][currentPlayer.column], roll);
+		
+		if (getHumanPlayer().getCanStay()) {
+			targets.add(getHumanPlayer().getCell());
+			getHumanPlayer().setCanStay(false);
+		}
+		
 		// set a flag to draw targets
 		doDrawTargets = true;
 	}
+	
 	public void setHumanMove(BoardCell c) {
 		currentPlayer.moveTo(c.getRow(), c.getCol());
 		// check if we went to a room
@@ -214,6 +222,7 @@ public class Board extends JPanel {
 				for (Room r : rooms) {
 					if (suggestion.getRoom().toString().equals(r.getName())) {
 						p.moveTo(r.getCenterCell().getRow(), r.getCenterCell().getCol());
+						p.setCanStay(true);
 						break;
 					}
 				}

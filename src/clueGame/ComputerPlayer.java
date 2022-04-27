@@ -31,6 +31,12 @@ public class ComputerPlayer extends Player {
 		BoardCell cell = board.getCell(row, column);
 		board.calcTargets(cell, roll);
 		Set<BoardCell> targets = board.getTargets();
+		
+		if (getCanStay()) {
+			targets.add(cell);
+			setCanStay(false);
+		}
+		
 		// https://stackoverflow.com/questions/124671/picking-a-random-element-from-a-set
 		for (BoardCell tcell : targets) {
 			if (tcell.isRoomCenter()) {

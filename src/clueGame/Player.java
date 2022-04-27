@@ -24,6 +24,7 @@ public abstract class Player {
 	protected ArrayList<Card> seenCards;
 	protected Board board;
 	private boolean turnOver;
+	private boolean canStay;
 	
 	// Default...
 	public Player() {
@@ -32,6 +33,7 @@ public abstract class Player {
 		this.row = 0;
 		this.column = 0;
 		this.isHuman = false;
+		this.setCanStay(false);
 	}
 	
 	public boolean isTurnOver() {
@@ -160,5 +162,13 @@ public abstract class Player {
 	}
 
 	protected abstract BoardCell selectTarget(int roll);
+
+	public boolean getCanStay() {
+		return canStay;
+	}
+
+	public void setCanStay(boolean canStay) {
+		this.canStay = canStay;
+	}
 	
 }

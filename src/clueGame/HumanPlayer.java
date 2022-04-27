@@ -25,13 +25,16 @@ public class HumanPlayer extends Player {
 
 	@Override
 	protected BoardCell selectTarget(int roll) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Solution makeSuggestion(ArrayList<Card> deck) {
-		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Solution checkForAccusation(ArrayList<Card> deck) {
 		return null;
 	}
 
