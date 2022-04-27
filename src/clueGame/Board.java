@@ -10,6 +10,7 @@ import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.*;
@@ -106,7 +107,8 @@ public class Board extends JPanel {
 		// check if we went to a room
 		if (c.isRoomCenter()) {
 			// open suggestion box
-			
+			SuggestionBox sb = new SuggestionBox(roomMap.get(c.getInitial()));
+			sb.setVisible(true);
 		}
 		
 		currentPlayer.setTurnOver(true);
@@ -152,20 +154,7 @@ public class Board extends JPanel {
 		// If we moved into a room, make a suggestion	
 		if (target.isRoomCenter()) {
 			Solution suggestion = currentPlayer.makeSuggestion(fullDeck);
-			// see if anyone can disprove it
-			boolean disproven = false;
-			for (Player p : players) {
-				if (p.disproveSuggestion(suggestion) != null) {
-					disproven = true;
-				}
-			}
-			// update UI
-			panel.setGuess(suggestion.toString());
-			if (disproven) {
-				panel.setGuessResult("Suggestion was disproven!");
-			}else {
-				panel.setGuessResult("Suggestion was not disproven!");
-			}
+			doSuggestion(suggestion);
 		}
 		
 		currentPlayer.setTurnOver(true);			// Set turn over
@@ -188,7 +177,23 @@ public class Board extends JPanel {
 
 	}
 
-	private class SuggestionBox extends JDialog{
+	public void doSuggestion(Solution suggestion) {
+		// see if anyone can disprove it
+		boolean disproven = false;
+		for (Player p : players) {
+			if (p.disproveSuggestion(suggestion) != null) {
+				disproven = true;
+			}
+		}
+		// update UI
+		panel.setGuess(suggestion.toString());
+		if (disproven) {
+			panel.setGuessResult("Suggestion was disproven!");
+		}else {
+			panel.setGuessResult("Suggestion was not disproven!");
+		}
+	}
+	private class SuggestionBox extends JDialog implements ActionListener{
 		private JComboBox personCombo;
 		private JComboBox weaponCombo;
 		private Room room;
@@ -213,7 +218,8 @@ public class Board extends JPanel {
 			}
 			submitButton = new JButton("Submit");
 			cancelButton = new JButton("Cancel");
-
+			submitButton.addActionListener(this);
+			cancelButton.addActionListener(this);
 			mainPanel.add(currentRoom);
 			mainPanel.add(roomLabel);
 			mainPanel.add(person);
@@ -222,14 +228,20 @@ public class Board extends JPanel {
 			mainPanel.add(weaponCombo);
 			mainPanel.add(submitButton);
 			mainPanel.add(cancelButton);
+			add(mainPanel);
+			setSize(300,200);
 		}
 		
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == submitButton) {
-				
+				// submit guess
+				Board.getInstance().doSuggestion(getSuggestion());
+				dispose();
 			}
 			if (e.getSource() == cancelButton) {
-				
+				// end turn without suggesting
+				Board.getInstance().nextTurn();
+				dispose();
 			}
 		}
 		public Solution getSuggestion() {
