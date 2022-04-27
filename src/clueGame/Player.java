@@ -56,8 +56,18 @@ public abstract class Player {
 	public void draw(Graphics g, int w, int h) {
 		int x = w * column;
 		int y = h * row;
+		int offset = 0;
+		int offsetTotal = 0;
+		int margin = 10;
+		// if we're in a room, offset 
+		if (board.getCell(row, column).isRoomCenter()) {
+			ArrayList<Player> occ = board.getOccupancy(board.getRoom(board.getCell(row, column)));
+			offset = occ.indexOf(this) * margin;
+			offsetTotal = - margin * (occ.size() / 2);
+		}
+		
 		g.setColor(color);
-		g.fillOval(x, y, w, h);
+		g.fillOval(x + offset + offsetTotal, y, w, h);
 	}
 	
 	public void setBoard(Board b) {
@@ -131,9 +141,22 @@ public abstract class Player {
 	
 	public void moveTo(int r, int c) {
 		board.getCell(row, column).setOccupied(false);
+		if (board.getCell(row, column).isRoomCenter()) {
+			// remove from occupancy of this room
+			board.removeOccupancy(board.getRoom(board.getCell(row, column)), this);
+		}
 		row = r;
 		column = c;
 		board.getCell(row, column).setOccupied(true);
+		if (board.getCell(row, column).isRoomCenter()) {
+			// add to occupancy of this room
+			board.addOccupancy(board.getRoom(board.getCell(row, column)), this);
+		}
+		
+	}
+	
+	public BoardCell getCell() {
+		return board.getCell(row, column);
 	}
 
 	protected abstract BoardCell selectTarget(int roll);

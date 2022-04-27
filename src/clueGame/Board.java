@@ -56,6 +56,7 @@ public class Board extends JPanel {
 	private Map<Character, Set<Character>> secretPassages;	// first char is the current room, second char set is room(s) it goes to
 	private ArrayList<Character> validChars;
 
+	private Map<Room, ArrayList<Player>> roomOccupancies;
 	private ArrayList<Card> fullDeck;
 	private ArrayList<Room> rooms;
 	private ArrayList<Player> players;
@@ -81,6 +82,7 @@ public class Board extends JPanel {
 		board = new BoardCell[numRows][numColumns];
 		targets = new HashSet<BoardCell>();
 
+		
 		try {
 			loadLayoutConfig();
 			loadSetupConfig();
@@ -155,6 +157,14 @@ public class Board extends JPanel {
 
 	// Next button events for computer player
 	public void computerTurn() {
+		// check if we have solved
+		Solution acc = currentPlayer.checkForAccusation(fullDeck);
+		if (acc != null) {
+			// A computer won!
+			JFrame frame = new JFrame("");
+			JOptionPane.showMessageDialog(frame, "You lose! " + currentPlayer.getName() + " won with the accusation: " + acc + ".", "Clue - GAME OVER", JOptionPane.NO_OPTION);
+			System.exit(0);
+		}
 		BoardCell target = currentPlayer.selectTarget(roll);
 		currentPlayer.moveTo(target.getRow(), target.getCol()); 		
 
@@ -167,6 +177,16 @@ public class Board extends JPanel {
 		currentPlayer.setTurnOver(true);			// Set turn over
 	}
 
+	public void addOccupancy(Room room, Player p) {
+		roomOccupancies.get(room).add(p);
+	}
+	public void removeOccupancy(Room room, Player p){
+		roomOccupancies.get(room).remove(p);
+	}
+	
+	public ArrayList<Player> getOccupancy(Room r){
+		return roomOccupancies.get(r);
+	}
 	public void nextPlayer() {
 		nextTurn();
 
@@ -476,7 +496,12 @@ public class Board extends JPanel {
 
 		}
 		reader.close();
-
+		
+		// Create room occupancy 
+		roomOccupancies = new HashMap<Room, ArrayList<Player>>();
+		for (Room r : rooms) {
+			roomOccupancies.put(r, new ArrayList<Player>());
+		}
 		// Finally, check format
 		if (validChars.size() != 0) throw new BadConfigFormatException("Layout refers to a room not in setup!");
 
@@ -688,7 +713,7 @@ public class Board extends JPanel {
 	// Does a recursive search of the grid and avoids obstacles. 
 	public void calculate(BoardCell startCell, int pathLength, Set<BoardCell> visited) {
 		for (BoardCell c : startCell.getAdjList()) {
-			if (!visited.contains(c) && ! c.getOccupied()) {
+			if (!visited.contains(c) && (!c.getOccupied() || c.isRoomCenter())) {
 				if (pathLength == 0 || c.isRoomCenter()) {
 					targets.add(c);
 				} else {
