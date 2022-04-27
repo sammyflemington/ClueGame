@@ -234,17 +234,21 @@ public class Board extends JPanel {
 		// see if anyone can disprove it
 		ArrayList<Card> newlySeen = new ArrayList<Card>();
 		boolean disproven = false;
+		boolean isHuman = false;
+		
 		for (Player p : players) {
 			Card c = p.disproveSuggestion(suggestion);
 			if (c != null) {
 				disproven = true;
 				newlySeen.add(c);
+				isHuman = p.isHuman();
 			}
 		}
+		
 		// update UI
 		controlPanel.setGuess(suggestion.toString());
 		if (disproven) {
-			controlPanel.setGuessResult("Suggestion was disproven!");
+			controlPanel.setGuessResult("Suggestion was disproven! A player showed card: " + newlySeen.get(0).toString());
 			// Add cards to player's seen lists
 			for (Card c : newlySeen) {
 				for (Player p : players) {
@@ -252,7 +256,7 @@ public class Board extends JPanel {
 				}
 			}
 			cardPanel.update(getHumanPlayer());
-		}else {
+		} else {
 			controlPanel.setGuessResult("No new clue!");
 		}
 	}
