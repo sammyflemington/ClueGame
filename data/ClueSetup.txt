@@ -21,7 +21,7 @@ Weapon, Used Needle
 // Players
 HumanPlayer, Sammy, Blue, 6, 0
 ComputerPlayer, Ellie, Red, 0, 16
-ComputerPlayer, Luka, Black, 24, 20
+ComputerPlayer, Hank, White, 24, 20
 ComputerPlayer, Snoop Dogg, Green, 26, 8
 ComputerPlayer, Your Mom, Pink, 21, 0
 ComputerPlayer, Mister Flufferson, Orange, 8, 21

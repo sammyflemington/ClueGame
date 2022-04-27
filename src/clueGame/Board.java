@@ -149,15 +149,18 @@ public class Board extends JPanel {
 		int row = (int) Math.floor((y - 1 * getCell(0, 0).getHeight()) / getCell(0, 0).getHeight());
 		int col = (int) Math.round(x / getCell(0, 0).getWidth());
 
-		BoardCell clickedCell = getCell(row, col);
-		//System.out.println(Integer.toString(row) + ", " + Integer.toString(col));
+		if (row <= numRows && col <= numColumns) {
+			BoardCell clickedCell = getCell(row, col);
+			//System.out.println(Integer.toString(row) + ", " + Integer.toString(col));
 
-		// Check each target rectangle for the coordinates (x, y)
-		for (BoardCell target : targets) {
-			if (target.equals(clickedCell)) {
-				return target;
+			// Check each target rectangle for the coordinates (x, y)
+			for (BoardCell target : targets) {
+				if (target.equals(clickedCell)) {
+					return target;
+				}
 			}
 		}
+		
 
 		return null;
 
@@ -248,7 +251,20 @@ public class Board extends JPanel {
 		// update UI
 		controlPanel.setGuess(suggestion.toString());
 		if (disproven) {
-			controlPanel.setGuessResult("Suggestion was disproven! A player showed card: " + newlySeen.get(0).toString());
+			Card card = newlySeen.get(0);
+			if (getHumanPlayer().getHand().contains(card)) {
+				// human player disproved suggestion
+				controlPanel.setGuessResult("Suggestion was disproven! You showed: " + card.toString());
+				controlPanel.setGuessColor(getHumanPlayer().getColor());
+			}else {
+				for (Player p : players) {
+					if (p.getHand().contains(card)) {
+						// This player disproved 
+						controlPanel.setGuessResult("Suggestion was disproven! " + p.getName() + " showed: " + card.toString());
+						controlPanel.setGuessColor(p.getColor());
+					}
+				}
+			}
 			// Add cards to player's seen lists
 			for (Card c : newlySeen) {
 				for (Player p : players) {
@@ -267,7 +283,7 @@ public class Board extends JPanel {
 				accusation.getRoom().equals(solution.getRoom()) &&
 				accusation.getWeapon().equals(solution.getWeapon())) {
 			JFrame frame = new JFrame("");
-			JOptionPane.showMessageDialog(frame, "Congratulations! You won!", "Clue - GAME OVER", JOptionPane.NO_OPTION);
+			JOptionPane.showMessageDialog(frame, "Congratulations! You won! You made the accusation: " + solution.toString(), "Clue - GAME OVER", JOptionPane.NO_OPTION);
 			System.exit(0);
 		} else {
 			JFrame frame = new JFrame("");
@@ -541,12 +557,13 @@ public class Board extends JPanel {
 
 	private Color stringToColor(String s) {
 		switch (s){
-		case "Blue": return Color.blue;	
+		case "Blue": return Color.cyan;	
 		case "Red": return Color.red; 
 		case "Black": return Color.black; 
 		case "Green": return Color.green; 
 		case "Pink": return Color.pink; 
 		case "Orange": return Color.orange; 
+		case "White": return Color.white;
 		default: return Color.white;
 		}
 	}

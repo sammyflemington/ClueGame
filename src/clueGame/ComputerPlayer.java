@@ -106,11 +106,12 @@ public class ComputerPlayer extends Player {
 	public Solution checkForAccusation(ArrayList<Card> deck) {
 		// if this player has solved the mystery, make an accusation!
 		ArrayList<Card> unseen = new ArrayList<Card>();
-		for (Card c : getSeen()) {
-			if (!deck.contains(c)) {
+		for (Card c : deck) {
+			if (!getSeen().contains(c)) {
 				unseen.add(c);
 			}
 		}
+		
 		if (unseen.size() == 3) {
 			Card no = new Card("sdkljfasd;kfj", CardType.PERSON);
 			Card person = no, room = no, weapon= no;

@@ -55,7 +55,8 @@ public class CardPanel extends JPanel{
 		roomHolder.clear();
 		weaponHolder.clear();
 		for (Card c : p.getSeen()) {
-			addToSeen(c);
+			if (!p.getHand().contains(c))
+				addToSeen(c);
 		}
 		addToHand(p.getHand());
 	}
