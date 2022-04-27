@@ -99,7 +99,7 @@ public class CardPanel extends JPanel{
 		private static Color seenColor;
 		
 		public CardHolder(String title) {
-			setLayout(new GridLayout(2, 1));
+			setLayout(new GridLayout(0, 1));
 			setBorder(new TitledBorder(new EtchedBorder(), title, TitledBorder.CENTER, TitledBorder.CENTER));
 			
 			handColor = getRandomColor();	// Set hand cards to a random color			

@@ -97,4 +97,9 @@ public class ComputerPlayer extends Player {
 		return new Solution(room, unseenPeople.get(person), unseenWeapons.get(weapon));
 	}
 
+	public Solution checkForAccusation() {
+		// if this player has solved the mystery, make an accusation!
+		
+		return null;
+	}
 }

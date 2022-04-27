@@ -206,9 +206,14 @@ public class Board extends JPanel {
 			}
 			cardPanel.update(getHumanPlayer());
 		}else {
-			controlPanel.setGuessResult("Suggestion was not disproven!");
+			controlPanel.setGuessResult("No new clue!");
 		}
 	}
+	
+	public void doAccusation(Solution accusation) {
+		
+	}
+	
 	private class SuggestionBox extends JDialog implements ActionListener{
 		private JComboBox personCombo;
 		private JComboBox weaponCombo;
@@ -270,6 +275,66 @@ public class Board extends JPanel {
 		}
 	}
 	
+	private class AccusationBox extends JDialog implements ActionListener{
+		private JComboBox personCombo;
+		private JComboBox weaponCombo;
+		private JComboBox roomCombo; 
+		private JButton submitButton;
+		private JButton cancelButton;
+		public AccusationBox() {
+			super();
+			JPanel mainPanel = new JPanel();
+			mainPanel.setLayout(new GridLayout(4, 2));
+			JLabel currentRoom = new JLabel("Current room");
+			JLabel person = new JLabel("Person");
+			JLabel weapon = new JLabel("Weapon");
+			roomCombo = new JComboBox();
+			weaponCombo = new JComboBox();
+			personCombo = new JComboBox();
+			for (Room r : rooms) {
+				roomCombo.addItem(r.toString());
+			}
+			for (String w : weapons) {
+				weaponCombo.addItem(w);
+			}
+			for (Player p : players) {
+				personCombo.addItem(p.getName());
+			}
+			submitButton = new JButton("Submit");
+			cancelButton = new JButton("Cancel");
+			submitButton.addActionListener(this);
+			cancelButton.addActionListener(this);
+			mainPanel.add(currentRoom);
+			mainPanel.add(roomCombo);
+			mainPanel.add(person);
+			mainPanel.add(personCombo);
+			mainPanel.add(weapon);
+			mainPanel.add(weaponCombo);
+			mainPanel.add(submitButton);
+			mainPanel.add(cancelButton);
+			add(mainPanel);
+			setSize(300,200);
+		}
+		
+		public void actionPerformed(ActionEvent e) {
+			if (e.getSource() == submitButton) {
+				// submit accusation
+				Board.getInstance().doAccusation(getSuggestion());
+				dispose();
+			}
+			if (e.getSource() == cancelButton) {
+				dispose();
+			}
+		}
+		public Solution getSuggestion() {
+			String playerString = (String)personCombo.getSelectedItem();
+			String weaponString = (String)weaponCombo.getSelectedItem();
+			String roomString = (String)roomCombo.getSelectedItem();
+			return new Solution(new Card(roomString, CardType.ROOM), 
+					new Card(playerString, CardType.PERSON),
+					new Card(weaponString, CardType.WEAPON));
+		}
+	}
 	// Returns a random number from 1-6
 	public int setRoll() {
 		Random rand = new Random();
