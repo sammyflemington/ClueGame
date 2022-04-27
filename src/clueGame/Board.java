@@ -19,7 +19,9 @@ import java.util.*;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import java.io.File;
@@ -41,13 +43,13 @@ public class Board extends JPanel {
 	private GameControlPanel controlPanel;
 	private CardPanel cardPanel;
 	private boolean doDrawTargets = true;
-	
+
 	static int numColumns = 1;
 	static int numRows = 1;
-	
+
 	private String layoutConfigFile;
 	private String setupConfigFile;
-	
+
 	private Map<Character, Room> roomMap;
 	private Map<Character, BoardCell> roomLabels;
 	private Map<Character, BoardCell> roomCenters;
@@ -87,17 +89,17 @@ public class Board extends JPanel {
 		} catch(FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 	public void setControlPanel(GameControlPanel panel) {
 		this.controlPanel = panel;
 	}
-	
+
 	public void setCardPanel(CardPanel panel) {
 		this.cardPanel = panel;
 	}
-	
+
 	public boolean getDoDrawTargets() {
 		return doDrawTargets;
 	}
@@ -116,7 +118,7 @@ public class Board extends JPanel {
 			SuggestionBox sb = new SuggestionBox(roomMap.get(c.getInitial()));
 			sb.setVisible(true);
 		}
-		
+
 		currentPlayer.setTurnOver(true);
 		doDrawTargets = false;
 	}
@@ -130,16 +132,16 @@ public class Board extends JPanel {
 		}
 		repaint();
 	}
-	
+
 	// Checks if the human player clicked on a valid target cell
 	public BoardCell checkTargetClicked(int x, int y) {
 
 		int row = (int) Math.floor((y - 1 * getCell(0, 0).getHeight()) / getCell(0, 0).getHeight());
 		int col = (int) Math.round(x / getCell(0, 0).getWidth());
-		
+
 		BoardCell clickedCell = getCell(row, col);
 		//System.out.println(Integer.toString(row) + ", " + Integer.toString(col));
-		
+
 		// Check each target rectangle for the coordinates (x, y)
 		for (BoardCell target : targets) {
 			if (target.equals(clickedCell)) {
@@ -155,25 +157,25 @@ public class Board extends JPanel {
 	public void computerTurn() {
 		BoardCell target = currentPlayer.selectTarget(roll);
 		currentPlayer.moveTo(target.getRow(), target.getCol()); 		
-		
+
 		// If we moved into a room, make a suggestion	
 		if (target.isRoomCenter()) {
 			Solution suggestion = currentPlayer.makeSuggestion(fullDeck);
 			doSuggestion(suggestion);
 		}
-		
+
 		currentPlayer.setTurnOver(true);			// Set turn over
 	}
 
 	public void nextPlayer() {
 		nextTurn();
-		
+
 		currentPlayer = players.get(turn);			// Update current player
 		currentPlayer.setTurnOver(false);			// Set turn not over
 		setRoll();
 		int roll = getRoll();
 		calcTargets(board[currentPlayer.row][currentPlayer.column], roll);
-		
+
 		if (currentPlayer instanceof HumanPlayer) {
 			humanTurn();
 		} else {
@@ -208,11 +210,28 @@ public class Board extends JPanel {
 			controlPanel.setGuessResult("No new clue!");
 		}
 	}
-	
+
 	public void doAccusation(Solution accusation) {
-		
+
+		if (accusation.getPerson().equals(solution.getPerson()) && 
+				accusation.getRoom().equals(solution.getRoom()) &&
+				accusation.getWeapon().equals(solution.getWeapon())) {
+			JFrame frame = new JFrame("");
+			JOptionPane.showMessageDialog(frame, "Congratulations! You won!", "Clue - GAME OVER", JOptionPane.NO_OPTION);
+			System.exit(0);
+		} else {
+			JFrame frame = new JFrame("");
+			JOptionPane.showMessageDialog(frame, "You lose!!!", "Clue - GAME OVER", JOptionPane.NO_OPTION);
+			System.exit(0);
+		}
+
 	}
-	
+
+	public void makeAccusationBox() {
+		AccusationBox accusationBox = new AccusationBox();
+		accusationBox.setVisible(true);
+	}
+
 	private class SuggestionBox extends JDialog implements ActionListener{
 		private JComboBox personCombo;
 		private JComboBox weaponCombo;
@@ -251,7 +270,7 @@ public class Board extends JPanel {
 			add(mainPanel);
 			setSize(300,200);
 		}
-		
+
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == submitButton) {
 				// submit guess
@@ -273,7 +292,7 @@ public class Board extends JPanel {
 					new Card(weaponString, CardType.WEAPON));
 		}
 	}
-	
+
 	private class AccusationBox extends JDialog implements ActionListener{
 		private JComboBox personCombo;
 		private JComboBox weaponCombo;
@@ -314,7 +333,7 @@ public class Board extends JPanel {
 			add(mainPanel);
 			setSize(300,200);
 		}
-		
+
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == submitButton) {
 				// submit accusation
@@ -340,7 +359,7 @@ public class Board extends JPanel {
 		this.roll = rand.nextInt(6) + 1;
 		return roll;
 	}
-	
+
 	public int getRoll() {
 		return roll;
 	}
@@ -817,7 +836,7 @@ public class Board extends JPanel {
 	public int getTurn() {
 		return turn;
 	}
-	
+
 	public Room getRoom(char c) {
 		return roomMap.get(c);
 	}
@@ -833,7 +852,7 @@ public class Board extends JPanel {
 	public Player getCurrentPlayer() {
 		return players.get(turn);
 	}
-	
+
 	public HumanPlayer getHumanPlayer() {
 		for (Player p : players) {
 			if (p instanceof HumanPlayer) {
@@ -850,7 +869,7 @@ public class Board extends JPanel {
 	public String getRoomLabel(char c){
 		return roomMap.get(c).getName();
 	}
-	
+
 	public void setTurn(int t) {
 		turn = t;
 	}

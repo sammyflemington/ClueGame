@@ -171,7 +171,8 @@ public class GameControlPanel extends JPanel implements ActionListener {
 		
 		// Accuse button was clicked
 		if (e.getSource() == accuseButton) {
-			// TODO: allow human player to make accusation
+			// allow human player to make accusation
+			board.makeAccusationBox();
 		}
 		
 		// Next button was clicked
