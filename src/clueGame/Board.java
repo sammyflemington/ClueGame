@@ -214,6 +214,10 @@ public class Board extends JPanel {
 		
 	}
 	
+	public void makeAccusationBox() {
+		AccusationBox accusationBox = new AccusationBox();
+	}
+	
 	private class SuggestionBox extends JDialog implements ActionListener{
 		private JComboBox personCombo;
 		private JComboBox weaponCombo;
