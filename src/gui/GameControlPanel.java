@@ -172,7 +172,13 @@ public class GameControlPanel extends JPanel implements ActionListener {
 		// Accuse button was clicked
 		if (e.getSource() == accuseButton) {
 			// allow human player to make accusation
-			board.makeAccusationBox();
+			
+			if (board.getCurrentPlayer().equals(board.getHumanPlayer())) {
+				board.makeAccusationBox();
+			} else {
+				JOptionPane.showMessageDialog(this, "You can only accuse on your turn!!", "CLUE ERROR", JOptionPane.ERROR_MESSAGE);
+			}
+			
 		}
 		
 		// Next button was clicked

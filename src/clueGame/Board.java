@@ -205,6 +205,23 @@ public class Board extends JPanel {
 	}
 
 	public void doSuggestion(Solution suggestion) {
+		
+		// move suggested player into the suggested room
+		for (Player p : players) {
+			
+			if (p.getName().equals(suggestion.getPerson().toString())) {
+				
+				for (Room r : rooms) {
+					if (suggestion.getRoom().toString().equals(r.getName())) {
+						p.moveTo(r.getCenterCell().getRow(), r.getCenterCell().getCol());
+						break;
+					}
+				}
+
+			}
+			
+		}
+		
 		// see if anyone can disprove it
 		ArrayList<Card> newlySeen = new ArrayList<Card>();
 		boolean disproven = false;
