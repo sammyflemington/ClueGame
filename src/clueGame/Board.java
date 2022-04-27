@@ -153,7 +153,6 @@ public class Board extends JPanel {
 
 	// Next button events for computer player
 	public void computerTurn() {
-
 		BoardCell target = currentPlayer.selectTarget(roll);
 		currentPlayer.moveTo(target.getRow(), target.getCol()); 		
 		

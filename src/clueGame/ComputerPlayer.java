@@ -97,9 +97,34 @@ public class ComputerPlayer extends Player {
 		return new Solution(room, unseenPeople.get(person), unseenWeapons.get(weapon));
 	}
 
-	public Solution checkForAccusation() {
+	public Solution checkForAccusation(ArrayList<Card> deck) {
 		// if this player has solved the mystery, make an accusation!
-		
+		ArrayList<Card> unseen = new ArrayList<Card>();
+		for (Card c : getSeen()) {
+			if (!deck.contains(c)) {
+				unseen.add(c);
+			}
+		}
+		if (unseen.size() == 3) {
+			Card no = new Card("sdkljfasd;kfj", CardType.PERSON);
+			Card person = no, room = no, weapon= no;
+			for (Card c : unseen) {
+				switch(c.getCardType()) {
+				case ROOM:
+					room = c;
+					break;
+				case PERSON:
+					person = c;
+					break;
+					
+				case WEAPON:
+					weapon = c;
+					break;
+				}
+			}
+			if (room != no && person != no && weapon != no)
+				return new Solution(room, person, weapon);
+		}
 		return null;
 	}
 }

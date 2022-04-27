@@ -109,6 +109,7 @@ public abstract class Player {
 	}
 	
 	public abstract Solution makeSuggestion(ArrayList<Card> deck);
+	public abstract Solution checkForAccusation(ArrayList<Card> deck);
 	
 	public Card disproveSuggestion(Solution suggestion) {
 		ArrayList<Card> suggested = suggestion.getCards();
