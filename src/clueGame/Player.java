@@ -104,6 +104,8 @@ public abstract class Player {
 		return color;
 	}
 	
+	public abstract Solution makeSuggestion(ArrayList<Card> deck);
+	
 	public Card disproveSuggestion(Solution suggestion) {
 		ArrayList<Card> suggested = suggestion.getCards();
 		Random rand = new Random();

@@ -7,12 +7,18 @@ package clueGame;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.GridLayout;
 import java.awt.Point;
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.*;
 import java.util.*;
 
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import java.io.File;
@@ -97,6 +103,12 @@ public class Board extends JPanel {
 	}
 	public void setHumanMove(BoardCell c) {
 		currentPlayer.moveTo(c.getRow(), c.getCol());
+		// check if we went to a room
+		if (c.isRoomCenter()) {
+			// open suggestion box
+			
+		}
+		
 		currentPlayer.setTurnOver(true);
 		doDrawTargets = false;
 	}
@@ -118,7 +130,7 @@ public class Board extends JPanel {
 		int col = (int) Math.round(x / getCell(0, 0).getWidth());
 		
 		BoardCell clickedCell = getCell(row, col);
-		System.out.println(Integer.toString(row) + ", " + Integer.toString(col));
+		//System.out.println(Integer.toString(row) + ", " + Integer.toString(col));
 		
 		// Check each target rectangle for the coordinates (x, y)
 		for (BoardCell target : targets) {
@@ -136,7 +148,26 @@ public class Board extends JPanel {
 
 		BoardCell target = currentPlayer.selectTarget(roll);
 		currentPlayer.moveTo(target.getRow(), target.getCol()); 		
-
+		
+		// If we moved into a room, make a suggestion	
+		if (target.isRoomCenter()) {
+			Solution suggestion = currentPlayer.makeSuggestion(fullDeck);
+			// see if anyone can disprove it
+			boolean disproven = false;
+			for (Player p : players) {
+				if (p.disproveSuggestion(suggestion) != null) {
+					disproven = true;
+				}
+			}
+			// update UI
+			panel.setGuess(suggestion.toString());
+			if (disproven) {
+				panel.setGuessResult("Suggestion was disproven!");
+			}else {
+				panel.setGuessResult("Suggestion was not disproven!");
+			}
+		}
+		
 		currentPlayer.setTurnOver(true);			// Set turn over
 	}
 
@@ -157,6 +188,60 @@ public class Board extends JPanel {
 
 	}
 
+	private class SuggestionBox extends JDialog{
+		private JComboBox personCombo;
+		private JComboBox weaponCombo;
+		private Room room;
+		private JButton submitButton;
+		private JButton cancelButton;
+		public SuggestionBox(Room room) {
+			super();
+			this.room = room;
+			JPanel mainPanel = new JPanel();
+			mainPanel.setLayout(new GridLayout(4, 2));
+			JLabel currentRoom = new JLabel("Current room");
+			JLabel person = new JLabel("Person");
+			JLabel weapon = new JLabel("Weapon");
+			JLabel roomLabel = new JLabel(room.toString());
+			weaponCombo = new JComboBox();
+			personCombo = new JComboBox();
+			for (String w : weapons) {
+				weaponCombo.addItem(w);
+			}
+			for (Player p : players) {
+				personCombo.addItem(p.getName());
+			}
+			submitButton = new JButton("Submit");
+			cancelButton = new JButton("Cancel");
+
+			mainPanel.add(currentRoom);
+			mainPanel.add(roomLabel);
+			mainPanel.add(person);
+			mainPanel.add(personCombo);
+			mainPanel.add(weapon);
+			mainPanel.add(weaponCombo);
+			mainPanel.add(submitButton);
+			mainPanel.add(cancelButton);
+		}
+		
+		public void actionPerformed(ActionEvent e) {
+			if (e.getSource() == submitButton) {
+				
+			}
+			if (e.getSource() == cancelButton) {
+				
+			}
+		}
+		public Solution getSuggestion() {
+			String playerString = (String)personCombo.getSelectedItem();
+			String weaponString = (String)weaponCombo.getSelectedItem();
+			String roomString = this.room.toString();
+			return new Solution(new Card(roomString, CardType.ROOM), 
+					new Card(playerString, CardType.PERSON),
+					new Card(weaponString, CardType.WEAPON));
+		}
+	}
+	
 	// Returns a random number from 1-6
 	public int setRoll() {
 		Random rand = new Random();

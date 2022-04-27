@@ -3,6 +3,7 @@
 package clueGame;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.Set;
 
@@ -24,6 +25,12 @@ public class HumanPlayer extends Player {
 
 	@Override
 	protected BoardCell selectTarget(int roll) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Solution makeSuggestion(ArrayList<Card> deck) {
 		// TODO Auto-generated method stub
 		return null;
 	}

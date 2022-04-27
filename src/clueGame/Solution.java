@@ -67,4 +67,8 @@ public class Solution {
 			return false;
 		}
 	}
+	
+	public String toString() {
+		return person.toString() + ", " + room.toString() + ", " + weapon.toString();
+	}
 }
