@@ -25,6 +25,7 @@ import javax.swing.JPanel;
 import java.io.File;
 
 import clueGame.BoardCell;
+import gui.CardPanel;
 import gui.GameControlPanel;
 
 /*
@@ -37,7 +38,8 @@ public class Board extends JPanel {
 	private static Board theInstance = new Board();
 	private BoardCell[][] board;
 	private Set<BoardCell> targets;
-	private GameControlPanel panel;
+	private GameControlPanel controlPanel;
+	private CardPanel cardPanel;
 	private boolean doDrawTargets = true;
 	
 	static int numColumns = 1;
@@ -88,8 +90,12 @@ public class Board extends JPanel {
 		
 	}
 	
-	public void setPanel(GameControlPanel panel) {
-		this.panel = panel;
+	public void setControlPanel(GameControlPanel panel) {
+		this.controlPanel = panel;
+	}
+	
+	public void setCardPanel(CardPanel panel) {
+		this.cardPanel = panel;
 	}
 	
 	public boolean getDoDrawTargets() {
@@ -179,18 +185,28 @@ public class Board extends JPanel {
 
 	public void doSuggestion(Solution suggestion) {
 		// see if anyone can disprove it
+		ArrayList<Card> newlySeen = new ArrayList<Card>();
 		boolean disproven = false;
 		for (Player p : players) {
-			if (p.disproveSuggestion(suggestion) != null) {
+			Card c = p.disproveSuggestion(suggestion);
+			if (c != null) {
 				disproven = true;
+				newlySeen.add(c);
 			}
 		}
 		// update UI
-		panel.setGuess(suggestion.toString());
+		controlPanel.setGuess(suggestion.toString());
 		if (disproven) {
-			panel.setGuessResult("Suggestion was disproven!");
+			controlPanel.setGuessResult("Suggestion was disproven!");
+			// Add cards to player's seen lists
+			for (Card c : newlySeen) {
+				for (Player p : players) {
+					p.updateSeen(c);
+				}
+			}
+			cardPanel.update(getHumanPlayer());
 		}else {
-			panel.setGuessResult("Suggestion was not disproven!");
+			controlPanel.setGuessResult("Suggestion was not disproven!");
 		}
 	}
 	private class SuggestionBox extends JDialog implements ActionListener{

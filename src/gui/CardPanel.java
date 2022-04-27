@@ -50,6 +50,10 @@ public class CardPanel extends JPanel{
 	}
 	
 	public void update(Player p) {
+		// first clear holders
+		peopleHolder.clear();
+		roomHolder.clear();
+		weaponHolder.clear();
 		for (Card c : p.getSeen()) {
 			addToSeen(c);
 		}
@@ -68,6 +72,7 @@ public class CardPanel extends JPanel{
 			roomHolder.addToSeen(c);
 			break;
 		}
+		updateUI();
 	}
 	
 	private void addToHand(ArrayList<Card> hand) {
@@ -84,6 +89,7 @@ public class CardPanel extends JPanel{
 				break;
 			}
 		}
+		updateUI();
 	}
 	
 	class CardHolder extends JPanel {
@@ -137,6 +143,10 @@ public class CardPanel extends JPanel{
 			updateUI();
 		}
 		
+		public void clear() {
+			hand.removeAll();
+			seen.removeAll();
+		}
 		public void addToSeen(Card c) {
 			JTextField card = new JTextField(c.toString());
 			card.setHorizontalAlignment(JTextField.CENTER);

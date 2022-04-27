@@ -69,7 +69,11 @@ public abstract class Player {
 	}
 	
 	public void updateSeen(Card card) {
-		seenCards.add(card);
+		// avoid adding duplicates
+		if (!seenCards.contains(card)) {
+			seenCards.add(card);
+		}
+		
 	}
 
 	public String getName() {

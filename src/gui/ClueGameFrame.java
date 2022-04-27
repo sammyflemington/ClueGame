@@ -48,7 +48,8 @@ public class ClueGameFrame extends JFrame {
 		setTitle("Really Good Lookin' Clue!");
 		addMouseListener(new ClueListener());		// Add listener to the panel
 		currentPlayer = board.getHumanPlayer();
-		board.setPanel(gameControlPanel);
+		board.setControlPanel(gameControlPanel);
+		board.setCardPanel(cardPanel);
 	}
 	
 	/*
